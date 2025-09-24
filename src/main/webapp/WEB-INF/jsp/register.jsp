@@ -1,20 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Skill Swap - Login</title>
+<title>Skill Swap - Register</title>
 </head>
 <body>
-<h2>Skill Swap Login</h2>
-    <form name="frm" action="doLogin" method="post">
+<h2>Skill Swap Register</h2>
+    <form name="frm1" action="doRegister" method="post">
         username: <input type="text" name="username"> <br>
         password: <input type="password" name="password"> <br>
-        <input type="submit" value="เข้าสู่ระบบ">
+        <input type="submit" value="บันทึก">
     </form>
 
-    <p><a href="register">สมัครสมาชิก</a></p>
+    <p><a href="/">กลับไปหน้า Login</a></p>
 
     <font color="red">${error}</font>
 </body>

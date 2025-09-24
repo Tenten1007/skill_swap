@@ -1,16 +1,91 @@
 package com.springboot.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.springboot.model.User;
+import com.springboot.model.UserManager;
+import com.springboot.model.PasswordUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AuthController {
-	@GetMapping("/")
-	public ModelAndView listRestaurant() {
 
-		ModelAndView mv = new ModelAndView("login");
+    @Autowired
+    private UserManager userManager;
 
-		return mv;
-	}
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ModelAndView openLoginPage() {
+        return new ModelAndView("login");
+    }
+
+    @RequestMapping(value = "/doLogin", method = RequestMethod.POST)
+    public ModelAndView userLogin(HttpServletRequest request, HttpSession session) {
+        String uname = request.getParameter("username");
+        String pwd = request.getParameter("password");
+
+        try {
+            String hashedPassword = PasswordUtil.getInstance().createPassword(pwd, "Tenten");
+            User user = new User(uname, hashedPassword);
+            boolean isLogin = userManager.isLogin(user);
+
+            if (isLogin) {
+                // Get complete user data from database for session
+                User completeUser = userManager.getUserByUsername(uname);
+                session.setAttribute("user", completeUser);
+                session.setMaxInactiveInterval(30 * 60); // 30 minutes
+
+                ModelAndView mav = new ModelAndView("home");
+                return mav;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        ModelAndView mav = new ModelAndView("login");
+        mav.addObject("error", "Login บ่สำเร็จเจ้า");
+        return mav;
+    }
+
+    @RequestMapping(value = "/doLogout", method = RequestMethod.GET)
+    public String doLogout(HttpSession session) {
+        session.removeAttribute("user");
+        session.setMaxInactiveInterval(0);
+        return "login";
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public String registerPage(HttpServletRequest request) {
+        return "register";
+    }
+
+    @RequestMapping(value = "/doRegister", method = RequestMethod.POST)
+    public ModelAndView registerUser(HttpServletRequest request) {
+        String uname = request.getParameter("username");
+        String pwd = request.getParameter("password");
+
+        User user0 = userManager.getUserByUsername(uname);
+
+        if (user0 == null) {
+            try {
+                String hashedPassword = PasswordUtil.getInstance().createPassword(pwd, "Tenten");
+                User user = new User(uname, hashedPassword);
+                userManager.insertUser(user);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            ModelAndView mav = new ModelAndView("register");
+            mav.addObject("error", "username ซ้ำครับอ้าย");
+            return mav;
+        }
+
+        ModelAndView mav = new ModelAndView("login");
+        return mav;
+    }
 }

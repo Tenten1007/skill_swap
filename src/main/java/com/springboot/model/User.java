@@ -56,6 +56,11 @@ public class User {
     // Constructors
     public User() {}
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     public User(int id, String username, String password, String email, String firstName, String lastName,
                 String profileImage, String bio, String location, LocalDateTime createdAt,
                 List<SkillOffer> skillOffers) {
