@@ -36,16 +36,25 @@ public class HomeController {
 
             if (search != null && !search.trim().isEmpty()) {
                 skillOffers = skillOfferRepository.searchActiveOffers(search.trim());
+                System.out.println("Search results: " + skillOffers.size());
             } else if (location != null && !location.trim().isEmpty()) {
                 skillOffers = skillOfferRepository.findActiveOffersByLocation(location.trim());
+                System.out.println("Location results: " + skillOffers.size());
             } else if (categoryId != null) {
                 skillOffers = skillOfferRepository.findActiveOffersBySkillId(categoryId);
+                System.out.println("Category results: " + skillOffers.size());
             } else {
                 skillOffers = skillOfferRepository.findActiveOffersOrderByCreatedAtDesc();
+                System.out.println("All active offers: " + skillOffers.size());
             }
+
+            // Debug: Check total records in database
+            List<SkillOffer> allOffers = skillOfferRepository.findAll();
+            System.out.println("Total offers in database: " + allOffers.size());
 
             // Get all categories for filter dropdown
             List<SkillCategory> categories = skillCategoryRepository.findAll();
+            System.out.println("Total categories: " + categories.size());
 
             mav.addObject("skillOffers", skillOffers != null ? skillOffers : new java.util.ArrayList<>());
             mav.addObject("categories", categories != null ? categories : new java.util.ArrayList<>());

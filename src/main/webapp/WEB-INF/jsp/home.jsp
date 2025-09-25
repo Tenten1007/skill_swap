@@ -495,28 +495,49 @@
                             <div class="glass-card skill-offer-card">
                                 <div class="skill-header">
                                     <span class="skill-category">
-                                        ${offer.skill.category.categoryName}
+                                        <c:choose>
+                                            <c:when test="${not empty offer.skill and not empty offer.skill.category}">
+                                                ${offer.skill.category.categoryName}
+                                            </c:when>
+                                            <c:otherwise>ไม่ระบุหมวดหมู่</c:otherwise>
+                                        </c:choose>
                                     </span>
                                     <span class="skill-date">
-                                        <fmt:formatDate value="${offer.createdAt}" pattern="d MMM yyyy"/>
+                                        <c:if test="${not empty offer.createdAt}">
+                                            ${offer.createdAt.dayOfMonth}
+                                            ${offer.createdAt.month.toString().substring(0,3).toLowerCase()}
+                                            ${offer.createdAt.year}
+                                        </c:if>
                                     </span>
                                 </div>
 
-                                <h3 class="skill-title">${offer.title}</h3>
-                                <p class="skill-description">${offer.description}</p>
+                                <h3 class="skill-title">
+                                    <c:out value="${not empty offer.title ? offer.title : 'ไม่มีชื่อ'}"/>
+                                </h3>
+
+                                <p class="skill-description">
+                                    <c:out value="${not empty offer.description ? offer.description : 'ไม่มีรายละเอียด'}"/>
+                                </p>
 
                                 <div class="skill-footer">
                                     <div class="skill-user">
                                         <div class="skill-user-avatar">
-                                            ${offer.user.username.substring(0,1).toUpperCase()}
+                                            <c:choose>
+                                                <c:when test="${not empty offer.user and not empty offer.user.username}">
+                                                    ${offer.user.username.substring(0,1).toUpperCase()}
+                                                </c:when>
+                                                <c:otherwise>?</c:otherwise>
+                                            </c:choose>
                                         </div>
-                                        <span class="skill-username">${offer.user.username}</span>
+                                        <span class="skill-username">
+                                            <c:out value="${not empty offer.user.username ? offer.user.username : 'ไม่ระบุผู้ใช้'}"/>
+                                        </span>
                                     </div>
 
                                     <c:if test="${not empty offer.location}">
                                         <div class="skill-location">
                                             <i class="fas fa-map-marker-alt"></i>
-                                            ${offer.location}
+                                            <c:out value="${offer.location}"/>
                                         </div>
                                     </c:if>
                                 </div>
