@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skill Swap - หน้าหลัก</title>
+    <title>Skill Swap - Home Feed</title>
 
     <!-- Aurora Glass Theme -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/aurora-theme.css">
@@ -14,129 +15,310 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        /* Home-specific overrides for Aurora theme */
+        /* Home Feed specific styles */
         .home-container {
-            padding: var(--space-lg);
             min-height: 100vh;
+            background: var(--bg-gradient);
+            padding: var(--space-lg);
         }
 
-        .welcome-card {
-            text-align: center;
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: var(--space-xl);
         }
 
-        .welcome-title {
-            font-size: var(--font-4xl);
+        .welcome-info h1 {
+            font-size: var(--font-3xl);
             font-weight: 700;
             color: var(--text-glass);
-            margin-bottom: var(--space-md);
             text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
-            letter-spacing: -0.02em;
+            margin-bottom: var(--space-xs);
         }
 
-        .welcome-subtitle {
-            font-size: var(--font-lg);
+        .welcome-info p {
+            font-size: var(--font-base);
             color: var(--text-glass-secondary);
             font-weight: 500;
-            margin-bottom: var(--space-xl);
-            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
         }
 
-        .user-info {
+        .user-profile {
             display: flex;
             align-items: center;
             gap: var(--space-md);
-            margin-bottom: var(--space-lg);
-            padding: var(--space-lg);
-            background: var(--glass-bg);
+            padding: var(--space-md) var(--space-lg);
+            background: var(--glass-bg-strong);
             border: 1px solid var(--glass-border);
             border-radius: var(--radius-lg);
             backdrop-filter: var(--blur-strength);
         }
 
         .user-avatar {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             background: var(--button-gradient);
             border-radius: var(--radius-full);
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--text-white);
-            font-size: 24px;
+            font-size: 20px;
         }
 
-        .user-details h3 {
-            color: var(--text-glass);
-            font-size: var(--font-xl);
+        .user-name {
+            font-size: var(--font-base);
             font-weight: 600;
-            margin-bottom: var(--space-xs);
+            color: var(--text-glass);
             text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
         }
 
-        .user-details p {
-            color: var(--text-glass-secondary);
-            font-size: var(--font-sm);
-            font-weight: 500;
-            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4);
-        }
-
-        .action-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: var(--space-lg);
+        /* Search and Filter Section */
+        .search-filter-section {
             margin-bottom: var(--space-xl);
         }
 
-        .action-card {
-            padding: var(--space-xl);
-            text-align: center;
+        .search-bar {
+            display: flex;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .search-input-group {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: var(--space-md) var(--space-md) var(--space-md) 50px;
+            background: var(--glass-bg-strong);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            font-size: var(--font-base);
+            color: var(--text-glass);
+            backdrop-filter: var(--blur-strength);
+            transition: all var(--duration-normal) var(--smooth-easing);
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: var(--focus-ring);
+            background: var(--glass-hover);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: var(--space-md);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-glass-secondary);
+            font-size: 18px;
+        }
+
+        .search-button {
+            padding: var(--space-md) var(--space-xl);
+            white-space: nowrap;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: var(--space-md);
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            padding: var(--space-sm) var(--space-md);
+            background: var(--glass-bg-strong);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            color: var(--text-glass);
+            backdrop-filter: var(--blur-strength);
+            font-size: var(--font-sm);
+            min-width: 150px;
+        }
+
+        .clear-filters {
+            padding: var(--space-sm) var(--space-md);
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: var(--radius-md);
+            color: var(--error);
+            font-size: var(--font-sm);
+            text-decoration: none;
+            transition: all var(--duration-normal) var(--smooth-easing);
+        }
+
+        .clear-filters:hover {
+            background: rgba(239, 68, 68, 0.2);
+            text-decoration: none;
+        }
+
+        /* Feed Section */
+        .feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .feed-title {
+            font-size: var(--font-2xl);
+            font-weight: 600;
+            color: var(--text-glass);
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+        }
+
+        .add-skill-button {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-md) var(--space-lg);
+            background: var(--button-gradient);
+            color: var(--text-white);
+            border: none;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-size: var(--font-sm);
+            font-weight: 600;
+            transition: all var(--duration-normal) var(--smooth-easing);
+            box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
+        }
+
+        .add-skill-button:hover {
+            transform: var(--hover-lift);
+            box-shadow: 0 8px 32px rgba(0, 122, 255, 0.4);
+            text-decoration: none;
+            color: var(--text-white);
+        }
+
+        /* Skill Offers Grid */
+        .skill-offers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-2xl);
+        }
+
+        .skill-offer-card {
+            padding: var(--space-lg);
             transition: all var(--duration-normal) var(--smooth-easing);
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
 
-        .action-card:hover {
+        .skill-offer-card:hover {
             transform: var(--hover-lift);
+            box-shadow: var(--glass-shadow-strong);
         }
 
-        .action-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto var(--space-lg);
-            background: var(--button-gradient);
-            border-radius: var(--radius-xl);
+        .skill-header {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-white);
-            font-size: 36px;
-            transition: all var(--duration-normal) var(--smooth-easing);
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-md);
         }
 
-        .action-card:hover .action-icon {
-            transform: scale(1.05) rotate(5deg);
+        .skill-category {
+            padding: var(--space-xs) var(--space-sm);
+            background: rgba(0, 122, 255, 0.15);
+            color: var(--primary);
+            border-radius: var(--radius-sm);
+            font-size: var(--font-xs);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        .action-title {
+        .skill-date {
+            font-size: var(--font-xs);
+            color: var(--text-glass-secondary);
+            opacity: 0.8;
+        }
+
+        .skill-title {
             font-size: var(--font-xl);
             font-weight: 600;
             color: var(--text-glass);
             margin-bottom: var(--space-sm);
             text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+            line-height: 1.3;
         }
 
-        .action-description {
+        .skill-description {
             font-size: var(--font-sm);
             color: var(--text-glass-secondary);
-            font-weight: 500;
             line-height: 1.5;
-            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4);
+            margin-bottom: var(--space-md);
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
+        .skill-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .skill-user {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .skill-user-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--accent);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-white);
+            font-size: 14px;
+        }
+
+        .skill-username {
+            font-size: var(--font-sm);
+            font-weight: 500;
+            color: var(--text-glass);
+        }
+
+        .skill-location {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-size: var(--font-xs);
+            color: var(--text-glass-secondary);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: var(--space-2xl);
+            color: var(--text-glass-secondary);
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            margin-bottom: var(--space-lg);
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: var(--font-xl);
+            margin-bottom: var(--space-md);
+            color: var(--text-glass);
+        }
+
+        /* Logout Section */
         .logout-section {
             text-align: center;
-            margin-top: var(--space-2xl);
-            padding-top: var(--space-lg);
+            padding: var(--space-lg);
             border-top: 1px solid var(--glass-border);
         }
 
@@ -144,38 +326,48 @@
             display: inline-flex;
             align-items: center;
             gap: var(--space-sm);
-            color: var(--text-glass);
-            text-decoration: none;
-            font-size: var(--font-sm);
-            font-weight: 500;
             padding: var(--space-md) var(--space-lg);
             background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
             border-radius: var(--radius-md);
-            backdrop-filter: var(--blur-strength);
+            color: var(--error);
+            text-decoration: none;
+            font-size: var(--font-sm);
+            font-weight: 600;
             transition: all var(--duration-normal) var(--smooth-easing);
         }
 
         .logout-button:hover {
             background: rgba(239, 68, 68, 0.2);
-            border-color: rgba(239, 68, 68, 0.4);
             transform: var(--hover-lift);
             text-decoration: none;
+            color: var(--error);
         }
 
-        /* Mobile responsiveness */
+        /* Mobile Responsiveness */
         @media (max-width: 768px) {
-            .action-grid {
+            .header-section {
+                flex-direction: column;
+                gap: var(--space-md);
+                text-align: center;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .filter-row {
+                justify-content: center;
+            }
+
+            .skill-offers-grid {
                 grid-template-columns: 1fr;
                 gap: var(--space-md);
             }
 
-            .welcome-title {
-                font-size: var(--font-3xl);
-            }
-
-            .user-info {
+            .feed-header {
                 flex-direction: column;
+                gap: var(--space-md);
                 text-align: center;
             }
         }
@@ -196,125 +388,184 @@
         <div class="particle"></div>
     </div>
 
-    <!-- Main Home Container -->
+    <!-- Main Container -->
     <div class="home-container">
-        <div class="glass-card form-container" style="max-width: 800px; margin: 0 auto;">
-            <!-- Welcome Section -->
-            <div class="welcome-card">
-                <h1 class="welcome-title">
-                    <i class="fas fa-home"></i>
-                    ยินดีต้อนรับสู่ Skill Swap!
-                </h1>
-                <p class="welcome-subtitle">แพลตฟอร์มแลกเปลี่ยนทักษะ สร้างโอกาสใหม่</p>
-            </div>
+        <div style="max-width: 1200px; margin: 0 auto;">
 
-            <!-- User Info Section -->
-            <div class="user-info">
-                <div class="user-avatar">
-                    <i class="fas fa-user"></i>
+            <!-- Header Section -->
+            <div class="header-section">
+                <div class="welcome-info">
+                    <h1><i class="fas fa-home"></i> Skill Swap Feed</h1>
+                    <p>ค้นหาและแลกเปลี่ยนทักษะกับชุมชนของเรา</p>
                 </div>
-                <div class="user-details">
-                    <h3>สวัสดี, ${sessionScope.user.username}!</h3>
-                    <p>เข้าสู่ระบบสำเร็จแล้ว - พร้อมสำหรับการแลกเปลี่ยนทักษะ</p>
-                </div>
-            </div>
 
-            <!-- Action Cards -->
-            <div class="action-grid">
-                <div class="glass-card action-card">
-                    <div class="action-icon">
-                        <i class="fas fa-search"></i>
+                <div class="user-profile">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
                     </div>
-                    <h3 class="action-title">ค้นหาทักษะ</h3>
-                    <p class="action-description">
-                        ค้นหาและเรียนรู้ทักษะใหม่ๆ จากผู้เชี่ยวชาญในชุมชนของเรา
-                    </p>
-                </div>
-
-                <div class="glass-card action-card">
-                    <div class="action-icon">
-                        <i class="fas fa-plus-circle"></i>
-                    </div>
-                    <h3 class="action-title">แชร์ทักษะ</h3>
-                    <p class="action-description">
-                        แบ่งปันความรู้และทักษะของคุณให้กับผู้ที่สนใจ
-                    </p>
-                </div>
-
-                <div class="glass-card action-card">
-                    <div class="action-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3 class="action-title">เชื่อมต่อ</h3>
-                    <p class="action-description">
-                        พบปะกับคนใหม่ๆ และสร้างเครือข่ายในการแลกเปลี่ยนทักษะ
-                    </p>
-                </div>
-
-                <div class="glass-card action-card">
-                    <div class="action-icon">
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <h3 class="action-title">รีวิวและคะแนน</h3>
-                    <p class="action-description">
-                        ให้คะแนนและรีวิวประสบการณ์การแลกเปลี่ยนทักษะ
-                    </p>
-                </div>
-            </div>
-
-            <!-- Quick Stats -->
-            <div class="glass-card" style="padding: var(--space-lg); text-align: center; margin-bottom: var(--space-lg);">
-                <h3 class="text-glass text-xl font-semibold m-md">สถิติด่วน</h3>
-                <div class="flex justify-center gap-4 text-center">
                     <div>
-                        <div class="text-2xl font-bold text-glass">0</div>
-                        <div class="text-sm text-glass opacity-70">ทักษะที่เรียนรู้</div>
-                    </div>
-                    <div class="w-px bg-glass-border"></div>
-                    <div>
-                        <div class="text-2xl font-bold text-glass">0</div>
-                        <div class="text-sm text-glass opacity-70">ทักษะที่แชร์</div>
-                    </div>
-                    <div class="w-px bg-glass-border"></div>
-                    <div>
-                        <div class="text-2xl font-bold text-glass">0</div>
-                        <div class="text-sm text-glass opacity-70">คะแนนรีวิว</div>
+                        <div class="user-name">${sessionScope.user.username}</div>
+                        <a href="doLogout" style="font-size: 12px; color: var(--error); text-decoration: none;">
+                            <i class="fas fa-sign-out-alt"></i> ออกจากระบบ
+                        </a>
                     </div>
                 </div>
             </div>
 
-            <!-- Logout Section -->
-            <div class="logout-section">
-                <a href="doLogout" class="logout-button">
-                    <i class="fas fa-sign-out-alt"></i>
-                    ออกจากระบบ
+            <!-- Search and Filter Section -->
+            <div class="glass-card search-filter-section">
+                <form method="GET" action="home">
+                    <div class="search-bar">
+                        <div class="search-input-group">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text"
+                                   name="search"
+                                   class="search-input"
+                                   placeholder="ค้นหาทักษะที่สนใจ... เช่น Programming, Design, Marketing"
+                                   value="${searchQuery}">
+                        </div>
+                        <button type="submit" class="btn btn-primary search-button">
+                            <i class="fas fa-search"></i>
+                            ค้นหา
+                        </button>
+                    </div>
+
+                    <div class="filter-row">
+                        <select name="categoryId" class="filter-select">
+                            <option value="">หมวดหมู่ทั้งหมด</option>
+                            <c:forEach var="category" items="${categories}">
+                                <option value="${category.id}" ${selectedCategoryId == category.id ? 'selected' : ''}>
+                                    ${category.categoryName}
+                                </option>
+                            </c:forEach>
+                        </select>
+
+                        <input type="text"
+                               name="location"
+                               class="filter-select"
+                               placeholder="สถานที่"
+                               value="${selectedLocation}"
+                               style="min-width: 120px;">
+
+                        <c:if test="${not empty searchQuery or not empty selectedLocation or not empty selectedCategoryId}">
+                            <a href="home" class="clear-filters">
+                                <i class="fas fa-times"></i>
+                                ล้างตัวกรอง
+                            </a>
+                        </c:if>
+
+                        <button type="submit" class="btn btn-glass" style="padding: var(--space-sm) var(--space-md);">
+                            <i class="fas fa-filter"></i>
+                            กรอง
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Feed Header -->
+            <div class="feed-header">
+                <h2 class="feed-title">
+                    <c:choose>
+                        <c:when test="${not empty searchQuery}">
+                            ผลการค้นหา "${searchQuery}"
+                        </c:when>
+                        <c:when test="${not empty selectedLocation}">
+                            ทักษะใน ${selectedLocation}
+                        </c:when>
+                        <c:otherwise>
+                            ทักษะล่าสุด
+                        </c:otherwise>
+                    </c:choose>
+                    <span style="font-size: var(--font-base); font-weight: normal; opacity: 0.7;">
+                        (${skillOffers != null ? skillOffers.size() : 0} รายการ)
+                    </span>
+                </h2>
+
+                <a href="add-skill" class="add-skill-button">
+                    <i class="fas fa-plus-circle"></i>
+                    แชร์ทักษะของคุณ
                 </a>
             </div>
+
+            <!-- Skill Offers Grid -->
+            <c:choose>
+                <c:when test="${not empty skillOffers}">
+                    <div class="skill-offers-grid">
+                        <c:forEach var="offer" items="${skillOffers}">
+                            <div class="glass-card skill-offer-card">
+                                <div class="skill-header">
+                                    <span class="skill-category">
+                                        ${offer.skill.category.categoryName}
+                                    </span>
+                                    <span class="skill-date">
+                                        <fmt:formatDate value="${offer.createdAt}" pattern="d MMM yyyy"/>
+                                    </span>
+                                </div>
+
+                                <h3 class="skill-title">${offer.title}</h3>
+                                <p class="skill-description">${offer.description}</p>
+
+                                <div class="skill-footer">
+                                    <div class="skill-user">
+                                        <div class="skill-user-avatar">
+                                            ${offer.user.username.substring(0,1).toUpperCase()}
+                                        </div>
+                                        <span class="skill-username">${offer.user.username}</span>
+                                    </div>
+
+                                    <c:if test="${not empty offer.location}">
+                                        <div class="skill-location">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            ${offer.location}
+                                        </div>
+                                    </c:if>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="glass-card empty-state">
+                        <i class="fas fa-search"></i>
+                        <h3>ไม่พบทักษะที่ค้นหา</h3>
+                        <p>ลองเปลี่ยนคำค้นหาหรือตัวกรองดู หรือ <a href="add-skill" style="color: var(--primary);">แชร์ทักษะแรกของคุณ</a></p>
+                    </div>
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
 
     <script>
-        // Enhanced interactions
+        // Enhanced search functionality
         document.addEventListener('DOMContentLoaded', function() {
-            const actionCards = document.querySelectorAll('.action-card');
+            const searchInput = document.querySelector('.search-input');
+            const filterSelects = document.querySelectorAll('.filter-select');
 
-            actionCards.forEach(card => {
+            // Auto-submit on filter change
+            filterSelects.forEach(select => {
+                select.addEventListener('change', function() {
+                    this.closest('form').submit();
+                });
+            });
+
+            // Search suggestions (future enhancement)
+            searchInput.addEventListener('input', function() {
+                // Future: Add search suggestions
+            });
+
+            // Card click handlers
+            const skillCards = document.querySelectorAll('.skill-offer-card');
+            skillCards.forEach(card => {
                 card.addEventListener('click', function() {
-                    // Add click animation
-                    this.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 150);
-
-                    // Future: Add navigation to specific features
-                    console.log('Feature coming soon:', this.querySelector('.action-title').textContent);
+                    // Future: Navigate to skill detail page
+                    console.log('Navigate to skill details');
                 });
             });
 
             // Console branding
-            console.log('%c🚀 Skill Swap Home', 'color: #6366F1; font-size: 16px; font-weight: bold;');
-            console.log('%cAurora Glass Theme System', 'color: #8B5CF6; font-size: 12px;');
-            console.log('%c✨ Welcome, ${sessionScope.user.username}!', 'color: #10B981; font-size: 14px;');
+            console.log('%c🚀 Skill Swap Feed', 'color: #007AFF; font-size: 16px; font-weight: bold;');
+            console.log('%cAurora Glass Theme System', 'color: #5856D6; font-size: 12px;');
+            console.log('%c✨ Welcome to the Feed!', 'color: #32D74B; font-size: 14px;');
         });
     </script>
 </body>

@@ -40,8 +40,7 @@ public class AuthController {
                 session.setAttribute("user", completeUser);
                 session.setMaxInactiveInterval(30 * 60); // 30 minutes
 
-                ModelAndView mav = new ModelAndView("home");
-                return mav;
+                return new ModelAndView("redirect:/home");
             }
         } catch (Exception e) {
             e.printStackTrace();
