@@ -1369,10 +1369,16 @@
                     </span>
                 </h2>
 
-                <a href="add-skill" class="add-skill-button">
-                    <i class="fas fa-plus-circle"></i>
-                    แชร์ทักษะของคุณ
-                </a>
+                <div style="display: flex; gap: var(--space-md); align-items: center; flex-wrap: wrap;">
+                    <a href="add-skill" class="add-skill-button">
+                        <i class="fas fa-plus-circle"></i>
+                        แชร์ทักษะของคุณ
+                    </a>
+                    <a href="my-offers" class="add-skill-button" style="background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.3); color: var(--secondary);">
+                        <i class="fas fa-briefcase"></i>
+                        My Offers
+                    </a>
+                </div>
             </div>
 
             <!-- Skill Offers Grid -->

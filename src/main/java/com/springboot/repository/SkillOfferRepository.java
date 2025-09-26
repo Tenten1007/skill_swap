@@ -29,4 +29,6 @@ public interface SkillOfferRepository extends JpaRepository<SkillOffer, Integer>
 
     @Query("SELECT so FROM SkillOffer so WHERE so.isActive = true AND (so.title LIKE %:keyword% OR so.description LIKE %:keyword%)")
     List<SkillOffer> searchActiveOffers(@Param("keyword") String keyword);
+
+    List<SkillOffer> findByUserOrderByCreatedAtDesc(User user);
 }
