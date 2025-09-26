@@ -43,13 +43,26 @@ public class SkillOfferController {
         User user = (User) session.getAttribute("user");
         ModelAndView mav = new ModelAndView("my-offers");
 
+        System.out.println("=== MY OFFERS DEBUG ===");
+        System.out.println("Username: " + username);
+        System.out.println("User object: " + user);
+        System.out.println("User ID: " + (user != null ? user.getId() : "null"));
+
         try {
             // Get user's skill offers
             List<SkillOffer> myOffers = skillOfferRepository.findByUserOrderByCreatedAtDesc(user);
+            System.out.println("Number of offers found: " + myOffers.size());
+
+            if (myOffers.size() > 0) {
+                System.out.println("First offer: " + myOffers.get(0).getTitle());
+                System.out.println("First offer user ID: " + myOffers.get(0).getUser().getId());
+            }
+
             mav.addObject("skillOffers", myOffers);
             mav.addObject("user", user);
 
         } catch (Exception e) {
+            System.out.println("ERROR in showMyOffers: " + e.getMessage());
             e.printStackTrace();
             mav.addObject("error", "เกิดข้อผิดพลาดในการโหลดข้อมูล");
             mav.addObject("skillOffers", new java.util.ArrayList<>());
