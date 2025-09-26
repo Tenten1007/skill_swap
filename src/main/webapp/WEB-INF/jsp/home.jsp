@@ -1378,6 +1378,10 @@
                         <i class="fas fa-briefcase"></i>
                         My Offers
                     </a>
+                    <a href="matches" class="add-skill-button" style="background: rgba(6, 182, 212, 0.1); border-color: rgba(6, 182, 212, 0.3); color: var(--accent);">
+                        <i class="fas fa-handshake"></i>
+                        Matches
+                    </a>
                 </div>
             </div>
 
