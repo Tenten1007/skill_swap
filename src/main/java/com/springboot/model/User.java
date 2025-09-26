@@ -46,8 +46,20 @@ public class User {
     @Column(length = 100)
     private String location;
 
+    @Column(length = 20)
+    private String phone;
+
+    @Column(length = 200)
+    private String linkedin;
+
+    @Column(length = 200)
+    private String github;
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
@@ -157,11 +169,59 @@ public class User {
         this.createdAt = createdAt;
     }
 
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getLinkedin() {
+        return linkedin;
+    }
+
+    public void setLinkedin(String linkedin) {
+        this.linkedin = linkedin;
+    }
+
+    public String getGithub() {
+        return github;
+    }
+
+    public void setGithub(String github) {
+        this.github = github;
+    }
+
     public List<SkillOffer> getSkillOffers() {
         return skillOffers;
     }
 
     public void setSkillOffers(List<SkillOffer> skillOffers) {
         this.skillOffers = skillOffers;
+    }
+
+    // Helper methods
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
+    public String getInitials() {
+        String initials = "";
+        if (firstName != null && !firstName.isEmpty()) {
+            initials += firstName.charAt(0);
+        }
+        if (lastName != null && !lastName.isEmpty()) {
+            initials += lastName.charAt(0);
+        }
+        return initials.toUpperCase();
     }
 }

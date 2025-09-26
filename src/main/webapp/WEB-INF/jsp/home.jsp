@@ -1382,6 +1382,10 @@
                         <i class="fas fa-handshake"></i>
                         Matches
                     </a>
+                    <a href="profile" class="add-skill-button" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); color: var(--success);">
+                        <i class="fas fa-user"></i>
+                        Profile
+                    </a>
                 </div>
             </div>
 
