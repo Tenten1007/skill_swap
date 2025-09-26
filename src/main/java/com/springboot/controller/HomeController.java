@@ -10,8 +10,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.springboot.model.SkillOffer;
 import com.springboot.model.SkillCategory;
+import com.springboot.model.User;
 import com.springboot.repository.SkillOfferRepository;
 import com.springboot.repository.SkillCategoryRepository;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class HomeController {
@@ -26,7 +29,16 @@ public class HomeController {
     public ModelAndView home(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) String location,
-            @RequestParam(required = false) Integer categoryId) {
+            @RequestParam(required = false) Integer categoryId,
+            HttpSession session) {
+
+        // Check if user is logged in
+        String username = (String) session.getAttribute("username");
+        if (username == null) {
+            return new ModelAndView("redirect:/login");
+        }
+
+        User user = (User) session.getAttribute("user");
 
         ModelAndView mav = new ModelAndView("home");
 
@@ -36,31 +48,23 @@ public class HomeController {
 
             if (search != null && !search.trim().isEmpty()) {
                 skillOffers = skillOfferRepository.searchActiveOffers(search.trim());
-                System.out.println("Search results: " + skillOffers.size());
             } else if (location != null && !location.trim().isEmpty()) {
                 skillOffers = skillOfferRepository.findActiveOffersByLocation(location.trim());
-                System.out.println("Location results: " + skillOffers.size());
             } else if (categoryId != null) {
                 skillOffers = skillOfferRepository.findActiveOffersBySkillId(categoryId);
-                System.out.println("Category results: " + skillOffers.size());
             } else {
                 skillOffers = skillOfferRepository.findActiveOffersOrderByCreatedAtDesc();
-                System.out.println("All active offers: " + skillOffers.size());
             }
-
-            // Debug: Check total records in database
-            List<SkillOffer> allOffers = skillOfferRepository.findAll();
-            System.out.println("Total offers in database: " + allOffers.size());
 
             // Get all categories for filter dropdown
             List<SkillCategory> categories = skillCategoryRepository.findAll();
-            System.out.println("Total categories: " + categories.size());
 
             mav.addObject("skillOffers", skillOffers != null ? skillOffers : new java.util.ArrayList<>());
             mav.addObject("categories", categories != null ? categories : new java.util.ArrayList<>());
             mav.addObject("searchQuery", search);
             mav.addObject("selectedLocation", location);
             mav.addObject("selectedCategoryId", categoryId);
+            mav.addObject("user", user);
 
         } catch (Exception e) {
             e.printStackTrace();

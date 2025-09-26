@@ -110,6 +110,47 @@
             transform: var(--hover-lift);
             text-decoration: none;
         }
+
+        /* Alert Messages */
+        .alert {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-md) var(--space-lg);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-lg);
+            font-weight: 500;
+            backdrop-filter: blur(20px);
+            border: 1px solid;
+            animation: slideInFromTop 0.5s ease-out;
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .alert-info {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .alert i {
+            font-size: 18px;
+        }
+
+        @keyframes slideInFromTop {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 
@@ -144,6 +185,14 @@
                 <div class="alert alert-error">
                     <i class="fas fa-exclamation-triangle"></i>
                     <span>${error}</span>
+                </div>
+            </c:if>
+
+            <!-- Login Required Message -->
+            <c:if test="${param.message == 'login-required'}">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <span>กรุณาเข้าสู่ระบบก่อนเพื่อสร้าง Skill Offer</span>
                 </div>
             </c:if>
 

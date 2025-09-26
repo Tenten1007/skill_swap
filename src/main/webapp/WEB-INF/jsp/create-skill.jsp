@@ -1,0 +1,986 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สร้าง Skill Offer - Skill Swap</title>
+
+    <!-- Aurora Glass Theme -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/aurora-theme.css">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            /* === Glass Effects === */
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            --glass-hover: rgba(255, 255, 255, 0.12);
+            --blur-strength: blur(20px);
+
+            /* === Aurora Color Palette === */
+            --primary: #6366F1;
+            --primary-hover: #4F46E5;
+            --secondary: #8B5CF6;
+            --accent: #06B6D4;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --error: #EF4444;
+
+            /* === Aurora Gradients === */
+            --bg-gradient: linear-gradient(135deg,
+                rgba(99, 102, 241, 0.1) 0%,
+                rgba(139, 92, 246, 0.1) 25%,
+                rgba(6, 182, 212, 0.1) 50%,
+                rgba(16, 185, 129, 0.1) 75%,
+                rgba(245, 158, 11, 0.1) 100%);
+
+            --button-gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+
+            /* === Text System === */
+            --text-primary: #1F2937;
+            --text-secondary: #6B7280;
+            --text-muted: #9CA3AF;
+            --text-white: #FFFFFF;
+            --text-glass: rgba(255, 255, 255, 0.9);
+
+            /* === Interactive States === */
+            --hover-lift: translateY(-2px);
+            --spring-easing: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --smooth-easing: cubic-bezier(0.4, 0, 0.2, 1);
+            --duration-normal: 0.3s;
+
+            /* === Spacing System === */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+
+            /* === Border Radius === */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --radius-full: 9999px;
+
+            /* === Font Sizes === */
+            --font-xs: 0.75rem;
+            --font-sm: 0.875rem;
+            --font-base: 1rem;
+            --font-lg: 1.125rem;
+            --font-xl: 1.25rem;
+            --font-2xl: 1.5rem;
+            --font-3xl: 1.875rem;
+            --font-4xl: 2.25rem;
+        }
+
+        /* Create Skill Page Styles */
+        .create-skill-container {
+            min-height: 100vh;
+            background: var(--bg-gradient);
+            padding: var(--space-lg);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Enhanced Background Animation */
+        body {
+            background: linear-gradient(-45deg,
+                rgba(99, 102, 241, 0.03) 0%,
+                rgba(139, 92, 246, 0.04) 25%,
+                rgba(6, 182, 212, 0.03) 50%,
+                rgba(16, 185, 129, 0.04) 75%,
+                rgba(245, 158, 11, 0.03) 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Enhanced Floating Background Elements */
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.08;
+            animation: floatShape 20s infinite ease-in-out;
+            filter: blur(1px);
+        }
+
+        .shape:nth-child(1) {
+            top: 15%;
+            left: 10%;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            top: 60%;
+            right: 15%;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, var(--secondary), var(--accent));
+            transform: rotate(45deg);
+            animation-delay: -5s;
+        }
+
+        .shape:nth-child(3) {
+            bottom: 25%;
+            left: 20%;
+            width: 0;
+            height: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-bottom: 80px solid var(--accent);
+            animation-delay: -10s;
+        }
+
+        .shape:nth-child(4) {
+            top: 30%;
+            right: 30%;
+            width: 100px;
+            height: 40px;
+            background: linear-gradient(90deg, var(--success), var(--warning));
+            border-radius: var(--radius-full);
+            animation-delay: -15s;
+        }
+
+        .shape:nth-child(5) {
+            bottom: 40%;
+            right: 5%;
+            width: 60px;
+            height: 60px;
+            background: var(--warning);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            animation-delay: -3s;
+        }
+
+        @keyframes floatShape {
+            0%, 100% {
+                transform: translateY(0px) translateX(0px) rotate(0deg) scale(1);
+                opacity: 0.08;
+            }
+            25% {
+                transform: translateY(-40px) translateX(20px) rotate(90deg) scale(1.1);
+                opacity: 0.12;
+            }
+            50% {
+                transform: translateY(-20px) translateX(-30px) rotate(180deg) scale(0.9);
+                opacity: 0.06;
+            }
+            75% {
+                transform: translateY(-50px) translateX(10px) rotate(270deg) scale(1.05);
+                opacity: 0.1;
+            }
+        }
+
+        /* Header Section */
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-2xl);
+            position: relative;
+            z-index: 2;
+            animation: slideInFromTop 0.8s ease-out;
+            padding: var(--space-lg);
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius-xl);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+        }
+
+        @keyframes slideInFromTop {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-title h1 {
+            font-size: var(--font-4xl);
+            font-weight: 700;
+            background: linear-gradient(135deg,
+                var(--primary) 0%,
+                var(--secondary) 30%,
+                var(--accent) 60%,
+                var(--success) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 200%;
+            margin-bottom: var(--space-xs);
+            animation: gradientShift 4s ease-in-out infinite;
+            position: relative;
+        }
+
+        .header-title h1::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg,
+                rgba(99, 102, 241, 0.1) 0%,
+                rgba(139, 92, 246, 0.1) 30%,
+                rgba(6, 182, 212, 0.1) 60%,
+                rgba(16, 185, 129, 0.1) 100%);
+            border-radius: var(--radius-md);
+            z-index: -1;
+            filter: blur(20px);
+            animation: gradientShift 4s ease-in-out infinite reverse;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% {
+                background-position: 0% 50%;
+                filter: hue-rotate(0deg);
+            }
+            50% {
+                background-position: 100% 50%;
+                filter: hue-rotate(20deg);
+            }
+        }
+
+        .header-title p {
+            font-size: var(--font-lg);
+            color: var(--text-glass);
+            font-weight: 500;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-md) var(--space-lg);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-lg);
+            color: var(--text-glass);
+            text-decoration: none;
+            font-weight: 600;
+            backdrop-filter: var(--blur-strength);
+            transition: all var(--duration-normal) var(--smooth-easing);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .back-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .back-button:hover::before {
+            left: 100%;
+        }
+
+        .back-button:hover {
+            transform: var(--hover-lift);
+            border-color: rgba(99, 102, 241, 0.4);
+            text-decoration: none;
+            color: var(--primary);
+        }
+
+        .back-button.logout:hover {
+            background: rgba(239, 68, 68, 0.2) !important;
+            border-color: rgba(239, 68, 68, 0.5) !important;
+            color: #ff4444 !important;
+        }
+
+        /* Main Form Container */
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            animation: slideInFromBottom 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes slideInFromBottom {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .glass-form {
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.25) 0%,
+                rgba(255, 255, 255, 0.10) 50%,
+                rgba(255, 255, 255, 0.05) 100%);
+            border: 2px solid transparent;
+            border-radius: var(--radius-xl);
+            backdrop-filter: blur(40px);
+            padding: var(--space-2xl);
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-form::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg,
+                var(--primary) 0%,
+                var(--secondary) 25%,
+                var(--accent) 50%,
+                var(--success) 75%,
+                var(--warning) 100%);
+            border-radius: var(--radius-xl);
+            z-index: -1;
+            opacity: 0.6;
+            filter: blur(2px);
+            animation: borderGlow 6s ease-in-out infinite;
+        }
+
+        .glass-form::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg,
+                rgba(99, 102, 241, 0.03) 0%,
+                rgba(139, 92, 246, 0.02) 25%,
+                rgba(6, 182, 212, 0.03) 50%,
+                rgba(16, 185, 129, 0.02) 75%,
+                rgba(245, 158, 11, 0.03) 100%);
+            border-radius: var(--radius-xl);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% {
+                opacity: 0.6;
+                filter: blur(2px) hue-rotate(0deg);
+            }
+            50% {
+                opacity: 0.8;
+                filter: blur(1px) hue-rotate(30deg);
+            }
+        }
+
+        /* Form Groups */
+        .form-group {
+            margin-bottom: var(--space-xl);
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-group.half-width {
+            display: inline-block;
+            width: 48%;
+            margin-right: 4%;
+            vertical-align: top;
+        }
+
+        .form-group.half-width:nth-child(even) {
+            margin-right: 0;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: var(--space-sm);
+            font-size: var(--font-base);
+            font-weight: 600;
+            color: var(--text-glass);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-label.required::after {
+            content: '*';
+            color: var(--error);
+            margin-left: var(--space-xs);
+        }
+
+        /* Enhanced Form Inputs */
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: var(--space-lg);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.15) 0%,
+                rgba(255, 255, 255, 0.08) 50%,
+                rgba(255, 255, 255, 0.05) 100%);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: var(--radius-lg);
+            color: var(--text-glass);
+            font-size: var(--font-base);
+            font-weight: 500;
+            backdrop-filter: blur(25px);
+            transition: all var(--duration-normal) var(--spring-easing);
+            position: relative;
+            z-index: 2;
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.25) 0%,
+                rgba(255, 255, 255, 0.15) 50%,
+                rgba(255, 255, 255, 0.10) 100%);
+            box-shadow:
+                0 0 0 3px rgba(99, 102, 241, 0.3),
+                0 15px 40px rgba(99, 102, 241, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px) scale(1.01);
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 400;
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .form-select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="rgba(255,255,255,0.7)" d="m0,1l2,2l2,-2z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 12px;
+            padding-right: 50px;
+        }
+
+        .form-select option {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 12px;
+            font-weight: 500;
+        }
+
+        /* Enhanced Category Dropdown */
+        .category-input-wrapper {
+            position: relative;
+        }
+
+        .category-icon {
+            position: absolute;
+            left: var(--space-lg);
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 2;
+            transition: all var(--duration-normal) var(--smooth-easing);
+        }
+
+        .category-input-wrapper:focus-within .category-icon {
+            color: var(--primary);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .form-select.with-icon {
+            padding-left: 60px;
+        }
+
+        /* Success/Error Messages */
+        .alert {
+            padding: var(--space-lg);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-lg);
+            font-weight: 500;
+            backdrop-filter: blur(20px);
+            border: 1px solid;
+            animation: slideInFromTop 0.5s ease-out;
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        /* Submit Button */
+        .submit-section {
+            display: flex;
+            gap: var(--space-lg);
+            margin-top: var(--space-2xl);
+            justify-content: flex-end;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-lg) var(--space-2xl);
+            border: none;
+            border-radius: var(--radius-lg);
+            font-size: var(--font-base);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all var(--duration-normal) var(--spring-easing);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--button-gradient);
+            color: var(--text-white);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-glass);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+        }
+
+        .btn-primary::before,
+        .btn-secondary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .btn-primary:hover::before,
+        .btn-secondary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            border-color: rgba(99, 102, 241, 0.4);
+            color: var(--primary);
+        }
+
+        /* Form Validation Styles */
+        .form-input.error,
+        .form-textarea.error,
+        .form-select.error {
+            border-color: var(--error);
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .form-input.success,
+        .form-textarea.success,
+        .form-select.success {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        /* Loading State */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+            position: relative;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .create-skill-container {
+                padding: var(--space-md);
+            }
+
+            .header-section {
+                flex-direction: column;
+                gap: var(--space-md);
+                text-align: center;
+            }
+
+            .header-title h1 {
+                font-size: var(--font-3xl);
+            }
+
+            .glass-form {
+                padding: var(--space-lg);
+            }
+
+            .form-group.half-width {
+                width: 100%;
+                margin-right: 0;
+                display: block;
+            }
+
+            .submit-section {
+                flex-direction: column;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-title h1 {
+                font-size: var(--font-2xl);
+            }
+
+            .glass-form {
+                padding: var(--space-md);
+            }
+
+            .form-input,
+            .form-textarea,
+            .form-select {
+                padding: var(--space-md);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Enhanced Background Effects -->
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="create-skill-container">
+        <!-- Header Section -->
+        <div class="header-section">
+            <div class="header-title">
+                <h1><i class="fas fa-plus-circle"></i> สร้าง Skill Offer</h1>
+                <p>แชร์ทักษะของคุณให้กับชุมชน</p>
+            </div>
+            <div style="display: flex; gap: var(--space-md);">
+                <a href="home" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    กลับหน้าหลัก
+                </a>
+                <a href="doLogout" class="back-button logout" style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); color: var(--error);">
+                    <i class="fas fa-sign-out-alt"></i>
+                    ออกจากระบบ
+                </a>
+            </div>
+        </div>
+
+        <!-- Form Container -->
+        <div class="form-container">
+            <!-- Success/Error Messages -->
+            <c:if test="${not empty error}">
+                <div class="alert alert-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    ${error}
+                </div>
+            </c:if>
+
+            <c:if test="${param.success == 'skill-created'}">
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i>
+                    สร้าง Skill Offer สำเร็จแล้ว!
+                </div>
+            </c:if>
+
+            <!-- Main Form -->
+            <form method="POST" action="add-skill" class="glass-form" id="skillForm">
+                <!-- Title -->
+                <div class="form-group">
+                    <label for="title" class="form-label required">ชื่อทักษะ</label>
+                    <input type="text"
+                           id="title"
+                           name="title"
+                           class="form-input"
+                           placeholder="เช่น สอน JavaScript เบื้องต้น, ถ่ายรูปแนว Portrait"
+                           required>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                    <label for="description" class="form-label required">รายละเอียด</label>
+                    <textarea id="description"
+                              name="description"
+                              class="form-textarea"
+                              placeholder="อธิบายทักษะของคุณ สิ่งที่จะสอน และประสบการณ์ที่เกี่ยวข้อง..."
+                              required></textarea>
+                </div>
+
+                <!-- Category and Level Row -->
+                <div class="form-group half-width">
+                    <label for="categoryId" class="form-label required">หมวดหมู่</label>
+                    <div class="category-input-wrapper">
+                        <i class="fas fa-layer-group category-icon" id="categoryIcon"></i>
+                        <select id="categoryId" name="categoryId" class="form-select with-icon" required>
+                            <option value="">เลือกหมวดหมู่</option>
+                            <c:forEach var="category" items="${categories}">
+                                <option value="${category.id}">
+                                    <c:choose>
+                                        <c:when test="${category.categoryName == 'Programming'}">💻</c:when>
+                                        <c:when test="${category.categoryName == 'Design'}">🎨</c:when>
+                                        <c:when test="${category.categoryName == 'Marketing'}">📈</c:when>
+                                        <c:when test="${category.categoryName == 'Photography'}">📸</c:when>
+                                        <c:when test="${category.categoryName == 'Music'}">🎵</c:when>
+                                        <c:when test="${category.categoryName == 'Language'}">🌍</c:when>
+                                        <c:when test="${category.categoryName == 'Cooking'}">🍳</c:when>
+                                        <c:when test="${category.categoryName == 'Fitness'}">💪</c:when>
+                                        <c:when test="${category.categoryName == 'Writing'}">✍️</c:when>
+                                        <c:when test="${category.categoryName == 'Business'}">💼</c:when>
+                                        <c:otherwise>🔧</c:otherwise>
+                                    </c:choose>
+                                    ${category.categoryName}
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group half-width">
+                    <label for="level" class="form-label required">ระดับ</label>
+                    <select id="level" name="level" class="form-select" required>
+                        <option value="">เลือกระดับ</option>
+                        <option value="Beginner">🌱 เริ่มต้น (Beginner)</option>
+                        <option value="Intermediate">🚀 ปานกลาง (Intermediate)</option>
+                        <option value="Advanced">⭐ ขั้นสูง (Advanced)</option>
+                        <option value="Expert">👑 ผู้เชี่ยวชาญ (Expert)</option>
+                    </select>
+                </div>
+
+                <!-- Time Commitment and Location Row -->
+                <div class="form-group half-width">
+                    <label for="timeCommitment" class="form-label">ระยะเวลา</label>
+                    <select id="timeCommitment" name="timeCommitment" class="form-select">
+                        <option value="">เลือกระยะเวลา</option>
+                        <option value="1-2 ชั่วโมง">⏰ 1-2 ชั่วโมง</option>
+                        <option value="ครึ่งวัน">🕐 ครึ่งวัน (4-5 ชั่วโมง)</option>
+                        <option value="เต็มวัน">📅 เต็มวัน (8+ ชั่วโมง)</option>
+                        <option value="หลายวัน">📆 หลายวัน</option>
+                        <option value="ยืดหยุ่น">🔄 ยืดหยุ่นได้</option>
+                    </select>
+                </div>
+
+                <div class="form-group half-width">
+                    <label for="location" class="form-label">สถานที่</label>
+                    <input type="text"
+                           id="location"
+                           name="location"
+                           class="form-input"
+                           placeholder="เช่น กรุงเทพ, เชียงใหม่, Online">
+                </div>
+
+                <!-- Submit Section -->
+                <div class="submit-section">
+                    <a href="home" class="btn-secondary">
+                        <i class="fas fa-times"></i>
+                        ยกเลิก
+                    </a>
+                    <button type="submit" class="btn-primary" id="submitBtn">
+                        <i class="fas fa-plus-circle"></i>
+                        สร้าง Skill Offer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('skillForm');
+            const categorySelect = document.getElementById('categoryId');
+            const categoryIcon = document.getElementById('categoryIcon');
+            const submitBtn = document.getElementById('submitBtn');
+
+            // Category icon mapping (same as home page)
+            function getCategoryIcon(categoryName) {
+                const categoryIcons = {
+                    'Programming': 'fas fa-code',
+                    'Design': 'fas fa-palette',
+                    'Marketing': 'fas fa-chart-line',
+                    'Photography': 'fas fa-camera',
+                    'Music': 'fas fa-music',
+                    'Language': 'fas fa-globe-americas',
+                    'Cooking': 'fas fa-utensils',
+                    'Fitness': 'fas fa-dumbbell',
+                    'Writing': 'fas fa-feather-alt',
+                    'Business': 'fas fa-briefcase'
+                };
+
+                return categoryIcons[categoryName] || 'fas fa-layer-group';
+            }
+
+            // Update category icon
+            function updateCategoryIcon() {
+                const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+                const categoryName = selectedOption.textContent.trim().replace(/^[^\s]+\s/, ''); // Remove emoji
+                const iconClass = getCategoryIcon(categoryName);
+
+                categoryIcon.className = iconClass + ' category-icon';
+                categoryIcon.style.color = categorySelect.value ? 'var(--primary)' : 'rgba(255, 255, 255, 0.7)';
+            }
+
+            // Category change handler
+            categorySelect.addEventListener('change', function() {
+                updateCategoryIcon();
+                validateField(this);
+            });
+
+            // Form validation
+            function validateField(field) {
+                const value = field.value.trim();
+
+                if (field.hasAttribute('required') && !value) {
+                    field.classList.add('error');
+                    field.classList.remove('success');
+                    return false;
+                } else if (value) {
+                    field.classList.add('success');
+                    field.classList.remove('error');
+                    return true;
+                } else {
+                    field.classList.remove('error', 'success');
+                    return true;
+                }
+            }
+
+            // Add validation to required fields
+            const requiredFields = form.querySelectorAll('[required]');
+            requiredFields.forEach(field => {
+                field.addEventListener('blur', () => validateField(field));
+                field.addEventListener('input', () => {
+                    if (field.classList.contains('error')) {
+                        validateField(field);
+                    }
+                });
+            });
+
+            // Form submit handler
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                let isValid = true;
+                requiredFields.forEach(field => {
+                    if (!validateField(field)) {
+                        isValid = false;
+                    }
+                });
+
+                if (!isValid) {
+                    // Scroll to first error
+                    const firstError = form.querySelector('.error');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        firstError.focus();
+                    }
+                    return;
+                }
+
+                // Add loading state
+                form.classList.add('loading');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> กำลังสร้าง...';
+
+                // Submit form
+                setTimeout(() => {
+                    form.submit();
+                }, 500);
+            });
+
+            // Enhanced input animations
+            const inputs = form.querySelectorAll('.form-input, .form-textarea, .form-select');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'translateY(-2px)';
+                });
+
+                input.addEventListener('blur', function() {
+                    this.parentElement.style.transform = '';
+                });
+            });
+
+            // Initialize category icon
+            updateCategoryIcon();
+        });
+    </script>
+</body>
+</html>

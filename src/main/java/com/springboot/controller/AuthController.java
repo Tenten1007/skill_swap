@@ -24,6 +24,11 @@ public class AuthController {
         return new ModelAndView("login");
     }
 
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public ModelAndView loginPage() {
+        return new ModelAndView("login");
+    }
+
     @RequestMapping(value = "/doLogin", method = RequestMethod.POST)
     public ModelAndView userLogin(HttpServletRequest request, HttpSession session) {
         String uname = request.getParameter("username");
@@ -37,10 +42,13 @@ public class AuthController {
             if (isLogin) {
                 // Get complete user data from database for session
                 User completeUser = userManager.getUserByUsername(uname);
-                session.setAttribute("user", completeUser);
+
+                // Store both username and user object for redundancy
+                session.setAttribute("username", uname);
+                session.setAttribute("user", completeUser != null ? completeUser : user);
                 session.setMaxInactiveInterval(30 * 60); // 30 minutes
 
-                return new ModelAndView("redirect:/home");
+                return new ModelAndView("redirect:/home?welcome=true");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,8 +62,9 @@ public class AuthController {
     @RequestMapping(value = "/doLogout", method = RequestMethod.GET)
     public String doLogout(HttpSession session) {
         session.removeAttribute("user");
-        session.setMaxInactiveInterval(0);
-        return "login";
+        session.removeAttribute("username");
+        session.invalidate(); // Clear entire session
+        return "redirect:/login";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
