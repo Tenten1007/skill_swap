@@ -39,11 +39,11 @@
             --button-gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
 
             /* === Text System === */
-            --text-primary: #1F2937;
-            --text-secondary: #6B7280;
-            --text-muted: #9CA3AF;
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-muted: rgba(255, 255, 255, 0.6);
             --text-white: #FFFFFF;
-            --text-glass: rgba(255, 255, 255, 0.9);
+            --text-glass: rgba(255, 255, 255, 0.95);
 
             /* === Interactive States === */
             --hover-lift: translateY(-2px);
@@ -82,15 +82,15 @@
             margin: 0;
             font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             background: linear-gradient(-45deg,
-                rgba(99, 102, 241, 0.03) 0%,
-                rgba(139, 92, 246, 0.04) 25%,
-                rgba(6, 182, 212, 0.03) 50%,
-                rgba(16, 185, 129, 0.04) 75%,
-                rgba(245, 158, 11, 0.03) 100%);
+                #0f0f23 0%,
+                #1a1a2e 25%,
+                #16213e 50%,
+                #0f3460 75%,
+                #533483 100%);
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
             min-height: 100vh;
-            color: var(--text-primary);
+            color: #ffffff;
         }
 
         @keyframes gradientShift {
@@ -182,11 +182,12 @@
             justify-content: space-between;
             align-items: center;
             padding: var(--space-lg);
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(255, 255, 255, 0.08);
             border-radius: var(--radius-xl);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(20px);
             animation: slideInFromTop 0.8s ease-out;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         @keyframes slideInFromTop {
@@ -218,7 +219,7 @@
 
         .header-title p {
             font-size: var(--font-lg);
-            color: var(--text-glass);
+            color: rgba(255, 255, 255, 0.9);
             font-weight: 500;
         }
 
@@ -249,8 +250,8 @@
 
         .btn-secondary {
             background: rgba(255, 255, 255, 0.1);
-            color: var(--text-glass);
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(20px);
         }
 
@@ -361,13 +362,13 @@
         .stat-number {
             font-size: var(--font-3xl);
             font-weight: 700;
-            color: var(--text-glass);
+            color: #ffffff;
             margin-bottom: var(--space-xs);
         }
 
         .stat-label {
             font-size: var(--font-base);
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.8);
             font-weight: 500;
         }
 
@@ -404,7 +405,7 @@
         .section-title {
             font-size: var(--font-2xl);
             font-weight: 700;
-            color: var(--text-glass);
+            color: #ffffff;
             margin-bottom: var(--space-xl);
             position: relative;
             z-index: 2;
@@ -469,7 +470,7 @@
         .offer-title {
             font-size: var(--font-xl);
             font-weight: 700;
-            color: var(--text-glass);
+            color: #ffffff;
             margin-bottom: var(--space-xs);
             line-height: 1.2;
         }
@@ -506,7 +507,7 @@
         }
 
         .offer-description {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.9);
             font-size: var(--font-base);
             line-height: 1.6;
             margin-bottom: var(--space-lg);
@@ -531,7 +532,7 @@
             display: flex;
             align-items: center;
             gap: var(--space-xs);
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.8);
             font-size: var(--font-sm);
         }
 
@@ -599,13 +600,13 @@
         .empty-title {
             font-size: var(--font-2xl);
             font-weight: 700;
-            color: var(--text-glass);
+            color: #ffffff;
             margin-bottom: var(--space-md);
         }
 
         .empty-description {
             font-size: var(--font-base);
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.8);
             margin-bottom: var(--space-xl);
             max-width: 400px;
             margin-left: auto;

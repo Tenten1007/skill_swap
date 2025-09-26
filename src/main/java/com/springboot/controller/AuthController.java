@@ -34,33 +34,23 @@ public class AuthController {
         String uname = request.getParameter("username");
         String pwd = request.getParameter("password");
 
-        System.out.println("=== LOGIN DEBUG ===");
-        System.out.println("Username: " + uname);
-
         try {
             String hashedPassword = PasswordUtil.getInstance().createPassword(pwd, "Tenten");
             User user = new User(uname, hashedPassword);
             boolean isLogin = userManager.isLogin(user);
 
-            System.out.println("Login success: " + isLogin);
-
             if (isLogin) {
                 // Get complete user data from database for session
                 User completeUser = userManager.getUserByUsername(uname);
-                System.out.println("Complete user from DB: " + completeUser);
-                System.out.println("Complete user ID: " + (completeUser != null ? completeUser.getId() : "null"));
 
                 // Store both username and user object for redundancy
                 session.setAttribute("username", uname);
                 session.setAttribute("user", completeUser != null ? completeUser : user);
                 session.setMaxInactiveInterval(30 * 60); // 30 minutes
 
-                System.out.println("User object stored in session: " + session.getAttribute("user"));
-
                 return new ModelAndView("redirect:/home?welcome=true");
             }
         } catch (Exception e) {
-            System.out.println("LOGIN ERROR: " + e.getMessage());
             e.printStackTrace();
         }
 
