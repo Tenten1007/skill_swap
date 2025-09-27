@@ -170,7 +170,7 @@ yarn-error.log*
 
 # Claude AI development notes
 CLAUDE.md
-.claude
+.claude/
 
 # Custom ignores for this project
 SETUP_GUIDE.md
