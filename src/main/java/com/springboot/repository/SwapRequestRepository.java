@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.springboot.model.SwapRequest;
-import com.springboot.model.User;
+
 
 @Repository
 public interface SwapRequestRepository extends JpaRepository<SwapRequest, Integer> {

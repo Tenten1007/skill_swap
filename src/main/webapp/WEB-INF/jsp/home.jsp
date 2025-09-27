@@ -12,44 +12,112 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/aurora-theme.css">
 
     <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
+        :root {
+            /* === Glass Effects === */
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --glass-hover: rgba(255, 255, 255, 0.12);
+            --blur-strength: blur(20px);
+
+            /* === Aurora Color Palette === */
+            --primary: #6366F1;
+            --primary-hover: #4F46E5;
+            --secondary: #8B5CF6;
+            --accent: #06B6D4;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --error: #EF4444;
+
+            --button-gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+
+            /* === Text System - WHITE ON DARK === */
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --text-white: #FFFFFF;
+            --text-glass: rgba(255, 255, 255, 0.95);
+
+            /* === Interactive States === */
+            --hover-lift: translateY(-2px);
+            --spring-easing: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --smooth-easing: cubic-bezier(0.4, 0, 0.2, 1);
+            --duration-normal: 0.3s;
+
+            /* === Spacing System === */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+
+            /* === Border Radius === */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+
+            /* === Font Sizes === */
+            --font-xs: 0.75rem;
+            --font-sm: 0.875rem;
+            --font-base: 1rem;
+            --font-lg: 1.125rem;
+            --font-xl: 1.25rem;
+            --font-2xl: 1.5rem;
+            --font-3xl: 1.875rem;
+            --font-4xl: 2.25rem;
+        }
+
+        /* Dark Theme Body */
+        body {
+            margin: 0;
+            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(-45deg,
+                #0f0f23 0%,
+                #1a1a2e 25%,
+                #16213e 50%,
+                #0f3460 75%,
+                #533483 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            color: #ffffff;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Glass Card Component */
+        .glass-card {
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.15) 0%,
+                rgba(255, 255, 255, 0.05) 100%);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-xl);
+            backdrop-filter: blur(40px);
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            animation: slideInFromBottom 0.8s ease-out;
+        }
+
         /* Enhanced Home Feed styles with modern animations */
         .home-container {
             min-height: 100vh;
-            background: var(--bg-gradient);
             padding: var(--space-lg);
             position: relative;
             overflow-x: hidden;
         }
 
-        /* Floating geometric shapes */
-        .floating-shapes {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
 
-        .shape {
-            position: absolute;
-            opacity: 0.1;
-            animation: floatShape 20s infinite linear;
-        }
 
-        .shape:nth-child(1) {
-            top: 20%;
-            left: 10%;
-            width: 60px;
-            height: 60px;
-            background: var(--primary);
-            border-radius: 50%;
-            animation-delay: 0s;
-        }
 
         .shape:nth-child(2) {
             top: 60%;
@@ -95,6 +163,16 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: var(--space-xl);
+            padding: var(--space-lg);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.15) 0%,
+                rgba(255, 255, 255, 0.05) 100%);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-xl);
+            backdrop-filter: blur(40px);
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
             position: relative;
             z-index: 2;
             animation: slideInFromTop 0.8s ease-out;
@@ -114,24 +192,34 @@
         .welcome-info h1 {
             font-size: var(--font-3xl);
             font-weight: 700;
-            color: var(--text-glass);
-            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
-            margin-bottom: var(--space-xs);
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+            background: linear-gradient(135deg,
+                var(--primary) 0%,
+                var(--secondary) 30%,
+                var(--accent) 60%,
+                var(--success) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: gradientShift 3s ease-in-out infinite;
+            background-size: 200% 200%;
+            margin-bottom: var(--space-xs);
+            animation: gradientShift 4s ease-in-out infinite;
+            letter-spacing: -0.02em;
         }
 
         @keyframes gradientShift {
-            0%, 100% { filter: hue-rotate(0deg); }
-            50% { filter: hue-rotate(20deg); }
+            0%, 100% {
+                background-position: 0% 50%;
+                filter: hue-rotate(0deg);
+            }
+            50% {
+                background-position: 100% 50%;
+                filter: hue-rotate(20deg);
+            }
         }
 
         .welcome-info p {
             font-size: var(--font-base);
-            color: var(--text-glass-secondary);
+            color: rgba(255, 255, 255, 0.8);
             font-weight: 500;
         }
 
@@ -140,10 +228,10 @@
             align-items: center;
             gap: var(--space-md);
             padding: var(--space-md) var(--space-lg);
-            background: var(--glass-bg-strong);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-lg);
-            backdrop-filter: var(--blur-strength);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-md);
+            backdrop-filter: blur(20px);
             position: relative;
             overflow: hidden;
             transition: all var(--duration-normal) var(--smooth-easing);
@@ -165,8 +253,9 @@
         }
 
         .user-profile:hover {
+            background: var(--glass-hover);
+            border-color: rgba(99, 102, 241, 0.3);
             transform: var(--hover-lift);
-            border-color: rgba(99, 102, 241, 0.4);
         }
 
         .user-avatar {
@@ -184,8 +273,7 @@
         .user-name {
             font-size: var(--font-base);
             font-weight: 600;
-            color: var(--text-glass);
-            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.9);
         }
 
         /* Ultra-Modern Search and Filter Section */
@@ -253,7 +341,7 @@
             border-radius: var(--radius-xl);
             font-size: var(--font-lg);
             font-weight: 500;
-            color: var(--text-glass);
+            color: #ffffff;
             backdrop-filter: blur(20px);
             transition: all var(--duration-normal) var(--smooth-easing);
             position: relative;
@@ -436,7 +524,7 @@
             background: transparent;
             border: none;
             border-radius: var(--radius-xl);
-            color: var(--text-glass);
+            color: #ffffff;
             font-size: var(--font-base);
             font-weight: 600;
             cursor: pointer;
@@ -461,8 +549,8 @@
 
         /* Enhanced Select Options */
         .filter-select option {
-            background: rgba(255, 255, 255, 0.95);
-            color: #2D3748;
+            background: #333;
+            color: #ffffff;
             padding: 14px 20px;
             font-weight: 500;
             font-size: var(--font-base);
@@ -552,6 +640,10 @@
             transition: all var(--duration-normal) var(--spring-easing);
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.2));
+            display: inline-block;
+            line-height: 1;
+            text-align: center;
+            width: 20px;
         }
 
         .custom-select-wrapper:hover .category-icon {
@@ -575,10 +667,6 @@
             filter: drop-shadow(0 0 12px rgba(99, 102, 241, 0.6));
         }
 
-        /* Enhanced Select with Icons */
-        .filter-select.with-icon {
-            padding-left: 60px;
-        }
 
         /* Custom Option Styling (for modern browsers) */
         .filter-select option {
@@ -647,7 +735,7 @@
             background: transparent;
             border: none;
             border-radius: var(--radius-xl);
-            color: var(--text-glass);
+            color: #ffffff;
             font-size: var(--font-base);
             font-weight: 600;
             transition: all var(--duration-normal) var(--smooth-easing);
@@ -789,7 +877,7 @@
         .feed-title {
             font-size: var(--font-2xl);
             font-weight: 600;
-            color: var(--text-glass);
+            color: #ffffff;
             text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
         }
 
@@ -937,8 +1025,8 @@
 
         .skill-category {
             padding: var(--space-xs) var(--space-sm);
-            background: rgba(0, 122, 255, 0.15);
-            color: var(--primary);
+            background: rgba(99, 102, 241, 0.2);
+            color: #ffffff;
             border-radius: var(--radius-sm);
             font-size: var(--font-xs);
             font-weight: 600;
@@ -947,7 +1035,14 @@
             position: relative;
             overflow: hidden;
             transition: all var(--duration-normal) var(--smooth-easing);
+            border: 1px solid rgba(99, 102, 241, 0.3);
         }
+
+        .skill-category i {
+            margin-right: 6px;
+            font-size: 12px;
+        }
+
 
         .skill-category::before {
             content: '';
@@ -966,26 +1061,26 @@
 
         .skill-date {
             font-size: var(--font-xs);
-            color: var(--text-glass-secondary);
+            color: rgba(255, 255, 255, 0.6);
             opacity: 0.8;
         }
 
         .skill-title {
             font-size: var(--font-xl);
             font-weight: 600;
-            color: var(--text-glass);
+            color: #ffffff;
             margin-bottom: var(--space-sm);
-            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
             line-height: 1.3;
         }
 
         .skill-description {
             font-size: var(--font-sm);
-            color: var(--text-glass-secondary);
+            color: rgba(255, 255, 255, 0.8);
             line-height: 1.5;
             margin-bottom: var(--space-md);
             display: -webkit-box;
             -webkit-line-clamp: 3;
+            line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -1018,7 +1113,7 @@
         .skill-username {
             font-size: var(--font-sm);
             font-weight: 500;
-            color: var(--text-glass);
+            color: #ffffff;
         }
 
         .skill-location {
@@ -1026,14 +1121,14 @@
             align-items: center;
             gap: var(--space-xs);
             font-size: var(--font-xs);
-            color: var(--text-glass-secondary);
+            color: rgba(255, 255, 255, 0.6);
         }
 
         /* Enhanced Empty State */
         .empty-state {
             text-align: center;
             padding: var(--space-2xl);
-            color: var(--text-glass-secondary);
+            color: rgba(255, 255, 255, 0.6);
             animation: fadeInScale 0.8s ease-out;
         }
 
@@ -1057,7 +1152,7 @@
         .empty-state h3 {
             font-size: var(--font-xl);
             margin-bottom: var(--space-md);
-            color: var(--text-glass);
+            color: #ffffff;
         }
 
         /* Logout Section */
@@ -1215,13 +1310,6 @@
         <div class="particle"></div>
     </div>
 
-    <!-- Floating Geometric Shapes -->
-    <div class="floating-shapes">
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-    </div>
 
     <!-- Main Container -->
     <div class="home-container">
@@ -1250,11 +1338,11 @@
             <!-- Welcome Message -->
             <c:if test="${param.welcome == 'true'}">
                 <div class="glass-card" style="margin-bottom: var(--space-xl); padding: var(--space-lg); background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); animation: slideInFromTop 0.5s ease-out;">
-                    <div style="display: flex; align-items: center; gap: var(--space-sm); color: #3b82f6;">
+                    <div style="display: flex; align-items: center; gap: var(--space-sm); color: #ffffff;">
                         <i class="fas fa-hand-wave" style="font-size: 20px;"></i>
                         <span style="font-weight: 600; font-size: var(--font-base);">ยินดีต้อนรับสู่ Skill Swap! 👋</span>
                     </div>
-                    <p style="margin: var(--space-sm) 0 0 28px; color: rgba(59, 130, 246, 0.8); font-size: var(--font-sm);">
+                    <p style="margin: var(--space-sm) 0 0 28px; color: rgba(255, 255, 255, 0.8); font-size: var(--font-sm);">
                         เข้าสู่ระบบสำเร็จแล้ว พร้อมแลกเปลี่ยนทักษะกับชุมชนของเรา
                     </p>
                 </div>
@@ -1301,24 +1389,10 @@
                     <div class="filter-row">
                         <!-- Enhanced Premium Category Dropdown -->
                         <div class="custom-select-wrapper" id="categoryDropdown">
-                            <i class="fas fa-layer-group category-icon" id="categoryIcon"></i>
-                            <select name="categoryId" class="filter-select with-icon" id="categorySelect">
-                                <option value="" data-icon="fas fa-th-large">📋 หมวดหมู่ทั้งหมด</option>
+                            <select name="categoryId" class="filter-select" id="categorySelect">
+                                <option value="">หมวดหมู่ทั้งหมด</option>
                                 <c:forEach var="category" items="${categories}">
                                     <option value="${category.id}" ${selectedCategoryId == category.id ? 'selected' : ''}>
-                                        <c:choose>
-                                            <c:when test="${category.categoryName == 'Programming'}">💻</c:when>
-                                            <c:when test="${category.categoryName == 'Design'}">🎨</c:when>
-                                            <c:when test="${category.categoryName == 'Marketing'}">📈</c:when>
-                                            <c:when test="${category.categoryName == 'Photography'}">📸</c:when>
-                                            <c:when test="${category.categoryName == 'Music'}">🎵</c:when>
-                                            <c:when test="${category.categoryName == 'Language'}">🌍</c:when>
-                                            <c:when test="${category.categoryName == 'Cooking'}">🍳</c:when>
-                                            <c:when test="${category.categoryName == 'Fitness'}">💪</c:when>
-                                            <c:when test="${category.categoryName == 'Writing'}">✍️</c:when>
-                                            <c:when test="${category.categoryName == 'Business'}">💼</c:when>
-                                            <c:otherwise>🔧</c:otherwise>
-                                        </c:choose>
                                         ${category.categoryName}
                                     </option>
                                 </c:forEach>
@@ -1466,13 +1540,7 @@
             const skillCards = document.querySelectorAll('.skill-offer-card');
             const addSkillButton = document.querySelector('.add-skill-button');
 
-            // Initialize category icons on page load
-            const categorySelect = document.getElementById('categorySelect');
-            if (categorySelect) {
-                setTimeout(() => {
-                    updateCategoryIconEnhanced(categorySelect, false); // No animation on initial load
-                }, 100);
-            }
+            // Category select is now simple, no icon animation needed
 
             // Enhanced dropdown interactions with premium animations
             filterSelects.forEach(select => {
@@ -1586,10 +1654,7 @@
                         loadingOverlay.style.opacity = '1';
                     }, 10);
 
-                    // Update category icon with animation
-                    if (select.id === 'categorySelect') {
-                        updateCategoryIconEnhanced(this);
-                    }
+                    // Category select is now simple, no icon needed
 
                     // Add enhanced delay for better UX
                     setTimeout(() => {
@@ -1608,15 +1673,15 @@
                     'ทั้งหมด': 'fas fa-th-large',
 
                     // English categories
-                    'Programming': 'fas fa-code',
-                    'Design': 'fas fa-palette',
-                    'Marketing': 'fas fa-chart-line',
+                    'Programming': 'fas fa-laptop-code',
+                    'Design': 'fas fa-paint-brush',
+                    'Marketing': 'fas fa-bullhorn',
                     'Photography': 'fas fa-camera',
                     'Music': 'fas fa-music',
-                    'Language': 'fas fa-globe-americas',
+                    'Language': 'fas fa-globe',
                     'Cooking': 'fas fa-utensils',
                     'Fitness': 'fas fa-dumbbell',
-                    'Writing': 'fas fa-feather-alt',
+                    'Writing': 'fas fa-pen',
                     'Business': 'fas fa-briefcase',
 
                     // Additional variations and alternatives
@@ -1697,14 +1762,16 @@
                 const wrapper = selectElement.closest('.custom-select-wrapper');
                 const iconElement = wrapper.querySelector('.category-icon');
                 const selectedOption = selectElement.options[selectElement.selectedIndex];
-                const categoryName = selectedOption.text;
 
-                // Get the correct icon class
-                const newIconClass = getCategoryIcon(categoryName);
+                // Get symbol from data-symbol attribute
+                let newSymbol = selectedOption.getAttribute('data-symbol');
+                if (!newSymbol) {
+                    newSymbol = '📋'; // default symbol
+                }
 
                 if (!withAnimation) {
                     // Simple update without animation for initial load
-                    iconElement.className = newIconClass + ' category-icon';
+                    iconElement.textContent = newSymbol;
                     return;
                 }
 
@@ -1718,11 +1785,10 @@
                 createSparkleEffect(wrapper);
 
                 setTimeout(() => {
-                    iconElement.className = newIconClass + ' category-icon';
+                    iconElement.textContent = newSymbol;
                     iconElement.style.transform = 'translateY(-50%) scale(1.3) rotate(0deg)';
                     iconElement.style.opacity = '1';
                     iconElement.style.filter = 'blur(0px) drop-shadow(0 0 12px rgba(99, 102, 241, 0.8))';
-                    iconElement.style.color = 'var(--primary)';
 
                     setTimeout(() => {
                         iconElement.style.transform = 'translateY(-50%) scale(1.15) rotate(0deg)';

@@ -7,10 +7,10 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -61,8 +61,7 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SkillOffer> skillOffers = new ArrayList<>();
 
     // Constructors
@@ -77,6 +76,7 @@ public class User {
                 String profileImage, String bio, String location, LocalDateTime createdAt,
                 List<SkillOffer> skillOffers) {
         this.id = id;
+        this.username = username;
         this.password = password;
         this.email = email;
         this.firstName = firstName;
@@ -85,6 +85,27 @@ public class User {
         this.bio = bio;
         this.location = location;
         this.createdAt = createdAt;
+        this.skillOffers = skillOffers;
+    }
+
+    // Full constructor with all fields
+    public User(int id, String username, String password, String email, String firstName, String lastName,
+                String profileImage, String bio, String location, String phone, String linkedin, String github,
+                LocalDateTime createdAt, LocalDateTime updatedAt, List<SkillOffer> skillOffers) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.profileImage = profileImage;
+        this.bio = bio;
+        this.location = location;
+        this.phone = phone;
+        this.linkedin = linkedin;
+        this.github = github;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.skillOffers = skillOffers;
     }
 

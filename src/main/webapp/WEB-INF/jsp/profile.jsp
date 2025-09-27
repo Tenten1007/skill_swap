@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -367,6 +368,42 @@
             color: rgba(255, 255, 255, 0.7);
         }
 
+        /* Rating Stars Styling */
+        .rating-stat {
+            grid-column: 1 / -1;
+        }
+
+        .rating-value {
+            font-size: var(--font-lg);
+            font-weight: 700;
+            color: var(--warning);
+            margin-right: var(--space-sm);
+        }
+
+        .rating-stars {
+            display: inline-flex;
+            gap: 2px;
+        }
+
+        .star {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.3);
+            transition: all var(--duration-normal) var(--smooth-easing);
+        }
+
+        .star.filled {
+            color: var(--warning);
+            text-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+        }
+
+        .rating-stat .stat-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+        }
+
         .profile-actions {
             display: flex;
             flex-direction: column;
@@ -666,6 +703,24 @@
                                 </c:choose>
                             </div>
                             <div class="stat-label">Joined</div>
+                        </div>
+                        <div class="stat-item rating-stat">
+                            <div class="stat-number">
+                                <span class="rating-value">
+                                    <c:choose>
+                                        <c:when test="${averageRating > 0}">
+                                            <fmt:formatNumber value="${averageRating}" type="number" maxFractionDigits="1"/>
+                                        </c:when>
+                                        <c:otherwise>--</c:otherwise>
+                                    </c:choose>
+                                </span>
+                                <span class="rating-stars">
+                                    <c:forEach begin="1" end="5" var="star">
+                                        <span class="star <c:if test="${star <= averageRating}">filled</c:if>">★</span>
+                                    </c:forEach>
+                                </span>
+                            </div>
+                            <div class="stat-label">Rating (${totalRatings} reviews)</div>
                         </div>
                     </div>
 

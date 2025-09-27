@@ -6,6 +6,7 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,8 +33,7 @@ public class Skill {
     @JoinColumn(name = "category_id")
     private SkillCategory category;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "skill_id")
+    @OneToMany(mappedBy = "skill", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SkillOffer> skillOffers = new ArrayList<>();
 
     // Constructors

@@ -41,12 +41,12 @@
 
             --button-gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
 
-            /* === Text System === */
-            --text-primary: #1F2937;
-            --text-secondary: #6B7280;
-            --text-muted: #9CA3AF;
+            /* === Text System - WHITE ON DARK === */
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-muted: rgba(255, 255, 255, 0.6);
             --text-white: #FFFFFF;
-            --text-glass: rgba(255, 255, 255, 0.9);
+            --text-glass: rgba(255, 255, 255, 0.95);
 
             /* === Interactive States === */
             --hover-lift: translateY(-2px);
@@ -80,25 +80,28 @@
             --font-4xl: 2.25rem;
         }
 
+        /* Dark Theme Body */
+        body {
+            margin: 0;
+            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(-45deg,
+                #0f0f23 0%,
+                #1a1a2e 25%,
+                #16213e 50%,
+                #0f3460 75%,
+                #533483 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            color: #ffffff;
+        }
+
         /* Create Skill Page Styles */
         .create-skill-container {
             min-height: 100vh;
-            background: var(--bg-gradient);
             padding: var(--space-lg);
             position: relative;
             overflow-x: hidden;
-        }
-
-        /* Enhanced Background Animation */
-        body {
-            background: linear-gradient(-45deg,
-                rgba(99, 102, 241, 0.03) 0%,
-                rgba(139, 92, 246, 0.04) 25%,
-                rgba(6, 182, 212, 0.03) 50%,
-                rgba(16, 185, 129, 0.04) 75%,
-                rgba(245, 158, 11, 0.03) 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
         }
 
         @keyframes gradientShift {
@@ -107,94 +110,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Enhanced Floating Background Elements */
-        .floating-shapes {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            overflow: hidden;
-        }
-
-        .shape {
-            position: absolute;
-            opacity: 0.08;
-            animation: floatShape 20s infinite ease-in-out;
-            filter: blur(1px);
-        }
-
-        .shape:nth-child(1) {
-            top: 15%;
-            left: 10%;
-            width: 120px;
-            height: 120px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 50%;
-            animation-delay: 0s;
-        }
-
-        .shape:nth-child(2) {
-            top: 60%;
-            right: 15%;
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(45deg, var(--secondary), var(--accent));
-            transform: rotate(45deg);
-            animation-delay: -5s;
-        }
-
-        .shape:nth-child(3) {
-            bottom: 25%;
-            left: 20%;
-            width: 0;
-            height: 0;
-            border-left: 50px solid transparent;
-            border-right: 50px solid transparent;
-            border-bottom: 80px solid var(--accent);
-            animation-delay: -10s;
-        }
-
-        .shape:nth-child(4) {
-            top: 30%;
-            right: 30%;
-            width: 100px;
-            height: 40px;
-            background: linear-gradient(90deg, var(--success), var(--warning));
-            border-radius: var(--radius-full);
-            animation-delay: -15s;
-        }
-
-        .shape:nth-child(5) {
-            bottom: 40%;
-            right: 5%;
-            width: 60px;
-            height: 60px;
-            background: var(--warning);
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-            animation-delay: -3s;
-        }
-
-        @keyframes floatShape {
-            0%, 100% {
-                transform: translateY(0px) translateX(0px) rotate(0deg) scale(1);
-                opacity: 0.08;
-            }
-            25% {
-                transform: translateY(-40px) translateX(20px) rotate(90deg) scale(1.1);
-                opacity: 0.12;
-            }
-            50% {
-                transform: translateY(-20px) translateX(-30px) rotate(180deg) scale(0.9);
-                opacity: 0.06;
-            }
-            75% {
-                transform: translateY(-50px) translateX(10px) rotate(270deg) scale(1.05);
-                opacity: 0.1;
-            }
-        }
 
         /* Header Section */
         .header-section {
@@ -206,10 +121,15 @@
             z-index: 2;
             animation: slideInFromTop 0.8s ease-out;
             padding: var(--space-lg);
-            background: rgba(255, 255, 255, 0.02);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.15) 0%,
+                rgba(255, 255, 255, 0.05) 100%);
             border-radius: var(--radius-xl);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(40px);
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
 
         @keyframes slideInFromTop {
@@ -282,11 +202,12 @@
             padding: var(--space-md) var(--space-lg);
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: var(--radius-lg);
-            color: var(--text-glass);
+            border-radius: var(--radius-md);
+            color: rgba(255, 255, 255, 0.9);
             text-decoration: none;
+            font-size: var(--font-sm);
             font-weight: 600;
-            backdrop-filter: var(--blur-strength);
+            backdrop-filter: blur(20px);
             transition: all var(--duration-normal) var(--smooth-easing);
             position: relative;
             overflow: hidden;
@@ -308,10 +229,11 @@
         }
 
         .back-button:hover {
-            transform: var(--hover-lift);
-            border-color: rgba(99, 102, 241, 0.4);
-            text-decoration: none;
             color: var(--primary);
+            background: var(--glass-hover);
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: var(--hover-lift);
+            text-decoration: none;
         }
 
         .back-button.logout:hover {
@@ -342,19 +264,18 @@
 
         .glass-form {
             background: linear-gradient(135deg,
-                rgba(255, 255, 255, 0.25) 0%,
-                rgba(255, 255, 255, 0.10) 50%,
+                rgba(255, 255, 255, 0.15) 0%,
                 rgba(255, 255, 255, 0.05) 100%);
-            border: 2px solid transparent;
+            border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: var(--radius-xl);
             backdrop-filter: blur(40px);
             padding: var(--space-2xl);
             box-shadow:
-                0 25px 80px rgba(0, 0, 0, 0.15),
-                0 0 0 1px rgba(255, 255, 255, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+                0 25px 80px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
             position: relative;
             overflow: hidden;
+            animation: slideInFromBottom 0.8s ease-out;
         }
 
         .glass-form::before {
@@ -444,23 +365,16 @@
         .form-textarea,
         .form-select {
             width: 100%;
-            padding: var(--space-lg);
-            background: linear-gradient(135deg,
-                rgba(255, 255, 255, 0.15) 0%,
-                rgba(255, 255, 255, 0.08) 50%,
-                rgba(255, 255, 255, 0.05) 100%);
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: var(--space-md);
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: var(--radius-lg);
-            color: var(--text-glass);
+            color: #ffffff;
             font-size: var(--font-base);
-            font-weight: 500;
-            backdrop-filter: blur(25px);
+            font-family: inherit;
             transition: all var(--duration-normal) var(--spring-easing);
-            position: relative;
-            z-index: 2;
-            box-shadow:
-                0 8px 25px rgba(0, 0, 0, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            box-sizing: border-box;
         }
 
         .form-input:focus,
@@ -468,21 +382,14 @@
         .form-select:focus {
             outline: none;
             border-color: var(--primary);
-            background: linear-gradient(135deg,
-                rgba(255, 255, 255, 0.25) 0%,
-                rgba(255, 255, 255, 0.15) 50%,
-                rgba(255, 255, 255, 0.10) 100%);
-            box-shadow:
-                0 0 0 3px rgba(99, 102, 241, 0.3),
-                0 15px 40px rgba(99, 102, 241, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3);
-            transform: translateY(-3px) scale(1.01);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            transform: translateY(-1px);
         }
 
         .form-input::placeholder,
         .form-textarea::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-            font-weight: 400;
+            color: rgba(255, 255, 255, 0.5);
         }
 
         .form-textarea {
@@ -502,8 +409,8 @@
         }
 
         .form-select option {
-            background: rgba(255, 255, 255, 0.95);
-            color: #333;
+            background: #333;
+            color: #fff;
             padding: 12px;
             font-weight: 500;
         }
@@ -718,14 +625,6 @@
 </head>
 
 <body>
-    <!-- Enhanced Background Effects -->
-    <div class="floating-shapes">
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-    </div>
 
     <!-- Main Container -->
     <div class="create-skill-container">

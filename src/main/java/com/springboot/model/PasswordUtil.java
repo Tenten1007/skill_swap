@@ -60,4 +60,14 @@ public class PasswordUtil implements Serializable {
         return hexString.toString();
     }
 
+    // Static method for easy password hashing
+    public static String hashPassword(String password) {
+        try {
+            PasswordUtil util = getInstance();
+            return util.createPassword(password);
+        } catch (Exception e) {
+            throw new RuntimeException("Error hashing password", e);
+        }
+    }
+
 }

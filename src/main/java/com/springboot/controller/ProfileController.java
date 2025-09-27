@@ -11,6 +11,7 @@ import com.springboot.model.User;
 import com.springboot.model.UserManager;
 import com.springboot.repository.SkillOfferRepository;
 import com.springboot.repository.SwapRequestRepository;
+import com.springboot.repository.RatingRepository;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -25,6 +26,9 @@ public class ProfileController {
 
     @Autowired
     private SwapRequestRepository swapRequestRepository;
+
+    @Autowired
+    private RatingRepository ratingRepository;
 
     @GetMapping("/profile")
     public ModelAndView showProfile(HttpSession session) {
@@ -51,11 +55,20 @@ public class ProfileController {
             int sentRequests = swapRequestRepository.findSentRequestsByUserId(user.getId()).size();
             int receivedRequests = swapRequestRepository.findReceivedRequestsByUserId(user.getId()).size();
 
+            // Get rating statistics
+            Double averageRating = ratingRepository.getAverageRatingByRateeId(user.getId());
+            Long totalRatings = ratingRepository.getCountRatingsByRateeId(user.getId());
+
+            // If no ratings, set default values
+            if (averageRating == null) averageRating = 0.0;
+            if (totalRatings == null) totalRatings = 0L;
 
             mav.addObject("user", user);
             mav.addObject("totalOffers", totalOffers);
             mav.addObject("sentRequests", sentRequests);
             mav.addObject("receivedRequests", receivedRequests);
+            mav.addObject("averageRating", averageRating);
+            mav.addObject("totalRatings", totalRatings);
 
         } catch (Exception e) {
             System.out.println("ERROR in showProfile: " + e.getMessage());
@@ -65,6 +78,8 @@ public class ProfileController {
             mav.addObject("totalOffers", 0);
             mav.addObject("sentRequests", 0);
             mav.addObject("receivedRequests", 0);
+            mav.addObject("averageRating", 0.0);
+            mav.addObject("totalRatings", 0L);
         }
 
         return mav;
