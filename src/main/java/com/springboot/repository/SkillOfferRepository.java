@@ -21,7 +21,7 @@ public interface SkillOfferRepository extends JpaRepository<SkillOffer, Integer>
     @Query("SELECT so FROM SkillOffer so WHERE so.isActive = true ORDER BY so.createdAt DESC")
     List<SkillOffer> findActiveOffersOrderByCreatedAtDesc();
 
-    @Query("SELECT so FROM SkillOffer so WHERE so.isActive = true AND so.location = :location")
+    @Query("SELECT so FROM SkillOffer so WHERE so.isActive = true AND so.location LIKE %:location%")
     List<SkillOffer> findActiveOffersByLocation(@Param("location") String location);
 
     @Query("SELECT so FROM SkillOffer so WHERE so.isActive = true AND so.skill.id = :skillId")
