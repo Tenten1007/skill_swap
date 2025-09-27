@@ -44,6 +44,11 @@ public class HomeController {
 
         User user = (User) session.getAttribute("user");
 
+        // Check if user is null
+        if (user == null) {
+            return new ModelAndView("redirect:/login?message=session-expired");
+        }
+
         ModelAndView mav = new ModelAndView("home");
 
         try {

@@ -32,21 +32,18 @@ public class MatchesController {
         }
 
         User user = (User) session.getAttribute("user");
-        ModelAndView mav = new ModelAndView("matches");
 
-        System.out.println("=== MATCHES DEBUG ===");
-        System.out.println("Username: " + username);
-        System.out.println("User object: " + user);
-        System.out.println("Active tab: " + tab);
+        // Check if user is null
+        if (user == null) {
+            return new ModelAndView("redirect:/login?message=session-expired");
+        }
+
+        ModelAndView mav = new ModelAndView("matches");
 
         try {
             List<SwapRequest> sentRequests = swapRequestRepository.findSentRequestsByUserId(user.getId());
             List<SwapRequest> receivedRequests = swapRequestRepository.findReceivedRequestsByUserId(user.getId());
             List<SwapRequest> pendingRequests = swapRequestRepository.findPendingRequestsForUser(user.getId());
-
-            System.out.println("Sent requests: " + sentRequests.size());
-            System.out.println("Received requests: " + receivedRequests.size());
-            System.out.println("Pending requests: " + pendingRequests.size());
 
             mav.addObject("sentRequests", sentRequests);
             mav.addObject("receivedRequests", receivedRequests);
@@ -85,6 +82,11 @@ public class MatchesController {
         }
 
         User user = (User) session.getAttribute("user");
+
+        // Check if user is null
+        if (user == null) {
+            return new ModelAndView("redirect:/login?message=session-expired");
+        }
 
         try {
             SwapRequest request = swapRequestRepository.findById(requestId).orElse(null);
@@ -126,6 +128,11 @@ public class MatchesController {
         }
 
         User user = (User) session.getAttribute("user");
+
+        // Check if user is null
+        if (user == null) {
+            return new ModelAndView("redirect:/login?message=session-expired");
+        }
 
         try {
             SwapRequest request = swapRequestRepository.findById(requestId).orElse(null);

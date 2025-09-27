@@ -45,22 +45,17 @@ public class SkillOfferController {
         }
 
         User user = (User) session.getAttribute("user");
-        ModelAndView mav = new ModelAndView("my-offers");
 
-        System.out.println("=== MY OFFERS DEBUG ===");
-        System.out.println("Username: " + username);
-        System.out.println("User object: " + user);
-        System.out.println("User ID: " + (user != null ? user.getId() : "null"));
+        // Check if user is null
+        if (user == null) {
+            return new ModelAndView("redirect:/login?message=session-expired");
+        }
+
+        ModelAndView mav = new ModelAndView("my-offers");
 
         try {
             // Get user's skill offers
             List<SkillOffer> myOffers = skillOfferRepository.findByUserOrderByCreatedAtDesc(user);
-            System.out.println("Number of offers found: " + myOffers.size());
-
-            if (myOffers.size() > 0) {
-                System.out.println("First offer: " + myOffers.get(0).getTitle());
-                System.out.println("First offer user ID: " + myOffers.get(0).getUser().getId());
-            }
 
             // Convert to DTOs for security
             List<SkillOfferDTO> myOfferDTOs = DTOMapper.toSkillOfferDTOList(myOffers);
@@ -90,6 +85,11 @@ public class SkillOfferController {
         if (username == null) {
             // Redirect to login with message
             return new ModelAndView("redirect:/login?message=login-required");
+        }
+
+        // Check if user is null
+        if (user == null) {
+            return new ModelAndView("redirect:/login?message=session-expired");
         }
 
         // Get all categories for dropdown - convert to DTOs
