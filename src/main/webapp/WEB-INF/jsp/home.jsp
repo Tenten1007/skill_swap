@@ -1472,8 +1472,8 @@
                                 <div class="skill-header">
                                     <span class="skill-category">
                                         <c:choose>
-                                            <c:when test="${not empty offer.skill and not empty offer.skill.category}">
-                                                ${offer.skill.category.categoryName}
+                                            <c:when test="${not empty offer.categoryName}">
+                                                ${offer.categoryName}
                                             </c:when>
                                             <c:otherwise>ไม่ระบุหมวดหมู่</c:otherwise>
                                         </c:choose>
@@ -1499,14 +1499,14 @@
                                     <div class="skill-user">
                                         <div class="skill-user-avatar">
                                             <c:choose>
-                                                <c:when test="${not empty offer.user and not empty offer.user.username}">
-                                                    ${offer.user.username.substring(0,1).toUpperCase()}
+                                                <c:when test="${not empty offer.userName}">
+                                                    ${offer.userName.substring(0,1).toUpperCase()}
                                                 </c:when>
                                                 <c:otherwise>?</c:otherwise>
                                             </c:choose>
                                         </div>
                                         <span class="skill-username">
-                                            <c:out value="${not empty offer.user.username ? offer.user.username : 'ไม่ระบุผู้ใช้'}"/>
+                                            <c:out value="${not empty offer.userName ? offer.userName : 'ไม่ระบุผู้ใช้'}"/>
                                         </span>
                                     </div>
 

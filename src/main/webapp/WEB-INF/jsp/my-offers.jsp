@@ -788,19 +788,19 @@
                                             <h3 class="offer-title">${offer.title}</h3>
                                             <div class="offer-category">
                                                 <c:choose>
-                                                    <c:when test="${offer.skill.category.categoryName == 'Programming'}">💻</c:when>
-                                                    <c:when test="${offer.skill.category.categoryName == 'Design'}">🎨</c:when>
-                                                    <c:when test="${offer.skill.category.categoryName == 'Marketing'}">📈</c:when>
-                                                    <c:when test="${offer.skill.category.categoryName == 'Photography'}">📸</c:when>
-                                                    <c:when test="${offer.skill.category.categoryName == 'Music'}">🎵</c:when>
-                                                    <c:when test="${offer.skill.category.categoryName == 'Language'}">🌍</c:when>
-                                                    <c:when test="${offer.skill.category.categoryName == 'Cooking'}">🍳</c:when>
-                                                    <c:when test="${offer.skill.category.categoryName == 'Fitness'}">💪</c:when>
-                                                    <c:when test="${offer.skill.category.categoryName == 'Writing'}">✍️</c:when>
-                                                    <c:when test="${offer.skill.category.categoryName == 'Business'}">💼</c:when>
+                                                    <c:when test="${offer.categoryName == 'Programming'}">💻</c:when>
+                                                    <c:when test="${offer.categoryName == 'Design'}">🎨</c:when>
+                                                    <c:when test="${offer.categoryName == 'Marketing'}">📈</c:when>
+                                                    <c:when test="${offer.categoryName == 'Photography'}">📸</c:when>
+                                                    <c:when test="${offer.categoryName == 'Music'}">🎵</c:when>
+                                                    <c:when test="${offer.categoryName == 'Language'}">🌍</c:when>
+                                                    <c:when test="${offer.categoryName == 'Cooking'}">🍳</c:when>
+                                                    <c:when test="${offer.categoryName == 'Fitness'}">💪</c:when>
+                                                    <c:when test="${offer.categoryName == 'Writing'}">✍️</c:when>
+                                                    <c:when test="${offer.categoryName == 'Business'}">💼</c:when>
                                                     <c:otherwise>🔧</c:otherwise>
                                                 </c:choose>
-                                                ${offer.skill.category.categoryName}
+                                                ${offer.categoryName}
                                             </div>
                                         </div>
                                         <div class="offer-status ${offer.active ? 'status-active' : 'status-inactive'}">

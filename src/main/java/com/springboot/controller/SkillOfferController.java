@@ -17,6 +17,10 @@ import com.springboot.model.User;
 import com.springboot.repository.SkillCategoryRepository;
 import com.springboot.repository.SkillOfferRepository;
 import com.springboot.repository.SkillRepository;
+import com.springboot.dto.SkillOfferDTO;
+import com.springboot.dto.SkillCategoryDTO;
+import com.springboot.dto.UserDTO;
+import com.springboot.dto.DTOMapper;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -58,8 +62,12 @@ public class SkillOfferController {
                 System.out.println("First offer user ID: " + myOffers.get(0).getUser().getId());
             }
 
-            mav.addObject("skillOffers", myOffers);
-            mav.addObject("user", user);
+            // Convert to DTOs for security
+            List<SkillOfferDTO> myOfferDTOs = DTOMapper.toSkillOfferDTOList(myOffers);
+            UserDTO userDTO = DTOMapper.toUserDTO(user);
+
+            mav.addObject("skillOffers", myOfferDTOs);
+            mav.addObject("user", userDTO);
 
         } catch (Exception e) {
             System.out.println("ERROR in showMyOffers: " + e.getMessage());
@@ -84,9 +92,13 @@ public class SkillOfferController {
             return new ModelAndView("redirect:/login?message=login-required");
         }
 
-        // Get all categories for dropdown
-        mav.addObject("categories", skillCategoryRepository.findAll());
-        mav.addObject("user", user);
+        // Get all categories for dropdown - convert to DTOs
+        List<SkillCategory> categories = skillCategoryRepository.findAll();
+        List<SkillCategoryDTO> categoryDTOs = DTOMapper.toSkillCategoryDTOList(categories);
+        UserDTO userDTO = DTOMapper.toUserDTO(user);
+
+        mav.addObject("categories", categoryDTOs);
+        mav.addObject("user", userDTO);
 
         return mav;
     }
@@ -112,7 +124,9 @@ public class SkillOfferController {
             if (category == null) {
                 ModelAndView mav = new ModelAndView("create-skill");
                 mav.addObject("error", "Invalid category selected");
-                mav.addObject("categories", skillCategoryRepository.findAll());
+                // Convert categories to DTOs
+                List<SkillCategory> categories = skillCategoryRepository.findAll();
+                mav.addObject("categories", DTOMapper.toSkillCategoryDTOList(categories));
                 return mav;
             }
 
@@ -146,7 +160,9 @@ public class SkillOfferController {
             e.printStackTrace();
             ModelAndView mav = new ModelAndView("create-skill");
             mav.addObject("error", "เกิดข้อผิดพลาดในการสร้าง Skill Offer");
-            mav.addObject("categories", skillCategoryRepository.findAll());
+            // Convert categories to DTOs
+            List<SkillCategory> categories = skillCategoryRepository.findAll();
+            mav.addObject("categories", DTOMapper.toSkillCategoryDTOList(categories));
             return mav;
         }
     }

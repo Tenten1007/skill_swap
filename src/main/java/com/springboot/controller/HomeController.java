@@ -13,6 +13,10 @@ import com.springboot.model.SkillCategory;
 import com.springboot.model.User;
 import com.springboot.repository.SkillOfferRepository;
 import com.springboot.repository.SkillCategoryRepository;
+import com.springboot.dto.SkillOfferDTO;
+import com.springboot.dto.SkillCategoryDTO;
+import com.springboot.dto.UserDTO;
+import com.springboot.dto.DTOMapper;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -59,12 +63,21 @@ public class HomeController {
             // Get all categories for filter dropdown
             List<SkillCategory> categories = skillCategoryRepository.findAll();
 
-            mav.addObject("skillOffers", skillOffers != null ? skillOffers : new java.util.ArrayList<>());
-            mav.addObject("categories", categories != null ? categories : new java.util.ArrayList<>());
+            // Convert to DTOs for security
+            List<SkillOfferDTO> skillOfferDTOs = DTOMapper.toSkillOfferDTOList(
+                skillOffers != null ? skillOffers : new java.util.ArrayList<>()
+            );
+            List<SkillCategoryDTO> categoryDTOs = DTOMapper.toSkillCategoryDTOList(
+                categories != null ? categories : new java.util.ArrayList<>()
+            );
+            UserDTO userDTO = DTOMapper.toUserDTO(user);
+
+            mav.addObject("skillOffers", skillOfferDTOs);
+            mav.addObject("categories", categoryDTOs);
             mav.addObject("searchQuery", search);
             mav.addObject("selectedLocation", location);
             mav.addObject("selectedCategoryId", categoryId);
-            mav.addObject("user", user);
+            mav.addObject("user", userDTO);
 
         } catch (Exception e) {
             e.printStackTrace();

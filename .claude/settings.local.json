@@ -3,7 +3,8 @@
     "allow": [
       "Bash(mysql:*)",
       "Bash(java:*)",
-      "Bash(dir)"
+      "Bash(dir)",
+      "Bash(tree:*)"
     ],
     "deny": [],
     "ask": []
