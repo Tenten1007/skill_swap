@@ -60,7 +60,7 @@ public class PasswordUtil implements Serializable {
         return hexString.toString();
     }
 
-    // Static method for easy password hashing
+  
     public static String hashPassword(String password) {
         try {
             PasswordUtil util = getInstance();
