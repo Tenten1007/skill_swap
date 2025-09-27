@@ -27,6 +27,9 @@ public interface SkillOfferRepository extends JpaRepository<SkillOffer, Integer>
     @Query("SELECT so FROM SkillOffer so WHERE so.isActive = true AND so.skill.id = :skillId")
     List<SkillOffer> findActiveOffersBySkillId(@Param("skillId") int skillId);
 
+    @Query("SELECT so FROM SkillOffer so WHERE so.isActive = true AND so.skill.category.id = :categoryId")
+    List<SkillOffer> findActiveOffersByCategoryId(@Param("categoryId") int categoryId);
+
     @Query("SELECT so FROM SkillOffer so WHERE so.isActive = true AND (so.title LIKE %:keyword% OR so.description LIKE %:keyword%)")
     List<SkillOffer> searchActiveOffers(@Param("keyword") String keyword);
 

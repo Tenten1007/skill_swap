@@ -29,6 +29,16 @@ public class Run {
 		// Clear existing data (optional - for testing purposes)
 		System.out.println("=== Starting Sample Data Creation ===");
 
+		// Clear all existing data to ensure clean state
+		System.out.println("Clearing existing data...");
+		ratingRepository.deleteAll();
+		swapMatchRepository.deleteAll();
+		skillOfferRepository.deleteAll();
+		skillRepository.deleteAll();
+		skillCategoryRepository.deleteAll();
+		userRepository.deleteAll();
+		System.out.println("Data cleared successfully");
+
 		// Create Sample Users
 		System.out.println("Creating sample users...");
 		User user1 = new User(0, "somsak", PasswordUtil.hashPassword("password123"), "somsak@email.com",
@@ -76,6 +86,7 @@ public class Run {
 		Skill uxSkill = skillRepository.save(new Skill(0, "UX/UI Design", "การออกแบบประสบการณ์ผู้ใช้และส่วนต่อประสาน", designCategory, new ArrayList<>()));
 		Skill digitalMarketingSkill = skillRepository.save(new Skill(0, "Digital Marketing", "การตลาดดิจิทัล SEO, SEM, Social Media", marketingCategory, new ArrayList<>()));
 		Skill contentWritingSkill = skillRepository.save(new Skill(0, "Content Writing", "การเขียนคอนเทนต์และบทความ", marketingCategory, new ArrayList<>()));
+		Skill socialMediaSkill = skillRepository.save(new Skill(0, "Social Media Marketing", "การตลาดผ่านโซเชียลมีเดีย Facebook, Instagram, TikTok", marketingCategory, new ArrayList<>()));
 		skillRepository.save(new Skill(0, "English", "ภาษาอังกฤษการสื่อสารและธุรกิจ", languageCategory, new ArrayList<>()));
 
 		// Create Skill Offers
@@ -105,6 +116,11 @@ public class Run {
 			"Advanced", "4-6 ชั่วโมงต่อสัปดาห์", "กรุงเทพฯ", true,
 			LocalDateTime.now().minusDays(2), null, new ArrayList<>()));
 
+		SkillOffer offer6 = skillOfferRepository.save(new SkillOffer(0, user2, socialMediaSkill, "Social Media Marketing Intensive",
+			"เรียนรู้การทำ Social Media Marketing แบบเข้มข้น Facebook, Instagram, TikTok สำหรับธุรกิจ",
+			"Beginner", "3-4 ชั่วโมงต่อสัปดาห์", "เชียงใหม่ หรือ Online", true,
+			LocalDateTime.now().minusDays(1), null, new ArrayList<>()));
+
 		// Create Swap Matches
 		System.out.println("Creating swap matches...");
 		SwapMatch match1 = swapMatchRepository.save(new SwapMatch(0, user1, user2, offer1, offer2, "completed",
@@ -118,6 +134,9 @@ public class Run {
 
 		swapMatchRepository.save(new SwapMatch(0, user4, user1, offer4, offer5, "pending",
 			LocalDateTime.now().minusDays(5), null));
+
+		swapMatchRepository.save(new SwapMatch(0, user1, user2, offer5, offer6, "pending",
+			LocalDateTime.now().minusDays(3), null));
 
 		// Create Ratings
 		System.out.println("Creating ratings...");
@@ -151,8 +170,11 @@ public class Run {
 		}
 
 		List<SkillOffer> allOffers = skillOfferRepository.findAll();
-		for (SkillOffer offer : allOffers) {
-			System.out.println("Offer: " + offer.getTitle() + " by " + offer.getUser().getUsername());
+		System.out.println("=== ALL SKILL OFFERS ===");
+		for (int i = 0; i < allOffers.size(); i++) {
+			SkillOffer offer = allOffers.get(i);
+			System.out.println((i+1) + ". " + offer.getTitle() + " by " + offer.getUser().getUsername() +
+					          " (Active: " + offer.isActive() + ")");
 		}
 
 		System.out.println("\n=== Swap Matches ===");

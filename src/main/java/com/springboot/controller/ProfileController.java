@@ -50,6 +50,11 @@ public class ProfileController {
                 session.setAttribute("user", user); // Update session with fresh data
             }
 
+            // Check if user is still null
+            if (user == null) {
+                return new ModelAndView("redirect:/login?message=session-expired");
+            }
+
             // Get user statistics
             int totalOffers = skillOfferRepository.findByUserId(user.getId()).size();
             int sentRequests = swapRequestRepository.findSentRequestsByUserId(user.getId()).size();
@@ -104,6 +109,11 @@ public class ProfileController {
                 session.setAttribute("user", user);
             }
 
+            // Check if user is still null
+            if (user == null) {
+                return new ModelAndView("redirect:/login?message=session-expired");
+            }
+
             mav.addObject("user", user);
 
         } catch (Exception e) {
@@ -141,6 +151,11 @@ public class ProfileController {
             User freshUser = userManager.getUserByUsername(username);
             if (freshUser != null) {
                 user = freshUser;
+            }
+
+            // Check if user is still null
+            if (user == null) {
+                return new ModelAndView("redirect:/login?message=session-expired");
             }
 
             // Update user fields

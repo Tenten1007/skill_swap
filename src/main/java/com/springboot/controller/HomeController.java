@@ -55,10 +55,13 @@ public class HomeController {
             } else if (location != null && !location.trim().isEmpty()) {
                 skillOffers = skillOfferRepository.findActiveOffersByLocation(location.trim());
             } else if (categoryId != null) {
-                skillOffers = skillOfferRepository.findActiveOffersBySkillId(categoryId);
+                skillOffers = skillOfferRepository.findActiveOffersByCategoryId(categoryId);
             } else {
                 skillOffers = skillOfferRepository.findActiveOffersOrderByCreatedAtDesc();
             }
+
+            // Debug output for testing
+            System.out.println("Found " + (skillOffers != null ? skillOffers.size() : 0) + " skill offers");
 
             // Get all categories for filter dropdown
             List<SkillCategory> categories = skillCategoryRepository.findAll();
