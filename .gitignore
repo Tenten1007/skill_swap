@@ -183,4 +183,4 @@ target/classes/sample_data.sql
 *~
 
 # JVM crash logs
-hs_err_pid*.log
+hs_err_pid*.log".claude/" 
