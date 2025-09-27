@@ -234,6 +234,7 @@
             backdrop-filter: blur(20px);
             position: relative;
             overflow: hidden;
+            cursor: pointer;
             transition: all var(--duration-normal) var(--smooth-easing);
         }
 
@@ -256,6 +257,44 @@
             background: var(--glass-hover);
             border-color: rgba(99, 102, 241, 0.3);
             transform: var(--hover-lift);
+        }
+
+        .user-profile:active {
+            transform: scale(0.98);
+            background: var(--glass-hover);
+            border-color: var(--primary);
+        }
+
+        .user-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+            align-items: flex-end;
+        }
+
+        .logout-button {
+            padding: var(--space-sm) var(--space-md);
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: var(--radius-sm);
+            color: var(--error);
+            text-decoration: none;
+            font-size: 12px;
+            backdrop-filter: blur(10px);
+            transition: all var(--duration-normal) var(--smooth-easing);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .logout-button:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: var(--error);
+            transform: var(--hover-lift);
+        }
+
+        .logout-button:active {
+            transform: scale(0.95);
         }
 
         .user-avatar {
@@ -1244,8 +1283,17 @@
                 font-size: var(--font-2xl);
             }
 
+            .user-section {
+                gap: var(--space-xs);
+            }
+
             .user-profile {
                 padding: var(--space-sm) var(--space-md);
+            }
+
+            .logout-button {
+                padding: var(--space-xs) var(--space-sm);
+                font-size: 10px;
             }
 
             .user-avatar {
@@ -1322,16 +1370,16 @@
                     <p>ค้นหาและแลกเปลี่ยนทักษะกับชุมชนของเรา</p>
                 </div>
 
-                <div class="user-profile">
-                    <div class="user-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div>
+                <div class="user-section">
+                    <div class="user-profile" onclick="window.location.href='/profile'">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
                         <div class="user-name">${sessionScope.user.username}</div>
-                        <a href="doLogout" style="font-size: 12px; color: var(--error); text-decoration: none;">
-                            <i class="fas fa-sign-out-alt"></i> ออกจากระบบ
-                        </a>
                     </div>
+                    <a href="doLogout" class="logout-button">
+                        <i class="fas fa-sign-out-alt"></i> ออกจากระบบ
+                    </a>
                 </div>
             </div>
 

@@ -65,8 +65,6 @@ public class HomeController {
                 skillOffers = skillOfferRepository.findActiveOffersOrderByCreatedAtDesc();
             }
 
-            // Debug output for testing
-            System.out.println("Found " + (skillOffers != null ? skillOffers.size() : 0) + " skill offers");
 
             // Get all categories for filter dropdown
             List<SkillCategory> categories = skillCategoryRepository.findAll();

@@ -696,16 +696,16 @@
                             <c:forEach var="category" items="${categories}">
                                 <option value="${category.id}">
                                     <c:choose>
-                                        <c:when test="${category.categoryName == 'Programming'}">💻</c:when>
-                                        <c:when test="${category.categoryName == 'Design'}">🎨</c:when>
-                                        <c:when test="${category.categoryName == 'Marketing'}">📈</c:when>
-                                        <c:when test="${category.categoryName == 'Photography'}">📸</c:when>
-                                        <c:when test="${category.categoryName == 'Music'}">🎵</c:when>
-                                        <c:when test="${category.categoryName == 'Language'}">🌍</c:when>
-                                        <c:when test="${category.categoryName == 'Cooking'}">🍳</c:when>
-                                        <c:when test="${category.categoryName == 'Fitness'}">💪</c:when>
-                                        <c:when test="${category.categoryName == 'Writing'}">✍️</c:when>
-                                        <c:when test="${category.categoryName == 'Business'}">💼</c:when>
+                                        <c:when test="${category.categoryName == 'Programming'}"></c:when>
+                                        <c:when test="${category.categoryName == 'Design'}"></c:when>
+                                        <c:when test="${category.categoryName == 'Marketing'}"></c:when>
+                                        <c:when test="${category.categoryName == 'Photography'}"></c:when>
+                                        <c:when test="${category.categoryName == 'Music'}"></c:when>
+                                        <c:when test="${category.categoryName == 'Language'}"></c:when>
+                                        <c:when test="${category.categoryName == 'Cooking'}"></c:when>
+                                        <c:when test="${category.categoryName == 'Fitness'}"></c:when>
+                                        <c:when test="${category.categoryName == 'Writing'}"></c:when>
+                                        <c:when test="${category.categoryName == 'Business'}"></c:when>
                                         <c:otherwise>🔧</c:otherwise>
                                     </c:choose>
                                     ${category.categoryName}
