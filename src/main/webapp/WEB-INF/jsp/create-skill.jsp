@@ -17,8 +17,8 @@
         :root {
             /* === Glass Effects === */
             --glass-bg: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             --glass-hover: rgba(255, 255, 255, 0.12);
             --blur-strength: blur(20px);
 
@@ -259,7 +259,7 @@
         }
 
         .glass-form {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+            background: linear-gradient(135deg, rgb(0 0 0) 0%, rgba(255, 255, 255, 0.05) 100%);
             border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: var(--radius-xl);
             backdrop-filter: blur(40px);
@@ -284,6 +284,59 @@
         }
 
 
+        /* Form Section */
+        .form-section {
+            margin-bottom: var(--space-2xl);
+            padding-bottom: var(--space-xl);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-2xl);
+            padding: var(--space-lg);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--primary);
+        }
+
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--button-gradient);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 20px;
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+            flex-shrink: 0;
+        }
+
+        .section-info {
+            flex: 1;
+        }
+
+        .section-title {
+            font-size: var(--font-xl);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0 0 var(--space-xs) 0;
+        }
+
+        .section-description {
+            font-size: var(--font-sm);
+            color: var(--text-muted);
+            margin: 0;
+        }
+
         /* Form Groups */
         .form-group {
             margin-bottom: var(--space-xl);
@@ -303,12 +356,18 @@
         }
 
         .form-label {
-            display: block;
-            margin-bottom: var(--space-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
             font-size: var(--font-base);
             font-weight: 600;
-            color: var(--text-glass);
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            color: var(--text-primary);
+        }
+
+        .form-label i {
+            color: var(--primary);
+            font-size: var(--font-lg);
         }
 
         .form-label.required::after {
@@ -317,22 +376,35 @@
             margin-left: var(--space-xs);
         }
 
-        /* Enhanced Form Inputs - Match skill-detail style */
+        .required-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: var(--space-xs) var(--space-sm);
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: var(--radius-sm);
+            font-size: var(--font-xs);
+            color: var(--error);
+            margin-left: auto;
+        }
+
+        /* Enhanced Form Inputs - Match glass-card style */
         .form-input,
         .form-textarea,
         .form-select {
             width: 100%;
             padding: var(--space-lg) var(--space-xl);
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
             border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: var(--radius-lg);
-            color: var(--text-primary);
+            color: #FFFFFF;
             font-size: var(--font-base);
-            font-weight: 500;
+            font-weight: 400;
             font-family: 'Inter', sans-serif;
             transition: all 0.3s var(--smooth-easing);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(40px);
             box-sizing: border-box;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
 
         .form-input:hover,
@@ -356,7 +428,7 @@
 
         .form-input::placeholder,
         .form-textarea::placeholder {
-            color: rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.4);
         }
 
         .form-textarea {
@@ -376,10 +448,10 @@
         }
 
         .form-select option {
-            background: #333;
-            color: #fff;
+            background: #1a1a2e;
+            color: #FFFFFF;
             padding: 12px;
-            font-weight: 500;
+            font-weight: 400;
         }
 
         /* Enhanced Category Dropdown */
@@ -405,6 +477,25 @@
 
         .form-select.with-icon {
             padding-left: 60px;
+        }
+
+        /* Form Hint */
+        .form-hint {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: var(--font-sm);
+            color: var(--text-muted);
+            padding: var(--space-sm) var(--space-md);
+            margin-top: var(--space-sm);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--primary);
+        }
+
+        .form-hint i {
+            color: var(--primary);
+            font-size: var(--font-base);
         }
 
         /* Success/Error Messages */
