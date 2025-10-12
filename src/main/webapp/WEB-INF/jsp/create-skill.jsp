@@ -121,15 +121,11 @@
             z-index: 2;
             animation: slideInFromTop 0.8s ease-out;
             padding: var(--space-lg);
-            background: linear-gradient(135deg,
-                rgba(255, 255, 255, 0.15) 0%,
-                rgba(255, 255, 255, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
             border-radius: var(--radius-xl);
             border: 2px solid rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(40px);
-            box-shadow:
-                0 25px 80px rgba(0, 0, 0, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
 
         @keyframes slideInFromTop {
@@ -263,69 +259,30 @@
         }
 
         .glass-form {
-            background: linear-gradient(135deg,
-                rgba(255, 255, 255, 0.15) 0%,
-                rgba(255, 255, 255, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
             border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: var(--radius-xl);
             backdrop-filter: blur(40px);
             padding: var(--space-2xl);
-            box-shadow:
-                0 25px 80px rgba(0, 0, 0, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2);
             position: relative;
             overflow: hidden;
             animation: slideInFromBottom 0.8s ease-out;
+            margin-bottom: var(--space-xl);
+            transition: all var(--duration-normal) var(--smooth-easing);
         }
 
         .glass-form::before {
             content: '';
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(135deg,
-                var(--primary) 0%,
-                var(--secondary) 25%,
-                var(--accent) 50%,
-                var(--success) 75%,
-                var(--warning) 100%);
-            border-radius: var(--radius-xl);
-            z-index: -1;
-            opacity: 0.6;
-            filter: blur(2px);
-            animation: borderGlow 6s ease-in-out infinite;
-        }
-
-        .glass-form::after {
-            content: '';
-            position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg,
-                rgba(99, 102, 241, 0.03) 0%,
-                rgba(139, 92, 246, 0.02) 25%,
-                rgba(6, 182, 212, 0.03) 50%,
-                rgba(16, 185, 129, 0.02) 75%,
-                rgba(245, 158, 11, 0.03) 100%);
-            border-radius: var(--radius-xl);
-            pointer-events: none;
-            z-index: 1;
+            height: 4px;
+            background: var(--button-gradient);
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
         }
 
-        @keyframes borderGlow {
-            0%, 100% {
-                opacity: 0.6;
-                filter: blur(2px) hue-rotate(0deg);
-            }
-            50% {
-                opacity: 0.8;
-                filter: blur(1px) hue-rotate(30deg);
-            }
-        }
 
         /* Form Groups */
         .form-group {
@@ -360,21 +317,31 @@
             margin-left: var(--space-xs);
         }
 
-        /* Enhanced Form Inputs */
+        /* Enhanced Form Inputs - Match skill-detail style */
         .form-input,
         .form-textarea,
         .form-select {
             width: 100%;
-            padding: var(--space-md);
-            background: rgba(255, 255, 255, 0.1);
+            padding: var(--space-lg) var(--space-xl);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
             border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: var(--radius-lg);
-            color: #ffffff;
+            color: var(--text-primary);
             font-size: var(--font-base);
-            font-family: inherit;
-            transition: all var(--duration-normal) var(--spring-easing);
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s var(--smooth-easing);
             backdrop-filter: blur(20px);
             box-sizing: border-box;
+        }
+
+        .form-input:hover,
+        .form-textarea:hover,
+        .form-select:hover {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
         }
 
         .form-input:focus,
@@ -382,14 +349,14 @@
         .form-select:focus {
             outline: none;
             border-color: var(--primary);
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-            transform: translateY(-1px);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.15) 100%);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15), 0 10px 30px rgba(99, 102, 241, 0.4);
+            transform: translateY(-2px);
         }
 
         .form-input::placeholder,
         .form-textarea::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.3);
         }
 
         .form-textarea {
@@ -491,14 +458,14 @@
         .btn-primary {
             background: var(--button-gradient);
             color: var(--text-white);
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.25);
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
             color: var(--text-glass);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
         }
 
         .btn-primary::before,
@@ -533,15 +500,15 @@
         .form-input.error,
         .form-textarea.error,
         .form-select.error {
-            border-color: var(--error);
-            background: rgba(239, 68, 68, 0.05);
+            border-color: rgba(239, 68, 68, 0.5);
+            background: rgba(239, 68, 68, 0.03);
         }
 
         .form-input.success,
         .form-textarea.success,
         .form-select.success {
-            border-color: var(--success);
-            background: rgba(16, 185, 129, 0.05);
+            border-color: rgba(16, 185, 129, 0.5);
+            background: rgba(16, 185, 129, 0.03);
         }
 
         /* Loading State */
@@ -665,25 +632,55 @@
 
             <!-- Main Form -->
             <form method="POST" action="add-skill" class="glass-form" id="skillForm">
-                <!-- Title -->
-                <div class="form-group">
-                    <label for="title" class="form-label required">ชื่อทักษะ</label>
-                    <input type="text"
-                           id="title"
-                           name="title"
-                           class="form-input"
-                           placeholder="เช่น สอน JavaScript เบื้องต้น, ถ่ายรูปแนว Portrait"
-                           required>
-                </div>
 
-                <!-- Description -->
-                <div class="form-group">
-                    <label for="description" class="form-label required">รายละเอียด</label>
-                    <textarea id="description"
-                              name="description"
-                              class="form-textarea"
-                              placeholder="อธิบายทักษะของคุณ สิ่งที่จะสอน และประสบการณ์ที่เกี่ยวข้อง..."
-                              required></textarea>
+                <!-- Section 1: Basic Information -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div class="section-info">
+                            <h3 class="section-title">ข้อมูลพื้นฐาน</h3>
+                            <p class="section-description">บอกเราเกี่ยวกับทักษะของคุณ</p>
+                        </div>
+                    </div>
+
+                    <!-- Title -->
+                    <div class="form-group">
+                        <label for="title" class="form-label">
+                            <i class="fas fa-tag"></i>
+                            <span>ชื่อทักษะ</span>
+                            <span class="required-badge">จำเป็น</span>
+                        </label>
+                        <input type="text"
+                               id="title"
+                               name="title"
+                               class="form-input"
+                               placeholder="เช่น สอน JavaScript เบื้องต้น, ถ่ายรูปแนว Portrait, สอนทำอาหารไทย"
+                               required>
+                        <div class="form-hint">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>ใช้ชื่อที่สั้น กระชับ และบอกถึงสิ่งที่คุณสอนได้ชัดเจน</span>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-group">
+                        <label for="description" class="form-label">
+                            <i class="fas fa-align-left"></i>
+                            <span>รายละเอียดทักษะ</span>
+                            <span class="required-badge">จำเป็น</span>
+                        </label>
+                        <textarea id="description"
+                                  name="description"
+                                  class="form-textarea"
+                                  placeholder="อธิบายทักษะของคุณ สิ่งที่จะสอน ประสบการณ์ และสิ่งที่ผู้เรียนจะได้รับ..."
+                                  required></textarea>
+                        <div class="form-hint">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>เขียนรายละเอียดที่น่าสนใจ อธิบายว่าคุณมีประสบการณ์อะไร และผู้เรียนจะได้อะไรบ้าง</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Category and Level Row -->
@@ -694,22 +691,7 @@
                         <select id="categoryId" name="categoryId" class="form-select with-icon" required>
                             <option value="">เลือกหมวดหมู่</option>
                             <c:forEach var="category" items="${categories}">
-                                <option value="${category.id}">
-                                    <c:choose>
-                                        <c:when test="${category.categoryName == 'Programming'}"></c:when>
-                                        <c:when test="${category.categoryName == 'Design'}"></c:when>
-                                        <c:when test="${category.categoryName == 'Marketing'}"></c:when>
-                                        <c:when test="${category.categoryName == 'Photography'}"></c:when>
-                                        <c:when test="${category.categoryName == 'Music'}"></c:when>
-                                        <c:when test="${category.categoryName == 'Language'}"></c:when>
-                                        <c:when test="${category.categoryName == 'Cooking'}"></c:when>
-                                        <c:when test="${category.categoryName == 'Fitness'}"></c:when>
-                                        <c:when test="${category.categoryName == 'Writing'}"></c:when>
-                                        <c:when test="${category.categoryName == 'Business'}"></c:when>
-                                        <c:otherwise>🔧</c:otherwise>
-                                    </c:choose>
-                                    ${category.categoryName}
-                                </option>
+                                <option value="${category.id}">${category.categoryName}</option>
                             </c:forEach>
                         </select>
                     </div>

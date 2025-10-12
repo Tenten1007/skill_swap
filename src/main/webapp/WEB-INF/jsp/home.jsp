@@ -967,6 +967,212 @@
             color: var(--text-white);
         }
 
+        /* Modern Sticky Navbar */
+        .modern-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: var(--space-md) var(--space-lg);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.15) 0%,
+                rgba(255, 255, 255, 0.08) 100%);
+            backdrop-filter: blur(40px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            animation: slideDownNavbar 0.6s ease-out;
+        }
+
+        @keyframes slideDownNavbar {
+            0% {
+                opacity: 0;
+                transform: translateY(-100%);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--space-lg);
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: var(--font-xl);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            transition: all var(--duration-normal) var(--smooth-easing);
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.05);
+            filter: brightness(1.2);
+        }
+
+        .navbar-menu {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+
+        .navbar-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-sm) var(--space-md);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-size: var(--font-sm);
+            font-weight: 600;
+            transition: all var(--duration-normal) var(--smooth-easing);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .navbar-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .navbar-link:hover::before {
+            left: 100%;
+        }
+
+        .navbar-link:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            color: var(--text-white);
+            text-decoration: none;
+        }
+
+        .navbar-link.active {
+            background: var(--button-gradient);
+            border-color: transparent;
+            color: var(--text-white);
+        }
+
+        .navbar-link.active:hover {
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.5);
+        }
+
+        /* Navbar Icons Colors */
+        .navbar-link.nav-home { border-color: rgba(99, 102, 241, 0.3); }
+        .navbar-link.nav-home:hover { background: rgba(99, 102, 241, 0.15); border-color: rgba(99, 102, 241, 0.5); }
+
+        .navbar-link.nav-board { border-color: rgba(245, 158, 11, 0.3); }
+        .navbar-link.nav-board:hover { background: rgba(245, 158, 11, 0.15); border-color: rgba(245, 158, 11, 0.5); }
+
+        .navbar-link.nav-add { border-color: rgba(16, 185, 129, 0.3); }
+        .navbar-link.nav-add:hover { background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.5); }
+
+        .navbar-link.nav-offers { border-color: rgba(139, 92, 246, 0.3); }
+        .navbar-link.nav-offers:hover { background: rgba(139, 92, 246, 0.15); border-color: rgba(139, 92, 246, 0.5); }
+
+        .navbar-link.nav-matches { border-color: rgba(6, 182, 212, 0.3); }
+        .navbar-link.nav-matches:hover { background: rgba(6, 182, 212, 0.15); border-color: rgba(6, 182, 212, 0.5); }
+
+        .navbar-link.nav-profile { border-color: rgba(16, 185, 129, 0.3); }
+        .navbar-link.nav-profile:hover { background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.5); }
+
+        /* Content Padding for Fixed Navbar */
+        .home-container {
+            padding-top: calc(80px + var(--space-lg));
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-md);
+            padding: var(--space-sm);
+            color: var(--text-white);
+            font-size: var(--font-xl);
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--smooth-easing);
+        }
+
+        .mobile-menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .navbar-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.15) 0%,
+                    rgba(255, 255, 255, 0.08) 100%);
+                backdrop-filter: blur(40px);
+                border-top: 1px solid rgba(255, 255, 255, 0.2);
+                padding: var(--space-md);
+                flex-direction: column;
+                gap: var(--space-xs);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            }
+
+            .navbar-menu.active {
+                display: flex;
+                animation: slideDownMenu 0.3s ease-out;
+            }
+
+            @keyframes slideDownMenu {
+                0% {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .navbar-link {
+                width: 100%;
+                justify-content: center;
+                padding: var(--space-md);
+            }
+
+            .navbar-brand {
+                font-size: var(--font-lg);
+            }
+        }
+
         /* Enhanced Skill Offers Grid with staggered animation */
         .skill-offers-grid {
             display: grid;
@@ -1345,6 +1551,47 @@
 </head>
 
 <body>
+    <!-- Modern Sticky Navbar -->
+    <nav class="modern-navbar">
+        <div class="navbar-container">
+            <a href="home" class="navbar-brand">
+                <i class="fas fa-exchange-alt"></i>
+                Skill Swap
+            </a>
+
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="navbar-menu" id="navbarMenu">
+                <a href="home" class="navbar-link nav-home active">
+                    <i class="fas fa-home"></i>
+                    For You
+                </a>
+                <a href="jobboard" class="navbar-link nav-board">
+                    <i class="fas fa-search"></i>
+                    Browse All
+                </a>
+                <a href="add-skill" class="navbar-link nav-add">
+                    <i class="fas fa-plus-circle"></i>
+                    Add Skill
+                </a>
+                <a href="my-offers" class="navbar-link nav-offers">
+                    <i class="fas fa-briefcase"></i>
+                    My Skills
+                </a>
+                <a href="matches" class="navbar-link nav-matches">
+                    <i class="fas fa-handshake"></i>
+                    Matches
+                </a>
+                <a href="profile" class="navbar-link nav-profile">
+                    <i class="fas fa-user"></i>
+                    Profile
+                </a>
+            </div>
+        </div>
+    </nav>
+
     <!-- Enhanced Background Effects -->
     <div class="floating-particles">
         <div class="particle"></div>
@@ -1366,16 +1613,16 @@
             <!-- Header Section -->
             <div class="header-section">
                 <div class="welcome-info">
-                    <h1><i class="fas fa-home"></i> Skill Swap Feed</h1>
-                    <p>ค้นหาและแลกเปลี่ยนทักษะกับชุมชนของเรา</p>
+                    <h1><i class="fas fa-sparkles"></i> For You</h1>
+                    <p>ทักษะที่แนะนำเฉพาะสำหรับคุณ</p>
                 </div>
 
                 <div class="user-section">
-                    <div class="user-profile" onclick="window.location.href='/profile'">
+                    <div class="user-profile" onclick="window.location.href='profile'">
                         <div class="user-avatar">
                             <i class="fas fa-user"></i>
                         </div>
-                        <div class="user-name">${sessionScope.user.username}</div>
+                        <div class="user-name">${user.username}</div>
                     </div>
                     <a href="doLogout" class="logout-button">
                         <i class="fas fa-sign-out-alt"></i> ออกจากระบบ
@@ -1409,174 +1656,142 @@
                 </div>
             </c:if>
 
-            <!-- Ultra-Modern Search and Filter Section -->
-            <div class="search-filter-section">
-                <form method="GET" action="home">
-                    <!-- Main Search Bar -->
-                    <div class="search-bar">
-                        <div class="search-input-group">
-                            <input type="text"
-                                   name="search"
-                                   class="search-input"
-                                   placeholder="ค้นหาทักษะที่สนใจ... เช่น Programming, Design, Marketing, Photography"
-                                   value="${searchQuery}">
-                            <i class="fas fa-search search-icon"></i>
-                        </div>
-                        <button type="submit" class="search-button">
-                            <i class="fas fa-search"></i>
-                            ค้นหา
-                        </button>
-                    </div>
-
-                    <!-- Advanced Filters Section -->
-                    <div class="filter-section-header">
-                        <i class="fas fa-sliders-h"></i>
-                        <span>ตัวกรองขั้นสูง</span>
-                    </div>
-
-                    <div class="filter-row">
-                        <!-- Enhanced Premium Category Dropdown -->
-                        <div class="custom-select-wrapper" id="categoryDropdown">
-                            <select name="categoryId" class="filter-select" id="categorySelect">
-                                <option value="">หมวดหมู่ทั้งหมด</option>
-                                <c:forEach var="category" items="${categories}">
-                                    <option value="${category.id}" ${selectedCategoryId == category.id ? 'selected' : ''}>
-                                        ${category.categoryName}
-                                    </option>
-                                </c:forEach>
-                            </select>
-                            <div class="dropdown-arrow"></div>
-                        </div>
-
-                        <!-- Location Input -->
-                        <input type="text"
-                               name="location"
-                               class="location-input"
-                               placeholder="🌍 สถานที่ เช่น กรุงเทพ, เชียงใหม่"
-                               value="${selectedLocation}">
-
-                        <!-- Clear Filters Button -->
-                        <c:if test="${not empty searchQuery or not empty selectedLocation or not empty selectedCategoryId}">
-                            <a href="home" class="clear-filters">
-                                <i class="fas fa-times-circle"></i>
-                                ล้างตัวกรอง
-                            </a>
-                        </c:if>
-
-                        <!-- Filter Apply Button -->
-                        <button type="submit" class="filter-button">
-                            <i class="fas fa-filter"></i>
-                            กรอง
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Feed Header -->
-            <div class="feed-header">
-                <h2 class="feed-title">
-                    <c:choose>
-                        <c:when test="${not empty searchQuery}">
-                            ผลการค้นหา "${searchQuery}"
-                        </c:when>
-                        <c:when test="${not empty selectedLocation}">
-                            ทักษะใน ${selectedLocation}
-                        </c:when>
-                        <c:otherwise>
-                            ทักษะล่าสุด
-                        </c:otherwise>
-                    </c:choose>
-                    <span style="font-size: var(--font-base); font-weight: normal; opacity: 0.7;">
-                        (${skillOffers != null ? skillOffers.size() : 0} รายการ)
-                    </span>
-                </h2>
-
-                <div style="display: flex; gap: var(--space-md); align-items: center; flex-wrap: wrap;">
-                    <a href="add-skill" class="add-skill-button">
-                        <i class="fas fa-plus-circle"></i>
-                        แชร์ทักษะของคุณ
-                    </a>
-                    <a href="my-offers" class="add-skill-button" style="background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.3); color: var(--secondary);">
-                        <i class="fas fa-briefcase"></i>
-                        My Offers
-                    </a>
-                    <a href="matches" class="add-skill-button" style="background: rgba(6, 182, 212, 0.1); border-color: rgba(6, 182, 212, 0.3); color: var(--accent);">
-                        <i class="fas fa-handshake"></i>
-                        Matches
-                    </a>
-                    <a href="profile" class="add-skill-button" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); color: var(--success);">
-                        <i class="fas fa-user"></i>
-                        Profile
-                    </a>
+            <!-- Personal Stats Dashboard -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-2xl);">
+                <div class="glass-card" style="padding: var(--space-lg); text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: var(--space-sm);">🎯</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: var(--space-xs);">${myActiveOffers}</div>
+                    <div style="color: var(--text-secondary); font-size: var(--font-sm);">My Active Skills</div>
+                </div>
+                <div class="glass-card" style="padding: var(--space-lg); text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: var(--space-sm);">🤝</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--accent); margin-bottom: var(--space-xs);">${totalMatches}</div>
+                    <div style="color: var(--text-secondary); font-size: var(--font-sm);">Total Matches</div>
+                </div>
+                <div class="glass-card" style="padding: var(--space-lg); text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: var(--space-sm);">⏳</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--warning); margin-bottom: var(--space-xs);">${pendingRequests}</div>
+                    <div style="color: var(--text-secondary); font-size: var(--font-sm);">Pending Requests</div>
                 </div>
             </div>
 
-            <!-- Skill Offers Grid -->
-            <c:choose>
-                <c:when test="${not empty skillOffers}">
+            <!-- Recommended Skills Section -->
+            <c:if test="${not empty recommendedSkills}">
+                <div style="margin-bottom: var(--space-2xl);">
+                    <div class="feed-header">
+                        <h2 class="feed-title">
+                            <i class="fas fa-star" style="color: var(--warning);"></i> แนะนำสำหรับคุณ
+                            <span style="font-size: var(--font-base); font-weight: normal; opacity: 0.7;">
+                                (ตามพื้นที่ของคุณ)
+                            </span>
+                        </h2>
+                    </div>
                     <div class="skill-offers-grid">
-                        <c:forEach var="offer" items="${skillOffers}">
+                        <c:forEach var="offer" items="${recommendedSkills}">
                             <div class="glass-card skill-offer-card">
                                 <div class="skill-header">
-                                    <span class="skill-category">
-                                        <c:choose>
-                                            <c:when test="${not empty offer.categoryName}">
-                                                ${offer.categoryName}
-                                            </c:when>
-                                            <c:otherwise>ไม่ระบุหมวดหมู่</c:otherwise>
-                                        </c:choose>
-                                    </span>
-                                    <span class="skill-date">
-                                        <c:if test="${not empty offer.createdAt}">
-                                            ${offer.createdAt.dayOfMonth}
-                                            ${offer.createdAt.month.toString().substring(0,3).toLowerCase()}
-                                            ${offer.createdAt.year}
-                                        </c:if>
-                                    </span>
+                                    <span class="skill-category">${offer.categoryName}</span>
+                                    <span class="skill-level-badge ${offer.level}">${offer.level}</span>
                                 </div>
-
-                                <h3 class="skill-title">
-                                    <c:out value="${not empty offer.title ? offer.title : 'ไม่มีชื่อ'}"/>
-                                </h3>
-
-                                <p class="skill-description">
-                                    <c:out value="${not empty offer.description ? offer.description : 'ไม่มีรายละเอียด'}"/>
-                                </p>
-
+                                <h3 class="skill-title">${offer.title}</h3>
+                                <p class="skill-description">${offer.description}</p>
+                                <div class="skill-meta">
+                                    <span><i class="fas fa-user"></i> ${offer.userName}</span>
+                                    <span><i class="fas fa-map-marker-alt"></i> ${offer.location}</span>
+                                </div>
                                 <div class="skill-footer">
-                                    <div class="skill-user">
-                                        <div class="skill-user-avatar">
-                                            <c:choose>
-                                                <c:when test="${not empty offer.userName}">
-                                                    ${offer.userName.substring(0,1).toUpperCase()}
-                                                </c:when>
-                                                <c:otherwise>?</c:otherwise>
-                                            </c:choose>
-                                        </div>
-                                        <span class="skill-username">
-                                            <c:out value="${not empty offer.userName ? offer.userName : 'ไม่ระบุผู้ใช้'}"/>
-                                        </span>
-                                    </div>
-
-                                    <c:if test="${not empty offer.location}">
-                                        <div class="skill-location">
-                                            <i class="fas fa-map-marker-alt"></i>
-                                            <c:out value="${offer.location}"/>
-                                        </div>
-                                    </c:if>
+                                    <span class="time-commitment"><i class="fas fa-clock"></i> ${offer.timeCommitment}</span>
+                                    <a href="skill?id=${offer.id}" class="view-details-btn">ดูรายละเอียด <i class="fas fa-arrow-right"></i></a>
                                 </div>
                             </div>
                         </c:forEach>
                     </div>
-                </c:when>
-                <c:otherwise>
-                    <div class="glass-card empty-state">
-                        <i class="fas fa-search"></i>
-                        <h3>ไม่พบทักษะที่ค้นหา</h3>
-                        <p>ลองเปลี่ยนคำค้นหาหรือตัวกรองดู หรือ <a href="add-skill" style="color: var(--primary);">แชร์ทักษะแรกของคุณ</a></p>
+                </div>
+            </c:if>
+
+            <!-- Recent/Trending Skills Section -->
+            <c:if test="${not empty recentSkills}">
+                <div style="margin-bottom: var(--space-2xl);">
+                    <div class="feed-header">
+                        <h2 class="feed-title">
+                            <i class="fas fa-fire" style="color: var(--error);"></i> ทักษะล่าสุด
+                            <span style="font-size: var(--font-base); font-weight: normal; opacity: 0.7;">
+                                (อัพเดตใหม่)
+                            </span>
+                        </h2>
                     </div>
-                </c:otherwise>
-            </c:choose>
+                    <div class="skill-offers-grid">
+                        <c:forEach var="offer" items="${recentSkills}">
+                            <div class="glass-card skill-offer-card">
+                                <div class="skill-header">
+                                    <span class="skill-category">${offer.categoryName}</span>
+                                    <span class="skill-level-badge ${offer.level}">${offer.level}</span>
+                                </div>
+                                <h3 class="skill-title">${offer.title}</h3>
+                                <p class="skill-description">${offer.description}</p>
+                                <div class="skill-meta">
+                                    <span><i class="fas fa-user"></i> ${offer.userName}</span>
+                                    <span><i class="fas fa-map-marker-alt"></i> ${offer.location}</span>
+                                </div>
+                                <div class="skill-footer">
+                                    <span class="time-commitment"><i class="fas fa-clock"></i> ${offer.timeCommitment}</span>
+                                    <a href="skill?id=${offer.id}" class="view-details-btn">ดูรายละเอียด <i class="fas fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
+            </c:if>
+
+            <!-- Nearby Skills Section -->
+            <c:if test="${not empty nearbySkills}">
+                <div style="margin-bottom: var(--space-2xl);">
+                    <div class="feed-header">
+                        <h2 class="feed-title">
+                            <i class="fas fa-location-dot" style="color: var(--success);"></i> ทักษะใกล้คุณ
+                            <span style="font-size: var(--font-base); font-weight: normal; opacity: 0.7;">
+                                (${user.location})
+                            </span>
+                        </h2>
+                    </div>
+                    <div class="skill-offers-grid">
+                        <c:forEach var="offer" items="${nearbySkills}">
+                            <div class="glass-card skill-offer-card">
+                                <div class="skill-header">
+                                    <span class="skill-category">${offer.categoryName}</span>
+                                    <span class="skill-level-badge ${offer.level}">${offer.level}</span>
+                                </div>
+                                <h3 class="skill-title">${offer.title}</h3>
+                                <p class="skill-description">${offer.description}</p>
+                                <div class="skill-meta">
+                                    <span><i class="fas fa-user"></i> ${offer.userName}</span>
+                                    <span><i class="fas fa-map-marker-alt"></i> ${offer.location}</span>
+                                </div>
+                                <div class="skill-footer">
+                                    <span class="time-commitment"><i class="fas fa-clock"></i> ${offer.timeCommitment}</span>
+                                    <a href="skill?id=${offer.id}" class="view-details-btn">ดูรายละเอียด <i class="fas fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
+            </c:if>
+
+            <!-- Empty State -->
+            <c:if test="${empty recommendedSkills and empty recentSkills and empty nearbySkills}">
+                <div class="glass-card" style="padding: var(--space-2xl); text-align: center;">
+                    <div style="font-size: 4rem; margin-bottom: var(--space-lg);">🔍</div>
+                    <h3 style="color: var(--text-primary); margin-bottom: var(--space-md);">ยังไม่มีทักษะในระบบ</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: var(--space-lg);">
+                        เป็นคนแรกที่แชร์ทักษะของคุณกับชุมชน หรือลองค้นหาทักษะใน Browse All
+                    </p>
+                    <a href="add-skill" class="add-skill-button">
+                        <i class="fas fa-plus-circle"></i>
+                        เพิ่มทักษะแรกของคุณ
+                    </a>
+                </div>
+            </c:if>
+
         </div>
     </div>
 
@@ -2333,6 +2548,30 @@
             `;
             document.head.appendChild(animateStyles);
 
+        });
+
+        // Mobile Menu Toggle Function
+        function toggleMobileMenu() {
+            const menu = document.getElementById('navbarMenu');
+            menu.classList.toggle('active');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const navbar = document.querySelector('.modern-navbar');
+            const menu = document.getElementById('navbarMenu');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+
+            if (!navbar.contains(event.target) && menu.classList.contains('active')) {
+                menu.classList.remove('active');
+            }
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.navbar-link').forEach(link => {
+            link.addEventListener('click', function() {
+                document.getElementById('navbarMenu').classList.remove('active');
+            });
         });
     </script>
 </body>
