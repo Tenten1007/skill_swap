@@ -1434,6 +1434,62 @@
                         margin-top: auto;
                     }
 
+                    /* Enhanced Detail Button - Match skillboard.jsp */
+                    .detail-button {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: var(--space-sm);
+                        padding: var(--space-sm) var(--space-lg);
+                        background: var(--button-gradient);
+                        border: none;
+                        border-radius: var(--radius-md);
+                        color: var(--text-primary);
+                        font-size: var(--font-sm);
+                        font-weight: 600;
+                        text-decoration: none;
+                        cursor: pointer;
+                        position: relative;
+                        overflow: hidden;
+                        transition: all 0.4s var(--spring-easing);
+                        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+                    }
+
+                    .detail-button::before {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: -100%;
+                        width: 100%;
+                        height: 100%;
+                        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+                        transition: left 0.6s;
+                    }
+
+                    .detail-button:hover::before {
+                        left: 100%;
+                    }
+
+                    .detail-button:hover {
+                        transform: translateY(-2px) scale(1.05);
+                        box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+                        text-decoration: none;
+                        color: var(--text-primary);
+                    }
+
+                    .detail-button:active {
+                        transform: translateY(-1px) scale(1.02);
+                    }
+
+                    .detail-button i {
+                        font-size: var(--font-sm);
+                        transition: transform 0.3s var(--spring-easing);
+                    }
+
+                    .detail-button:hover i {
+                        transform: translateX(3px);
+                    }
+
                     .skill-user {
                         display: flex;
                         align-items: center;
@@ -1817,8 +1873,10 @@
                                             <div class="skill-footer">
                                                 <span class="time-commitment"><i class="fas fa-clock"></i>
                                                     ${offer.timeCommitment}</span>
-                                                <a href="skill?id=${offer.id}" class="view-details-btn">ดูรายละเอียด <i
-                                                        class="fas fa-arrow-right"></i></a>
+                                                <a href="skill?id=${offer.id}" class="detail-button">
+                                                    <span>ดูรายละเอียด</span>
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </a>
                                             </div>
                                         </div>
                                     </c:forEach>
@@ -1853,8 +1911,10 @@
                                             <div class="skill-footer">
                                                 <span class="time-commitment"><i class="fas fa-clock"></i>
                                                     ${offer.timeCommitment}</span>
-                                                <a href="skill?id=${offer.id}" class="view-details-btn">ดูรายละเอียด <i
-                                                        class="fas fa-arrow-right"></i></a>
+                                                <a href="skill?id=${offer.id}" class="detail-button">
+                                                    <span>ดูรายละเอียด</span>
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </a>
                                             </div>
                                         </div>
                                     </c:forEach>
@@ -1889,8 +1949,10 @@
                                             <div class="skill-footer">
                                                 <span class="time-commitment"><i class="fas fa-clock"></i>
                                                     ${offer.timeCommitment}</span>
-                                                <a href="skill?id=${offer.id}" class="view-details-btn">ดูรายละเอียด <i
-                                                        class="fas fa-arrow-right"></i></a>
+                                                <a href="skill?id=${offer.id}" class="detail-button">
+                                                    <span>ดูรายละเอียด</span>
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </a>
                                             </div>
                                         </div>
                                     </c:forEach>
