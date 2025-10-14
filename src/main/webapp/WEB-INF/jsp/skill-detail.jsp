@@ -300,24 +300,12 @@
 				</button>
 			</form>
 
+	</div>
+</div>
 
 
 
-				<!-- Enhanced Navigation Footer -->
-				<div class="navigation-footer">
-					<a href="jobboard" class="back-button"> <i
-						class="fas fa-arrow-left"></i> <span>กลับไป JobBoard</span>
-					</a>
-					<div class="quick-nav">
-						<a href="home" class="nav-link"> <i class="fas fa-home"></i> <span>หน้าแรก</span>
-						</a> <a href="my-offers" class="nav-link"> <i
-							class="fas fa-briefcase"></i> <span>My Offers</span>
-						</a> <a href="add-skill" class="nav-link"> <i class="fas fa-plus"></i>
-							<span>เพิ่มสกิล</span>
-						</a>
-					</div>
-				</div>
-			</div>
+
 </body>
 <style>
 /* Enhanced Color Palette and Variables */
@@ -3135,66 +3123,6 @@ rgba
 	z-index: 1;
 }
 
-/* Enhanced Navigation Footer */
-.navigation-footer {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: var(--space-xl);
-	background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%,
-		rgba(255, 255, 255, 0.05) 100%);
-	border: 1px solid rgba(255, 255, 255, 0.2);
-	border-radius: var(--radius-xl);
-	backdrop-filter: blur(40px);
-	margin-top: var(--space-xl);
-}
-
-.back-button {
-	display: inline-flex;
-	align-items: center;
-	gap: var(--space-sm);
-	padding: var(--space-md) var(--space-lg);
-	background: var(--button-gradient);
-	color: var(--text-primary);
-	text-decoration: none;
-	border-radius: var(--radius-md);
-	font-weight: 600;
-	transition: all var(--duration-normal) var(--smooth-easing);
-	box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
-}
-
-.back-button:hover {
-	transform: translateY(-2px) scale(1.05);
-	box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
-	text-decoration: none;
-	color: var(--text-primary);
-}
-
-.quick-nav {
-	display: flex;
-	gap: var(--space-md);
-}
-
-.nav-link {
-	display: inline-flex;
-	align-items: center;
-	gap: var(--space-xs);
-	padding: var(--space-sm) var(--space-md);
-	color: var(--text-secondary);
-	text-decoration: none;
-	border-radius: var(--radius-sm);
-	font-size: var(--font-sm);
-	font-weight: 500;
-	transition: all var(--duration-normal) var(--smooth-easing);
-}
-
-.nav-link:hover {
-	color: var(--primary);
-	background: rgba(99, 102, 241, 0.1);
-	transform: translateY(-1px);
-	text-decoration: none;
-}
-
 .my-skill-selection {
 	margin-bottom: var(--space-xl);
 	padding: var(--space-lg);
@@ -3467,14 +3395,6 @@ translateX
 	}
 	.highlights-grid {
 		grid-template-columns: 1fr;
-	}
-	.navigation-footer {
-		flex-direction: column;
-		gap: var(--space-lg);
-	}
-	.quick-nav {
-		justify-content: center;
-		flex-wrap: wrap;
 	}
 	.breadcrumb-section {
 		flex-wrap: wrap;

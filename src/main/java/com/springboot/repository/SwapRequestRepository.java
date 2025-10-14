@@ -43,4 +43,8 @@ public interface SwapRequestRepository extends JpaRepository<SwapRequest, Intege
     // ดึงคำขอทั้งหมดของผู้ใช้ (ทั้งส่งและได้รับ)
     @Query("SELECT sr FROM SwapRequest sr WHERE sr.requester.id = :userId OR sr.requestedSkill.user.id = :userId ORDER BY sr.createdAt DESC")
     List<SwapRequest> findAllRequestsByUserId(@Param("userId") int userId);
+
+    // ค้นหา SwapRequest ที่เกี่ยวข้องกับ SkillOffer (สำหรับการลบ)
+    @Query("SELECT sr FROM SwapRequest sr WHERE sr.requestedSkill.id = :skillOfferId OR sr.offeredSkill.id = :skillOfferId")
+    List<SwapRequest> findByRequestedSkillIdOrOfferedSkillId(@Param("skillOfferId") int skillOfferId);
 }

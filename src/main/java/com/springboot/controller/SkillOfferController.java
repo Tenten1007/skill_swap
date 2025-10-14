@@ -36,6 +36,15 @@ public class SkillOfferController {
     @Autowired
     private SkillRepository skillRepository;
 
+    @Autowired
+    private com.springboot.repository.SwapRequestRepository swapRequestRepository;
+
+    @Autowired
+    private com.springboot.repository.RatingRepository ratingRepository;
+
+    @Autowired
+    private com.springboot.repository.SwapMatchRepository swapMatchRepository;
+
     @GetMapping("/my-offers")
     public ModelAndView showMyOffers(HttpSession session) {
         // Check if user is logged in
@@ -164,6 +173,67 @@ public class SkillOfferController {
             List<SkillCategory> categories = skillCategoryRepository.findAll();
             mav.addObject("categories", DTOMapper.toSkillCategoryDTOList(categories));
             return mav;
+        }
+    }
+
+    @PostMapping("/delete-skill")
+    public ModelAndView deleteSkillOffer(@RequestParam Integer skillOfferId, HttpSession session) {
+        try {
+            User user = (User) session.getAttribute("user");
+            if (user == null) {
+                return new ModelAndView("redirect:/login?message=session-expired");
+            }
+
+            // ตรวจสอบว่า SkillOffer มีอยู่จริง
+            SkillOffer skillOffer = skillOfferRepository.findById(skillOfferId).orElse(null);
+            if (skillOffer == null) {
+                return new ModelAndView("redirect:/my-offers?error=skill-not-found");
+            }
+
+            // ตรวจสอบว่าเป็นเจ้าของ SkillOffer หรือไม่
+            if (skillOffer.getUser().getId() != user.getId()) {
+                return new ModelAndView("redirect:/my-offers?error=unauthorized");
+            }
+
+            // ขั้นตอนที่ 1: ค้นหา SwapMatch ที่เกี่ยวข้องกับ SkillOffer นี้ (ทั้ง offerSkill และ requestSkill)
+            var relatedSwapMatches = swapMatchRepository.findByOfferSkillIdOrRequestSkillId(skillOfferId);
+            int totalRatingsDeleted = 0;
+            int totalSwapMatchesDeleted = 0;
+
+            // ลบ Rating ที่เกี่ยวข้องกับแต่ละ SwapMatch ก่อน
+            if (!relatedSwapMatches.isEmpty()) {
+                for (var swapMatch : relatedSwapMatches) {
+                    var ratings = ratingRepository.findBySwapMatchId(swapMatch.getId());
+                    if (!ratings.isEmpty()) {
+                        ratingRepository.deleteAll(ratings);
+                        totalRatingsDeleted += ratings.size();
+                    }
+                }
+                System.out.println("Deleted " + totalRatingsDeleted + " related ratings");
+
+                // ลบ SwapMatch ทั้งหมด
+                swapMatchRepository.deleteAll(relatedSwapMatches);
+                totalSwapMatchesDeleted = relatedSwapMatches.size();
+                System.out.println("Deleted " + totalSwapMatchesDeleted + " related swap matches");
+            }
+
+            // ขั้นตอนที่ 2: ค้นหาและลบ SwapRequest ที่เกี่ยวข้องกับ SkillOffer นี้
+            var relatedSwapRequests = swapRequestRepository.findByRequestedSkillIdOrOfferedSkillId(skillOfferId);
+            if (!relatedSwapRequests.isEmpty()) {
+                swapRequestRepository.deleteAll(relatedSwapRequests);
+                System.out.println("Deleted " + relatedSwapRequests.size() + " related swap requests");
+            }
+
+            // ขั้นตอนที่ 3: ลบ SkillOffer
+            skillOfferRepository.delete(skillOffer);
+
+            System.out.println("Successfully deleted SkillOffer with ID: " + skillOfferId);
+            return new ModelAndView("redirect:/my-offers?success=skill-deleted");
+
+        } catch (Exception e) {
+            System.out.println("ERROR in deleteSkillOffer: " + e.getMessage());
+            e.printStackTrace();
+            return new ModelAndView("redirect:/my-offers?error=delete-failed");
         }
     }
 }

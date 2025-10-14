@@ -28,4 +28,8 @@ public interface SwapMatchRepository extends JpaRepository<SwapMatch, Integer> {
 
     @Query("SELECT sm FROM SwapMatch sm WHERE sm.status = :status")
     List<SwapMatch> findByStatus(@Param("status") String status);
+
+    // ค้นหา SwapMatch ที่เกี่ยวข้องกับ SkillOffer (ทั้ง offer และ request)
+    @Query("SELECT sm FROM SwapMatch sm WHERE sm.offerSkill.id = :skillOfferId OR sm.requestSkill.id = :skillOfferId")
+    List<SwapMatch> findByOfferSkillIdOrRequestSkillId(@Param("skillOfferId") int skillOfferId);
 }

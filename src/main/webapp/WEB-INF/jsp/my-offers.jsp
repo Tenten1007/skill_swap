@@ -867,6 +867,12 @@
             gap: var(--space-sm);
         }
 
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
         .alert-error {
             background: rgba(239, 68, 68, 0.1);
             color: var(--error);
@@ -988,7 +994,33 @@
 
         <!-- Content Container -->
         <div class="content-container">
-            <!-- Error Message -->
+            <!-- Success Message -->
+            <c:if test="${param.success == 'skill-deleted'}">
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i>
+                    <span>ลบ Skill Offer สำเร็จแล้ว</span>
+                </div>
+            </c:if>
+
+            <!-- Error Messages -->
+            <c:if test="${param.error == 'skill-not-found'}">
+                <div class="alert alert-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>ไม่พบ Skill Offer ที่ต้องการลบ</span>
+                </div>
+            </c:if>
+            <c:if test="${param.error == 'unauthorized'}">
+                <div class="alert alert-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>คุณไม่มีสิทธิ์ลบ Skill Offer นี้</span>
+                </div>
+            </c:if>
+            <c:if test="${param.error == 'delete-failed'}">
+                <div class="alert alert-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>เกิดข้อผิดพลาดในการลบ Skill Offer กรุณาลองใหม่อีกครั้ง</span>
+                </div>
+            </c:if>
             <c:if test="${not empty error}">
                 <div class="alert alert-error">
                     <i class="fas fa-exclamation-triangle"></i>
@@ -1112,7 +1144,7 @@
                                             <i class="fas fa-edit"></i>
                                             แก้ไข
                                         </a>
-                                        <a href="#" class="btn-action btn-delete" onclick="confirmDelete(${offer.id})">
+                                        <a href="#" class="btn-action btn-delete" onclick="return confirmDelete(${offer.id})">
                                             <i class="fas fa-trash"></i>
                                             ลบ
                                         </a>
@@ -1180,10 +1212,22 @@
         });
 
         function confirmDelete(offerId) {
-            if (confirm('คุณแน่ใจหรือไม่ที่จะลบ Skill Offer นี้? การกระทำนี้ไม่สามารถยกเลิกได้')) {
-                // TODO: Implement delete functionality
-                alert('Delete functionality will be implemented soon!');
+            if (confirm('คุณแน่ใจหรือไม่ที่จะลบ Skill Offer นี้?\n\nการลบจะทำให้:\n- Skill Offer นี้ถูกลบถาวร\n- คำขอแลกเปลี่ยนที่เกี่ยวข้องจะถูกลบ\n- การกระทำนี้ไม่สามารถยกเลิกได้')) {
+                // สร้าง form เพื่อส่ง POST request
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = 'delete-skill';
+
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'skillOfferId';
+                input.value = offerId;
+
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
             }
+            return false; // ป้องกันการ navigate ของ link
         }
 
         // Mobile Menu Toggle Function

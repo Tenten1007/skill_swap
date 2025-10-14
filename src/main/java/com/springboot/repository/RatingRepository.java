@@ -28,4 +28,8 @@ public interface RatingRepository extends JpaRepository<Rating, Integer> {
 
     @Query("SELECT COUNT(r) FROM Rating r WHERE r.ratee.id = :userId")
     Long getCountRatingsByRateeId(@Param("userId") int userId);
+
+    // ค้นหา Rating ตาม SwapMatch ID (สำหรับการลบ)
+    @Query("SELECT r FROM Rating r WHERE r.swapMatch.id = :swapMatchId")
+    List<Rating> findBySwapMatchId(@Param("swapMatchId") int swapMatchId);
 }
