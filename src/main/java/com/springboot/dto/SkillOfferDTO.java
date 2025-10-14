@@ -19,6 +19,7 @@ public class SkillOfferDTO {
     private LocalDateTime createdAt;
 
     // User information (public only)
+    private Integer userId;
     private String userName;
     private String userFullName;
     private String userProfileImage;
@@ -33,7 +34,7 @@ public class SkillOfferDTO {
 
     public SkillOfferDTO(int id, String title, String description, String level,
                          String timeCommitment, String location, boolean isActive,
-                         LocalDateTime createdAt, String userName, String userFullName,
+                         LocalDateTime createdAt, Integer userId, String userName, String userFullName,
                          String userProfileImage, String userLocation,
                          String skillName, String categoryName) {
         this.id = id;
@@ -44,6 +45,7 @@ public class SkillOfferDTO {
         this.location = location;
         this.isActive = isActive;
         this.createdAt = createdAt;
+        this.userId = userId;
         this.userName = userName;
         this.userFullName = userFullName;
         this.userProfileImage = userProfileImage;
@@ -115,6 +117,14 @@ public class SkillOfferDTO {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {

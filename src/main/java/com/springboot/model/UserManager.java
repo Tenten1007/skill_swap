@@ -61,6 +61,15 @@ public class UserManager {
         }
     }
 
+    public User getUserById(int userId) {
+        try {
+            return userRepository.findById(userId).orElse(null);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }

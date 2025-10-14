@@ -1870,7 +1870,16 @@
                                             <h3 class="skill-title">${offer.title}</h3>
                                             <p class="skill-description">${offer.description}</p>
                                             <div class="skill-meta">
-                                                <span><i class="fas fa-user"></i> ${offer.userName}</span>
+                                                <span><i class="fas fa-user"></i>
+                                                    <c:choose>
+                                                        <c:when test="${offer.userId != null}">
+                                                            <a href="user-profile?userId=${offer.userId}" style="color: inherit; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='inherit'">${offer.userName}</a>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            ${offer.userName}
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </span>
                                                 <span><i class="fas fa-map-marker-alt"></i> ${offer.location}</span>
                                             </div>
                                             <div class="skill-footer">
@@ -1908,7 +1917,16 @@
                                             <h3 class="skill-title">${offer.title}</h3>
                                             <p class="skill-description">${offer.description}</p>
                                             <div class="skill-meta">
-                                                <span><i class="fas fa-user"></i> ${offer.userName}</span>
+                                                <span><i class="fas fa-user"></i>
+                                                    <c:choose>
+                                                        <c:when test="${offer.userId != null}">
+                                                            <a href="user-profile?userId=${offer.userId}" style="color: inherit; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='inherit'">${offer.userName}</a>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            ${offer.userName}
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </span>
                                                 <span><i class="fas fa-map-marker-alt"></i> ${offer.location}</span>
                                             </div>
                                             <div class="skill-footer">
@@ -1946,7 +1964,16 @@
                                             <h3 class="skill-title">${offer.title}</h3>
                                             <p class="skill-description">${offer.description}</p>
                                             <div class="skill-meta">
-                                                <span><i class="fas fa-user"></i> ${offer.userName}</span>
+                                                <span><i class="fas fa-user"></i>
+                                                    <c:choose>
+                                                        <c:when test="${offer.userId != null}">
+                                                            <a href="user-profile?userId=${offer.userId}" style="color: inherit; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='inherit'">${offer.userName}</a>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            ${offer.userName}
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </span>
                                                 <span><i class="fas fa-map-marker-alt"></i> ${offer.location}</span>
                                             </div>
                                             <div class="skill-footer">

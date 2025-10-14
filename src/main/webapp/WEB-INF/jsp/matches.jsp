@@ -971,7 +971,16 @@
                                     <c:forEach var="request" items="${receivedRequests}">
                                         <div class="request-card">
                                             <div class="request-header">
-                                                <h3>คำขอจาก ${request.requester.username}</h3>
+                                                <h3>คำขอจาก
+                                                    <c:choose>
+                                                        <c:when test="${request.requester.id != null}">
+                                                            <a href="user-profile?userId=${request.requester.id}" style="color: inherit; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='inherit'">${request.requester.username}</a>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            ${request.requester.username}
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </h3>
                                                 <div class="request-status status-${request.status.toLowerCase()}">
                                                     <c:choose>
                                                         <c:when test="${request.status == 'PENDING'}">
@@ -1077,7 +1086,16 @@
                                     <c:forEach var="request" items="${sentRequests}">
                                         <div class="request-card">
                                             <div class="request-header">
-                                                <h3>ส่งคำขอไปยัง ${request.requestedSkill.user.username}</h3>
+                                                <h3>ส่งคำขอไปยัง
+                                                    <c:choose>
+                                                        <c:when test="${request.requestedSkill.user.id != null}">
+                                                            <a href="user-profile?userId=${request.requestedSkill.user.id}" style="color: inherit; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='inherit'">${request.requestedSkill.user.username}</a>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            ${request.requestedSkill.user.username}
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </h3>
                                                 <div class="request-status status-${request.status.toLowerCase()}">
                                                     <c:choose>
                                                         <c:when test="${request.status == 'PENDING'}">

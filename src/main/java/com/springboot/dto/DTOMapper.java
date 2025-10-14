@@ -54,6 +54,7 @@ public class DTOMapper {
         if (skillOffer == null) return null;
 
         User user = skillOffer.getUser();
+        Integer userId = user != null ? user.getId() : null;
         String userName = user != null ? user.getUsername() : "";
         String userFullName = user != null ? user.getFullName() : "";
         String userProfileImage = user != null ? user.getProfileImage() : null;
@@ -74,6 +75,7 @@ public class DTOMapper {
             skillOffer.getLocation(),
             skillOffer.isActive(),
             skillOffer.getCreatedAt(),
+            userId,
             userName,
             userFullName,
             userProfileImage,

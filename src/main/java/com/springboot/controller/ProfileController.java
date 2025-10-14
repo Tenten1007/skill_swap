@@ -90,6 +90,60 @@ public class ProfileController {
         return mav;
     }
 
+    @GetMapping("/user-profile")
+    public ModelAndView viewUserProfile(@RequestParam int userId, HttpSession session) {
+        // Check if user is logged in
+        String username = (String) session.getAttribute("username");
+        if (username == null) {
+            return new ModelAndView("redirect:/login?message=login-required");
+        }
+
+        User currentUser = (User) session.getAttribute("user");
+        ModelAndView mav = new ModelAndView("user-profile");
+
+        try {
+            // Get the user profile to view
+            User viewedUser = userManager.getUserById(userId);
+
+            if (viewedUser == null) {
+                return new ModelAndView("redirect:/home?error=user-not-found");
+            }
+
+            // If viewing own profile, redirect to profile page
+            if (currentUser != null && currentUser.getId() == userId) {
+                return new ModelAndView("redirect:/profile");
+            }
+
+            // Get user statistics
+            int totalOffers = skillOfferRepository.findByUserId(viewedUser.getId()).size();
+
+            // Get rating statistics
+            Double averageRating = ratingRepository.getAverageRatingByRateeId(viewedUser.getId());
+            Long totalRatings = ratingRepository.getCountRatingsByRateeId(viewedUser.getId());
+
+            // If no ratings, set default values
+            if (averageRating == null) averageRating = 0.0;
+            if (totalRatings == null) totalRatings = 0L;
+
+            // Get user's skill offers
+            var userOffers = skillOfferRepository.findByUserId(viewedUser.getId());
+
+            mav.addObject("viewedUser", viewedUser);
+            mav.addObject("totalOffers", totalOffers);
+            mav.addObject("averageRating", averageRating);
+            mav.addObject("totalRatings", totalRatings);
+            mav.addObject("userOffers", userOffers);
+            mav.addObject("currentUser", currentUser);
+
+        } catch (Exception e) {
+            System.out.println("ERROR in viewUserProfile: " + e.getMessage());
+            e.printStackTrace();
+            return new ModelAndView("redirect:/home?error=profile-load-failed");
+        }
+
+        return mav;
+    }
+
     @GetMapping("/edit-profile")
     public ModelAndView showEditProfile(HttpSession session) {
         // Check if user is logged in

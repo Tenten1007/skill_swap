@@ -166,8 +166,19 @@
 				</div>
 				<div class="user-details">
 					<div class="user-name">
-						<i class="fas fa-user"></i> <span><c:out
-								value="${skillOffer.userName != null ? skillOffer.userName : 'ไม่ระบุผู้ใช้'}" /></span>
+						<i class="fas fa-user"></i>
+						<c:choose>
+							<c:when test="${skillOffer.userId != null}">
+								<a href="user-profile?userId=${skillOffer.userId}" style="color: inherit; text-decoration: none; transition: color 0.3s;">
+									<span style="cursor: pointer;" onmouseover="this.parentElement.style.color='var(--primary)'" onmouseout="this.parentElement.style.color='inherit'">
+										<c:out value="${skillOffer.userName != null ? skillOffer.userName : 'ไม่ระบุผู้ใช้'}" />
+									</span>
+								</a>
+							</c:when>
+							<c:otherwise>
+								<span><c:out value="${skillOffer.userName != null ? skillOffer.userName : 'ไม่ระบุผู้ใช้'}" /></span>
+							</c:otherwise>
+						</c:choose>
 					</div>
 					<c:if test="${skillOffer.userLocation != null}">
 						<div class="user-location">
@@ -181,6 +192,14 @@
 							class="fas fa-star"></i> <span class="rating-text">5.0 (24
 							รีวิว)</span>
 					</div>
+					<c:if test="${skillOffer.userId != null}">
+						<div style="margin-top: var(--space-md);">
+							<a href="user-profile?userId=${skillOffer.userId}" class="view-profile-button" style="display: inline-flex; align-items: center; gap: var(--space-xs); padding: var(--space-sm) var(--space-md); background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; text-decoration: none; border-radius: var(--radius-sm); font-size: var(--font-sm); font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);">
+								<i class="fas fa-id-card"></i>
+								<span>ดูโปรไฟล์เต็ม</span>
+							</a>
+						</div>
+					</c:if>
 				</div>
 			</div>
 		</div>

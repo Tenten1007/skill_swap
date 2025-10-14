@@ -192,7 +192,16 @@
 										</div>
 										<div>
 											<div class="skill-username">
-												<c:out value="${offer.userName}" />
+												<c:choose>
+													<c:when test="${offer.userId != null}">
+														<a href="user-profile?userId=${offer.userId}" style="color: inherit; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='inherit'">
+															<c:out value="${offer.userName}" />
+														</a>
+													</c:when>
+													<c:otherwise>
+														<c:out value="${offer.userName}" />
+													</c:otherwise>
+												</c:choose>
 											</div>
 										</div>
 									</div>
