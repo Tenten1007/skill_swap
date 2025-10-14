@@ -303,23 +303,27 @@
 
                     .logout-button {
                         padding: var(--space-sm) var(--space-md);
-                        background: rgba(239, 68, 68, 0.1);
-                        border: 1px solid rgba(239, 68, 68, 0.3);
+                        background: rgba(239, 68, 68, 0.25);
+                        border: 2px solid rgba(239, 68, 68, 0.6);
                         border-radius: var(--radius-sm);
-                        color: var(--error);
+                        color: #ff4444;
                         text-decoration: none;
                         font-size: 12px;
+                        font-weight: 600;
                         backdrop-filter: blur(10px);
                         transition: all var(--duration-normal) var(--smooth-easing);
                         display: flex;
                         align-items: center;
                         gap: var(--space-xs);
+                        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
                     }
 
                     .logout-button:hover {
-                        background: rgba(239, 68, 68, 0.2);
-                        border-color: var(--error);
+                        background: rgba(239, 68, 68, 0.4);
+                        border-color: #ff4444;
+                        color: #ffffff;
                         transform: var(--hover-lift);
+                        box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
                     }
 
                     .logout-button:active {
@@ -1566,20 +1570,24 @@
                         align-items: center;
                         gap: var(--space-sm);
                         padding: var(--space-md) var(--space-lg);
-                        background: rgba(239, 68, 68, 0.1);
-                        border: 1px solid rgba(239, 68, 68, 0.3);
+                        background: rgba(239, 68, 68, 0.25);
+                        border: 2px solid rgba(239, 68, 68, 0.6);
                         border-radius: var(--radius-md);
-                        color: var(--error);
+                        color: #ff4444;
                         text-decoration: none;
                         font-size: var(--font-sm);
                         font-weight: 600;
                         transition: all var(--duration-normal) var(--smooth-easing);
+                        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
                     }
 
                     .logout-button:hover {
-                        background: rgba(239, 68, 68, 0.2);
+                        background: rgba(239, 68, 68, 0.4);
+                        border-color: #ff4444;
+                        color: #ffffff;
                         transform: var(--hover-lift);
                         text-decoration: none;
+                        box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
                         color: var(--error);
                     }
 
@@ -1772,12 +1780,7 @@
                             </div>
 
                             <div class="user-section">
-                                <div class="user-profile" onclick="window.location.href='profile'">
-                                    <div class="user-avatar">
-                                        <i class="fas fa-user"></i>
-                                    </div>
-                                    <div class="user-name">${user.username}</div>
-                                </div>
+                                
                                 <a href="doLogout" class="logout-button">
                                     <i class="fas fa-sign-out-alt"></i> ออกจากระบบ
                                 </a>

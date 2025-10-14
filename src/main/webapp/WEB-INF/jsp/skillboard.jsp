@@ -73,24 +73,10 @@
 			<div class="header-section">
 				<div class="welcome-info">
 					<h1>
-						<i class="fas fa-clipboard-list" style="color: var(--primary); margin-right: 15px; font-size: 2.2rem;"></i> 
+						<i class="fas fa-clipboard-list" style="color: var(--primary); margin-right: 15px; font-size: 2.2rem;"></i>
 						SkillBoard
 					</h1>
 					<p>ค้นพบและสำรวจทักษะทั้งหมดในระบบ พร้อมรายละเอียดครบถ้วน</p>
-				</div>
-				
-				<!-- Enhanced Navigation Actions -->
-				<div class="user-section">
-					<div class="action-buttons">
-						<a href="home" class="action-button home-btn">
-							<i class="fas fa-home"></i>
-							<span>หน้าแรก</span>
-						</a>
-						<a href="add-skill" class="action-button add-skill-btn">
-							<i class="fas fa-plus"></i>
-							<span>เพิ่มสกิล</span>
-						</a>
-					</div>
 				</div>
 			</div>
 

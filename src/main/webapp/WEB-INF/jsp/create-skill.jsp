@@ -499,28 +499,17 @@
         }
 
         .glass-form {
-            background: linear-gradient(135deg, rgb(0 0 0) 0%, rgba(255, 255, 255, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
             border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: var(--radius-xl);
             backdrop-filter: blur(40px);
             padding: var(--space-2xl);
             box-shadow: 0 25px 80px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2);
             position: relative;
-            overflow: hidden;
+            overflow: visible;
             animation: slideInFromBottom 0.8s ease-out;
             margin-bottom: var(--space-xl);
             transition: all var(--duration-normal) var(--smooth-easing);
-        }
-
-        .glass-form::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--button-gradient);
-            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
         }
 
 
@@ -536,45 +525,29 @@
         }
 
         .section-header {
-            display: flex;
-            align-items: center;
-            gap: var(--space-lg);
-            margin-bottom: var(--space-2xl);
-            padding: var(--space-lg);
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
-            border-radius: var(--radius-lg);
-            border-left: 4px solid var(--primary);
-        }
-
-        .section-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--button-gradient);
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-primary);
-            font-size: 20px;
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
-            flex-shrink: 0;
-        }
-
-        .section-info {
-            flex: 1;
+            margin-bottom: var(--space-lg);
         }
 
         .section-title {
             font-size: var(--font-xl);
             font-weight: 700;
-            color: var(--text-primary);
-            margin: 0 0 var(--space-xs) 0;
+            color: #ffffff;
+            margin-bottom: var(--space-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
         }
 
-        .section-description {
-            font-size: var(--font-sm);
-            color: var(--text-muted);
-            margin: 0;
+        .section-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--button-gradient);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--text-white);
         }
 
         /* Form Groups */
@@ -634,7 +607,7 @@
         .form-select {
             width: 100%;
             padding: var(--space-lg) var(--space-xl);
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
             border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: var(--radius-lg);
             color: #FFFFFF;
@@ -651,7 +624,7 @@
         .form-textarea:hover,
         .form-select:hover {
             border-color: var(--primary);
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(139, 92, 246, 0.08) 100%);
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
         }
@@ -661,7 +634,7 @@
         .form-select:focus {
             outline: none;
             border-color: var(--primary);
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.15) 100%);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
             box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15), 0 10px 30px rgba(99, 102, 241, 0.4);
             transform: translateY(-2px);
         }
@@ -973,16 +946,7 @@
                 <h1><i class="fas fa-plus-circle"></i> สร้าง Skill Offer</h1>
                 <p>แชร์ทักษะของคุณให้กับชุมชน</p>
             </div>
-            <div style="display: flex; gap: var(--space-md);">
-                <a href="home" class="back-button">
-                    <i class="fas fa-arrow-left"></i>
-                    กลับหน้าหลัก
-                </a>
-                <a href="doLogout" class="back-button logout" style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); color: var(--error);">
-                    <i class="fas fa-sign-out-alt"></i>
-                    ออกจากระบบ
-                </a>
-            </div>
+            
         </div>
 
         <!-- Form Container -->
@@ -1007,15 +971,12 @@
 
                 <!-- Section 1: Basic Information -->
                 <div class="form-section">
-                    <div class="section-header">
+                    <h3 class="section-title">
                         <div class="section-icon">
                             <i class="fas fa-info-circle"></i>
                         </div>
-                        <div class="section-info">
-                            <h3 class="section-title">ข้อมูลพื้นฐาน</h3>
-                            <p class="section-description">บอกเราเกี่ยวกับทักษะของคุณ</p>
-                        </div>
-                    </div>
+                        ข้อมูลพื้นฐาน
+                    </h3>
 
                     <!-- Title -->
                     <div class="form-group">

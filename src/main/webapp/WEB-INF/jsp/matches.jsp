@@ -913,20 +913,6 @@
                 <h1><i class="fas fa-handshake"></i> Matches</h1>
                 <p>จัดการคำขอ Skill Swap และดูประวัติการแลกเปลี่ยน</p>
             </div>
-            <div class="header-actions">
-                <a href="home" class="action-button btn-secondary">
-                    <i class="fas fa-search"></i>
-                    ค้นหา Skills
-                </a>
-                <a href="my-offers" class="action-button btn-secondary">
-                    <i class="fas fa-briefcase"></i>
-                    My Offers
-                </a>
-                <a href="doLogout" class="action-button btn-secondary" style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); color: var(--error);">
-                    <i class="fas fa-sign-out-alt"></i>
-                    ออกจากระบบ
-                </a>
-            </div>
         </div>
 
         <!-- Content Container -->
