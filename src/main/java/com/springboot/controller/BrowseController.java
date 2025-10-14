@@ -32,6 +32,9 @@ public class BrowseController {
     @Autowired
     private SkillCategoryRepository skillCategoryRepository;
 
+    @Autowired
+    private com.springboot.repository.RatingRepository ratingRepository;
+
 	@GetMapping("/jobboard")
 	public ModelAndView jobBoard(
 	        @RequestParam(required = false) String search,
@@ -170,6 +173,20 @@ public class BrowseController {
 	            .toList();
 
 	    mav.addObject("mySkills", mySkills);
+
+	    // ดึงข้อมูล rating ของเจ้าของ skill
+	    if (skillOffer.getUser() != null) {
+	        int ownerId = skillOffer.getUser().getId();
+	        Double averageRating = ratingRepository.getAverageRatingByRateeId(ownerId);
+	        Long totalRatings = ratingRepository.getCountRatingsByRateeId(ownerId);
+
+	        // ถ้าไม่มี rating ให้ใส่ค่า default
+	        mav.addObject("ownerAverageRating", averageRating != null ? averageRating : 0.0);
+	        mav.addObject("ownerTotalRatings", totalRatings != null ? totalRatings : 0L);
+	    } else {
+	        mav.addObject("ownerAverageRating", 0.0);
+	        mav.addObject("ownerTotalRatings", 0L);
+	    }
 
 	    return mav;
 	}

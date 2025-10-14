@@ -187,10 +187,19 @@
 						</div>
 					</c:if>
 					<div class="user-rating">
-						<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-							class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-							class="fas fa-star"></i> <span class="rating-text">5.0 (24
-							รีวิว)</span>
+						<c:forEach begin="1" end="5" var="star">
+							<i class="fas fa-star" style="color: ${star <= ownerAverageRating ? '#F59E0B' : 'rgba(255, 255, 255, 0.3)'}"></i>
+						</c:forEach>
+						<span class="rating-text">
+							<c:choose>
+								<c:when test="${ownerAverageRating > 0}">
+									${ownerAverageRating} (${ownerTotalRatings} รีวิว)
+								</c:when>
+								<c:otherwise>
+									ยังไม่มีรีวิว
+								</c:otherwise>
+							</c:choose>
+						</span>
 					</div>
 					<c:if test="${skillOffer.userId != null}">
 						<div style="margin-top: var(--space-md);">
