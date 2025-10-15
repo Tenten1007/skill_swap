@@ -708,6 +708,24 @@
             border: 1px solid rgba(156, 163, 175, 0.3);
         }
 
+        .status-matched {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .status-in_progress {
+            background: rgba(6, 182, 212, 0.2);
+            color: var(--accent);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .status-completed {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
         .request-skills {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
@@ -792,6 +810,21 @@
             background: rgba(156, 163, 175, 0.1);
             color: var(--text-muted);
             border-color: rgba(156, 163, 175, 0.3);
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--text-white);
+        }
+
+        .btn-complete {
+            background: linear-gradient(135deg, var(--accent), #0891B2);
+            color: var(--text-white);
+        }
+
+        .btn-review {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: var(--text-white);
         }
 
         .btn-action:hover {
@@ -942,6 +975,14 @@
                     <div class="stat-number">${pendingCount}</div>
                     <div class="stat-label">รอการตอบรับ</div>
                 </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="stat-number">${learningCount}</div>
+                    <div class="stat-label">กำลังเรียนรู้</div>
+                </div>
             </div>
 
             <!-- Tabs Section -->
@@ -958,6 +999,13 @@
                     <a href="?tab=sent" class="tab-button ${activeTab == 'sent' ? 'active' : ''}">
                         <i class="fas fa-paper-plane"></i>
                         คำขอที่ส่ง
+                    </a>
+                    <a href="?tab=learning" class="tab-button ${activeTab == 'learning' ? 'active' : ''}">
+                        <i class="fas fa-graduation-cap"></i>
+                        กำลังเรียน
+                        <c:if test="${learningCount > 0}">
+                            <span style="background: var(--success); color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem;">${learningCount}</span>
+                        </c:if>
                     </a>
                 </div>
 
@@ -1181,6 +1229,126 @@
                                     <a href="home" class="action-button btn-primary">
                                         <i class="fas fa-search"></i>
                                         ค้นหา Skills
+                                    </a>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:if>
+
+                    <!-- My Learning Tab -->
+                    <c:if test="${activeTab == 'learning'}">
+                        <c:choose>
+                            <c:when test="${not empty myLearning}">
+                                <div class="requests-grid">
+                                    <c:forEach var="match" items="${myLearning}">
+                                        <div class="request-card">
+                                            <div class="request-header">
+                                                <h3>
+                                                    <c:choose>
+                                                        <c:when test="${match.offerer.id == user.id}">
+                                                            เรียนกับ
+                                                            <a href="user-profile?userId=${match.requester.id}" style="color: inherit; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='inherit'">${match.requester.username}</a>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            เรียนกับ
+                                                            <a href="user-profile?userId=${match.offerer.id}" style="color: inherit; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='inherit'">${match.offerer.username}</a>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </h3>
+                                                <div class="request-status status-${match.status.toLowerCase().replace('_', '_')}">
+                                                    <c:choose>
+                                                        <c:when test="${match.status == 'MATCHED'}">
+                                                            <i class="fas fa-handshake"></i> จับคู่แล้ว
+                                                        </c:when>
+                                                        <c:when test="${match.status == 'IN_PROGRESS'}">
+                                                            <i class="fas fa-book-reader"></i> กำลังเรียน
+                                                        </c:when>
+                                                        <c:when test="${match.status == 'COMPLETED'}">
+                                                            <i class="fas fa-check-circle"></i> เสร็จสิ้น
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <i class="fas fa-ban"></i> ${match.status}
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </div>
+                                            </div>
+
+                                            <div class="request-skills">
+                                                <div class="skill-card">
+                                                    <h4 class="skill-title">${match.offerSkill.title}</h4>
+                                                    <div class="skill-meta">
+                                                        <div>${match.offerSkill.skill.category.categoryName}</div>
+                                                        <div>Level: ${match.offerSkill.level}</div>
+                                                        <small>สอนโดย ${match.offerer.username}</small>
+                                                    </div>
+                                                </div>
+                                                <div class="swap-arrow">
+                                                    <i class="fas fa-exchange-alt"></i>
+                                                </div>
+                                                <div class="skill-card">
+                                                    <h4 class="skill-title">${match.requestSkill.title}</h4>
+                                                    <div class="skill-meta">
+                                                        <div>${match.requestSkill.skill.category.categoryName}</div>
+                                                        <div>Level: ${match.requestSkill.level}</div>
+                                                        <small>สอนโดย ${match.requester.username}</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="request-meta">
+                                                <span>
+                                                    <i class="fas fa-calendar"></i>
+                                                    เริ่ม: ${match.createdAt.dayOfMonth} ${match.createdAt.month.toString().substring(0,3).toLowerCase()} ${match.createdAt.year}
+                                                </span>
+                                                <c:if test="${match.updatedAt != null}">
+                                                    <span>
+                                                        <i class="fas fa-clock"></i>
+                                                        อัปเดต: ${match.updatedAt.dayOfMonth}/${match.updatedAt.monthValue}
+                                                    </span>
+                                                </c:if>
+                                            </div>
+
+                                            <div class="request-actions">
+                                                <c:choose>
+                                                    <c:when test="${match.status == 'MATCHED'}">
+                                                        <form method="post" action="start-learning" style="display: inline;">
+                                                            <input type="hidden" name="matchId" value="${match.id}">
+                                                            <button type="submit" class="btn-action btn-start">
+                                                                <i class="fas fa-play"></i> เริ่มเรียน
+                                                            </button>
+                                                        </form>
+                                                    </c:when>
+                                                    <c:when test="${match.status == 'IN_PROGRESS'}">
+                                                        <form method="post" action="complete-learning" style="display: inline;">
+                                                            <input type="hidden" name="matchId" value="${match.id}">
+                                                            <button type="submit" class="btn-action btn-complete">
+                                                                <i class="fas fa-check"></i> สิ้นสุดการเรียน
+                                                            </button>
+                                                        </form>
+                                                    </c:when>
+                                                    <c:when test="${match.status == 'COMPLETED'}">
+                                                        <a href="#" class="btn-action btn-review" onclick="alert('หน้าให้คะแนนจะพัฒนาโดยเพื่อน'); return false;">
+                                                            <i class="fas fa-star"></i> ให้คะแนน
+                                                        </a>
+                                                    </c:when>
+                                                </c:choose>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="empty-state">
+                                    <div class="empty-icon">
+                                        <i class="fas fa-graduation-cap"></i>
+                                    </div>
+                                    <h3 class="empty-title">ยังไม่มีการแลกเปลี่ยนที่เริ่มแล้ว</h3>
+                                    <p class="empty-description">
+                                        เมื่อคุณยอมรับคำขอแลกเปลี่ยน จะปรากฏที่นี่เพื่อให้คุณติดตามการเรียนรู้
+                                    </p>
+                                    <a href="?tab=received" class="action-button btn-primary">
+                                        <i class="fas fa-inbox"></i>
+                                        ดูคำขอที่ได้รับ
                                     </a>
                                 </div>
                             </c:otherwise>
