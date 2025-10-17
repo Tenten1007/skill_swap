@@ -1327,9 +1327,18 @@
                                                         </form>
                                                     </c:when>
                                                     <c:when test="${match.status == 'COMPLETED'}">
-                                                        <a href="#" class="btn-action btn-review" onclick="alert('หน้าให้คะแนนจะพัฒนาโดยเพื่อน'); return false;">
-                                                            <i class="fas fa-star"></i> ให้คะแนน
-                                                        </a>
+                                                        <c:choose>
+                                                            <c:when test="${match.offerer.id == user.id}">
+                                                                <a href="rating/give?userId=${match.requester.id}&matchId=${match.id}" class="btn-action btn-review">
+                                                                    <i class="fas fa-star"></i> ให้คะแนน ${match.requester.username}
+                                                                </a>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <a href="rating/give?userId=${match.offerer.id}&matchId=${match.id}" class="btn-action btn-review">
+                                                                    <i class="fas fa-star"></i> ให้คะแนน ${match.offerer.username}
+                                                                </a>
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </c:when>
                                                 </c:choose>
                                             </div>

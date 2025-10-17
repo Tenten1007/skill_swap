@@ -805,6 +805,93 @@
             transform: translateY(-2px);
         }
 
+        /* Reviews Section */
+        .reviews-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .review-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            transition: all var(--duration-normal) var(--spring-easing);
+        }
+
+        .review-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-md);
+        }
+
+        .reviewer-info {
+            display: flex;
+            gap: var(--space-md);
+            align-items: center;
+        }
+
+        .reviewer-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--button-gradient);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-lg);
+            font-weight: 700;
+            color: var(--text-white);
+        }
+
+        .reviewer-details {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+
+        .reviewer-name {
+            font-size: var(--font-base);
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .review-date {
+            font-size: var(--font-sm);
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .review-rating {
+            display: flex;
+            gap: 2px;
+        }
+
+        .review-star {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .review-star.filled {
+            color: var(--warning);
+            text-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+        }
+
+        .review-comment {
+            font-size: var(--font-base);
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            padding-top: var(--space-sm);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
         /* Success/Error Messages */
         .alert {
             padding: var(--space-lg);
@@ -1095,12 +1182,87 @@
                             </c:if>
                         </div>
                     </div>
+
+                    <!-- Reviews Section -->
+                    <div class="details-section">
+                        <h3 class="section-title">
+                            <div class="section-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            รีวิวและความคิดเห็น (${totalRatings})
+                        </h3>
+
+                        <c:choose>
+                            <c:when test="${not empty reviews}">
+                                <div class="reviews-container">
+                                    <c:forEach items="${reviews}" var="review">
+                                        <div class="review-card">
+                                            <div class="review-header">
+                                                <div class="reviewer-info">
+                                                    <div class="reviewer-avatar">
+                                                        ${review.raterName.substring(0, 1)}
+                                                    </div>
+                                                    <div class="reviewer-details">
+                                                        <div class="reviewer-name">${review.raterName}</div>
+                                                        <div class="review-date">
+                                                            ${review.createdAt.dayOfMonth}
+                                                            ${review.createdAt.month}
+                                                            ${review.createdAt.year}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="review-rating">
+                                                    <c:forEach begin="1" end="5" var="star">
+                                                        <span class="review-star <c:if test="${star <= review.score}">filled</c:if>">★</span>
+                                                    </c:forEach>
+                                                </div>
+                                            </div>
+                                            <div class="review-comment">
+                                                <c:choose>
+                                                    <c:when test="${not empty review.comment}">
+                                                        ${review.comment}
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span style="color: rgba(255, 255, 255, 0.4); font-style: italic;">ไม่มีความคิดเห็น</span>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="bio-text empty">
+                                    ยังไม่มีรีวิว เมื่อคุณช่วยเหลือผู้อื่นในการแลกเปลี่ยนทักษะ พวกเขาจะสามารถให้คะแนนและรีวิวคุณได้
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        // Thai month names
+        function getThaiMonth(monthNumber) {
+            const months = {
+                'JANUARY': 'มกราคม',
+                'FEBRUARY': 'กุมภาพันธ์',
+                'MARCH': 'มีนาคม',
+                'APRIL': 'เมษายน',
+                'MAY': 'พฤษภาคม',
+                'JUNE': 'มิถุนายน',
+                'JULY': 'กรกฎาคม',
+                'AUGUST': 'สิงหาคม',
+                'SEPTEMBER': 'กันยายน',
+                'OCTOBER': 'ตุลาคม',
+                'NOVEMBER': 'พฤศจิกายน',
+                'DECEMBER': 'ธันวาคม'
+            };
+            return months[monthNumber] || monthNumber;
+        }
+
         // Mobile Menu Toggle Function (must be global for onclick)
         function toggleMobileMenu() {
             const menu = document.getElementById('navbarMenu');
@@ -1108,6 +1270,17 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Convert month names to Thai
+            document.querySelectorAll('.review-date').forEach(function(dateElement) {
+                const text = dateElement.textContent.trim();
+                const parts = text.split(/\s+/);
+                if (parts.length === 3) {
+                    const day = parts[0];
+                    const month = getThaiMonth(parts[1]);
+                    const year = parseInt(parts[2]) + 543; // Convert to Buddhist Era
+                    dateElement.textContent = day + ' ' + month + ' ' + year;
+                }
+            });
             // Enhanced animations
             const elements = document.querySelectorAll('.profile-card, .profile-details');
 

@@ -1,5 +1,8 @@
 package com.springboot.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,11 +10,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.springboot.dto.ReviewDTO;
+import com.springboot.model.Rating;
 import com.springboot.model.User;
 import com.springboot.model.UserManager;
 import com.springboot.repository.SkillOfferRepository;
 import com.springboot.repository.SwapRequestRepository;
 import com.springboot.repository.RatingRepository;
+import com.springboot.service.RatingService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -29,6 +35,9 @@ public class ProfileController {
 
     @Autowired
     private RatingRepository ratingRepository;
+
+    @Autowired
+    private RatingService ratingService;
 
     @GetMapping("/profile")
     public ModelAndView showProfile(HttpSession session) {
@@ -68,12 +77,35 @@ public class ProfileController {
             if (averageRating == null) averageRating = 0.0;
             if (totalRatings == null) totalRatings = 0L;
 
+            // Get reviews/ratings list
+            List<Rating> ratings = ratingService.getRatingsByRateeId(user.getId());
+            List<ReviewDTO> reviews = new ArrayList<>();
+
+            System.out.println("=== DEBUG: Found " + ratings.size() + " ratings for user " + user.getId());
+
+            for (Rating r : ratings) {
+                System.out.println("Rating ID: " + r.getId());
+                System.out.println("  Rater: " + r.getRater().getFullName());
+                System.out.println("  Score: " + r.getScore());
+                System.out.println("  Comment: [" + r.getComment() + "]");
+                System.out.println("  Created: " + r.getCreatedAt());
+
+                ReviewDTO review = new ReviewDTO(
+                    r.getRater().getFullName(),
+                    r.getScore(),
+                    r.getComment(),
+                    r.getCreatedAt()
+                );
+                reviews.add(review);
+            }
+
             mav.addObject("user", user);
             mav.addObject("totalOffers", totalOffers);
             mav.addObject("sentRequests", sentRequests);
             mav.addObject("receivedRequests", receivedRequests);
             mav.addObject("averageRating", averageRating);
             mav.addObject("totalRatings", totalRatings);
+            mav.addObject("reviews", reviews);
 
         } catch (Exception e) {
             System.out.println("ERROR in showProfile: " + e.getMessage());
@@ -125,6 +157,28 @@ public class ProfileController {
             if (averageRating == null) averageRating = 0.0;
             if (totalRatings == null) totalRatings = 0L;
 
+            // Get reviews/ratings list
+            List<Rating> ratings = ratingService.getRatingsByRateeId(viewedUser.getId());
+            List<ReviewDTO> reviews = new ArrayList<>();
+
+            System.out.println("=== DEBUG: Found " + ratings.size() + " ratings for user " + viewedUser.getId());
+
+            for (Rating r : ratings) {
+                System.out.println("Rating ID: " + r.getId());
+                System.out.println("  Rater: " + r.getRater().getFullName());
+                System.out.println("  Score: " + r.getScore());
+                System.out.println("  Comment: [" + r.getComment() + "]");
+                System.out.println("  Created: " + r.getCreatedAt());
+
+                ReviewDTO review = new ReviewDTO(
+                    r.getRater().getFullName(),
+                    r.getScore(),
+                    r.getComment(),
+                    r.getCreatedAt()
+                );
+                reviews.add(review);
+            }
+
             // Get user's skill offers
             var userOffers = skillOfferRepository.findByUserId(viewedUser.getId());
 
@@ -132,6 +186,7 @@ public class ProfileController {
             mav.addObject("totalOffers", totalOffers);
             mav.addObject("averageRating", averageRating);
             mav.addObject("totalRatings", totalRatings);
+            mav.addObject("reviews", reviews);
             mav.addObject("userOffers", userOffers);
             mav.addObject("currentUser", currentUser);
 
