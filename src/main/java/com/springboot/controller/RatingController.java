@@ -22,6 +22,7 @@ import com.springboot.model.User;
 import com.springboot.service.RatingService;
 import com.springboot.service.SwapMatchService;
 import com.springboot.service.UserService;
+import com.springboot.service.NotificationService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -37,6 +38,9 @@ public class RatingController {
 
     @Autowired
     private SwapMatchService swapMatchService;
+
+    @Autowired
+    private NotificationService notificationService;
 
     // แสดงหน้าให้คะแนน
     @GetMapping("/give")
@@ -113,11 +117,20 @@ public class RatingController {
             rating.setSwapMatch(swapMatch);
         }
 
-        ratingService.saveRating(rating);
+        Rating savedRating = ratingService.saveRating(rating);
 
-        // ✅ เปลี่ยนจาก redirect:/rating-form เป็น redirect:/rating/give
+        // สร้าง notification สำหรับคนที่ถูกให้คะแนน
+        User ratee = rateeOpt.get();
+        notificationService.createRatingReceivedNotification(
+            ratee,
+            currentUser,
+            ratingDTO.getScore(),
+            savedRating.getId()
+        );
+
+        // ✅ เปลี่ยนจาก redirect:/rating-form เป็น redirect:/matches
         session.setAttribute("successMessage", "ขอบคุณที่ให้คะแนน! ความคิดเห็นของคุณมีค่ามาก");
-        return new ModelAndView("redirect:/rating/give?userId=" + ratingDTO.getRateeId());
+        return new ModelAndView("redirect:/matches?tab=learning");
     }
 
     // แสดงโปรไฟล์พร้อมคะแนนและรีวิว

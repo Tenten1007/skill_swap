@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.springboot.model.SwapRequest;
 import com.springboot.model.User;
 import com.springboot.repository.SwapRequestRepository;
+import com.springboot.service.NotificationService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -24,6 +25,9 @@ public class MatchesController {
 
     @Autowired
     private com.springboot.repository.SwapMatchRepository swapMatchRepository;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @GetMapping("/matches")
     public ModelAndView showMatches(HttpSession session,
@@ -125,12 +129,42 @@ public class MatchesController {
                 swapMatch.setStatus("MATCHED");
                 swapMatch.setCreatedAt(LocalDateTime.now());
 
-                swapMatchRepository.save(swapMatch);
+                com.springboot.model.SwapMatch savedMatch = swapMatchRepository.save(swapMatch);
+
+                // สร้าง notifications สำหรับทั้งสองฝ่าย
+                notificationService.createSwapAcceptedNotification(
+                    request.getRequester(),
+                    user,
+                    request.getRequestedSkill().getTitle(),
+                    savedMatch.getId()
+                );
+
+                notificationService.createMatchCreatedNotification(
+                    request.getRequester(),
+                    user,
+                    request.getRequestedSkill().getTitle(),
+                    savedMatch.getId()
+                );
+
+                notificationService.createMatchCreatedNotification(
+                    user,
+                    request.getRequester(),
+                    request.getRequestedSkill().getTitle(),
+                    savedMatch.getId()
+                );
 
             } else if ("reject".equals(action)) {
                 request.setStatus("REJECTED");
                 request.setRespondedAt(LocalDateTime.now());
                 swapRequestRepository.save(request);
+
+                // สร้าง notification สำหรับผู้ถูกปฏิเสธ
+                notificationService.createSwapRejectedNotification(
+                    request.getRequester(),
+                    user,
+                    request.getRequestedSkill().getTitle(),
+                    request.getId()
+                );
             }
 
             String message = "accept".equals(action) ? "accepted" : "rejected";
@@ -260,6 +294,24 @@ public class MatchesController {
                 swapMatch.setStatus("COMPLETED");
                 swapMatch.setUpdatedAt(LocalDateTime.now());
                 swapMatchRepository.save(swapMatch);
+
+                // สร้าง notifications สำหรับทั้งสองฝ่าย
+                User partner = swapMatch.getOfferer().getId() == user.getId() ?
+                               swapMatch.getRequester() : swapMatch.getOfferer();
+
+                notificationService.createMatchCompletedNotification(
+                    user,
+                    partner,
+                    swapMatch.getOfferSkill().getTitle(),
+                    swapMatch.getId()
+                );
+
+                notificationService.createMatchCompletedNotification(
+                    partner,
+                    user,
+                    swapMatch.getOfferSkill().getTitle(),
+                    swapMatch.getId()
+                );
             }
 
             return new ModelAndView("redirect:/matches?tab=learning&success=completed");

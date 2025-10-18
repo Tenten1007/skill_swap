@@ -100,12 +100,15 @@ public class ProfileController {
             }
 
             mav.addObject("user", user);
+            mav.addObject("isOwnProfile", true);
             mav.addObject("totalOffers", totalOffers);
             mav.addObject("sentRequests", sentRequests);
             mav.addObject("receivedRequests", receivedRequests);
             mav.addObject("averageRating", averageRating);
             mav.addObject("totalRatings", totalRatings);
             mav.addObject("reviews", reviews);
+            mav.addObject("userOffers", skillOfferRepository.findByUserId(user.getId()));
+            mav.addObject("currentUser", user);
 
         } catch (Exception e) {
             System.out.println("ERROR in showProfile: " + e.getMessage());
@@ -131,7 +134,13 @@ public class ProfileController {
         }
 
         User currentUser = (User) session.getAttribute("user");
-        ModelAndView mav = new ModelAndView("user-profile");
+
+        // If viewing own profile, redirect to /profile
+        if (currentUser != null && currentUser.getId() == userId) {
+            return new ModelAndView("redirect:/profile");
+        }
+
+        ModelAndView mav = new ModelAndView("profile");
 
         try {
             // Get the user profile to view
@@ -141,13 +150,10 @@ public class ProfileController {
                 return new ModelAndView("redirect:/home?error=user-not-found");
             }
 
-            // If viewing own profile, redirect to profile page
-            if (currentUser != null && currentUser.getId() == userId) {
-                return new ModelAndView("redirect:/profile");
-            }
-
             // Get user statistics
             int totalOffers = skillOfferRepository.findByUserId(viewedUser.getId()).size();
+            int sentRequests = 0;
+            int receivedRequests = 0;
 
             // Get rating statistics
             Double averageRating = ratingRepository.getAverageRatingByRateeId(viewedUser.getId());
@@ -182,8 +188,12 @@ public class ProfileController {
             // Get user's skill offers
             var userOffers = skillOfferRepository.findByUserId(viewedUser.getId());
 
-            mav.addObject("viewedUser", viewedUser);
+            // Send data to view - use "user" instead of "viewedUser" for consistency
+            mav.addObject("user", viewedUser);
+            mav.addObject("isOwnProfile", false);
             mav.addObject("totalOffers", totalOffers);
+            mav.addObject("sentRequests", sentRequests);
+            mav.addObject("receivedRequests", receivedRequests);
             mav.addObject("averageRating", averageRating);
             mav.addObject("totalRatings", totalRatings);
             mav.addObject("reviews", reviews);

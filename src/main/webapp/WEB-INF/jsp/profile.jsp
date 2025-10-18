@@ -892,6 +892,82 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .skill-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            transition: all var(--duration-normal) var(--spring-easing);
+        }
+
+        .skill-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .skill-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: var(--space-sm);
+        }
+
+        .skill-card-title {
+            font-size: var(--font-lg);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .skill-level {
+            padding: var(--space-xs) var(--space-sm);
+            background: var(--button-gradient);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-size: var(--font-xs);
+            font-weight: 600;
+        }
+
+        .skill-card-description {
+            font-size: var(--font-sm);
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: var(--space-md);
+        }
+
+        .skill-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: var(--space-sm);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .skill-category {
+            font-size: var(--font-xs);
+            color: var(--text-muted);
+        }
+
+        .view-skill-link {
+            font-size: var(--font-sm);
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .view-skill-link:hover {
+            color: var(--primary-hover);
+        }
+
         /* Success/Error Messages */
         .alert {
             padding: var(--space-lg);
@@ -1004,8 +1080,16 @@
         <!-- Header Section -->
         <div class="header-section">
             <div class="header-title">
-                <h1><i class="fas fa-user"></i> My Profile</h1>
-                <p>จัดการข้อมูลส่วนตัวและดูสถิติการใช้งาน</p>
+                <c:choose>
+                    <c:when test="${isOwnProfile}">
+                        <h1><i class="fas fa-user"></i> My Profile</h1>
+                        <p>จัดการข้อมูลส่วนตัวและดูสถิติการใช้งาน</p>
+                    </c:when>
+                    <c:otherwise>
+                        <h1><i class="fas fa-user"></i> ${user.fullName}</h1>
+                        <p>โปรไฟล์ผู้ใช้และทักษะ</p>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
 
@@ -1081,107 +1165,140 @@
                         </div>
                     </div>
 
-                    <div class="profile-actions">
-                        <a href="edit-profile" class="profile-btn profile-btn-primary">
-                            <i class="fas fa-edit"></i>
-                            แก้ไขโปรไฟล์
-                        </a>
-                        <a href="my-offers" class="profile-btn profile-btn-secondary">
-                            <i class="fas fa-briefcase"></i>
-                            My Skills
-                        </a>
-                    </div>
+                    <c:if test="${isOwnProfile}">
+                        <div class="profile-actions">
+                            <a href="edit-profile" class="profile-btn profile-btn-primary">
+                                <i class="fas fa-edit"></i>
+                                แก้ไขโปรไฟล์
+                            </a>
+                            <a href="my-offers" class="profile-btn profile-btn-secondary">
+                                <i class="fas fa-briefcase"></i>
+                                My Skills
+                            </a>
+                        </div>
+                    </c:if>
                 </div>
 
                 <!-- Profile Details -->
                 <div class="profile-details">
                     <!-- Personal Information -->
-                    <div class="details-section">
-                        <h3 class="section-title">
-                            <div class="section-icon">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            ข้อมูลส่วนตัว
-                        </h3>
-
-                        <div class="info-grid">
-                            <div class="info-item">
-                                <div class="info-label">ชื่อ</div>
-                                <div class="info-value">${user.firstName}</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">นามสกุล</div>
-                                <div class="info-value">${user.lastName}</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">อีเมล</div>
-                                <div class="info-value">${user.email}</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">เบอร์โทร</div>
-                                <div class="info-value ${empty user.phone ? 'empty' : ''}">
+                    <c:if test="${isOwnProfile or not empty user.location}">
+                        <div class="details-section">
+                            <h3 class="section-title">
+                                <div class="section-icon">
                                     <c:choose>
-                                        <c:when test="${not empty user.phone}">${user.phone}</c:when>
-                                        <c:otherwise>ไม่ได้ระบุ</c:otherwise>
+                                        <c:when test="${isOwnProfile}">
+                                            <i class="fas fa-user"></i>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </c:otherwise>
                                     </c:choose>
                                 </div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">ที่อยู่</div>
-                                <div class="info-value ${empty user.location ? 'empty' : ''}">
-                                    <c:choose>
-                                        <c:when test="${not empty user.location}">${user.location}</c:when>
-                                        <c:otherwise>ไม่ได้ระบุ</c:otherwise>
-                                    </c:choose>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                <c:choose>
+                                    <c:when test="${isOwnProfile}">ข้อมูลส่วนตัว</c:when>
+                                    <c:otherwise>สถานที่</c:otherwise>
+                                </c:choose>
+                            </h3>
 
-                    <!-- Bio Section -->
-                    <div class="details-section">
-                        <h3 class="section-title">
-                            <div class="section-icon">
-                                <i class="fas fa-quote-left"></i>
-                            </div>
-                            เกี่ยวกับฉัน
-                        </h3>
-
-                        <div class="bio-text ${empty user.bio ? 'empty' : ''}">
                             <c:choose>
-                                <c:when test="${not empty user.bio}">${user.bio}</c:when>
-                                <c:otherwise>ยังไม่ได้เขียนข้อมูลเกี่ยวกับตัวเอง คลิกแก้ไขโปรไฟล์เพื่อเพิ่มข้อมูล</c:otherwise>
+                                <c:when test="${isOwnProfile}">
+                                    <div class="info-grid">
+                                        <div class="info-item">
+                                            <div class="info-label">ชื่อ</div>
+                                            <div class="info-value">${user.firstName}</div>
+                                        </div>
+                                        <div class="info-item">
+                                            <div class="info-label">นามสกุล</div>
+                                            <div class="info-value">${user.lastName}</div>
+                                        </div>
+                                        <div class="info-item">
+                                            <div class="info-label">อีเมล</div>
+                                            <div class="info-value">${user.email}</div>
+                                        </div>
+                                        <div class="info-item">
+                                            <div class="info-label">เบอร์โทร</div>
+                                            <div class="info-value ${empty user.phone ? 'empty' : ''}">
+                                                <c:choose>
+                                                    <c:when test="${not empty user.phone}">${user.phone}</c:when>
+                                                    <c:otherwise>ไม่ได้ระบุ</c:otherwise>
+                                                </c:choose>
+                                            </div>
+                                        </div>
+                                        <div class="info-item">
+                                            <div class="info-label">ที่อยู่</div>
+                                            <div class="info-value ${empty user.location ? 'empty' : ''}">
+                                                <c:choose>
+                                                    <c:when test="${not empty user.location}">${user.location}</c:when>
+                                                    <c:otherwise>ไม่ได้ระบุ</c:otherwise>
+                                                </c:choose>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="info-grid">
+                                        <div class="info-item">
+                                            <div class="info-label">Location</div>
+                                            <div class="info-value">${user.location}</div>
+                                        </div>
+                                    </div>
+                                </c:otherwise>
                             </c:choose>
                         </div>
-                    </div>
+                    </c:if>
+
+                    <!-- Bio Section -->
+                    <c:if test="${isOwnProfile or not empty user.bio}">
+                        <div class="details-section">
+                            <h3 class="section-title">
+                                <div class="section-icon">
+                                    <i class="fas fa-quote-left"></i>
+                                </div>
+                                <c:choose>
+                                    <c:when test="${isOwnProfile}">เกี่ยวกับฉัน</c:when>
+                                    <c:otherwise>เกี่ยวกับ</c:otherwise>
+                                </c:choose>
+                            </h3>
+
+                            <div class="bio-text ${empty user.bio ? 'empty' : ''}">
+                                <c:choose>
+                                    <c:when test="${not empty user.bio}">${user.bio}</c:when>
+                                    <c:when test="${isOwnProfile}">ยังไม่ได้เขียนข้อมูลเกี่ยวกับตัวเอง คลิกแก้ไขโปรไฟล์เพื่อเพิ่มข้อมูล</c:when>
+                                </c:choose>
+                            </div>
+                        </div>
+                    </c:if>
 
                     <!-- Social Links -->
-                    <div class="details-section">
-                        <h3 class="section-title">
-                            <div class="section-icon">
-                                <i class="fas fa-link"></i>
-                            </div>
-                            ลิงก์โซเชียล
-                        </h3>
+                    <c:if test="${isOwnProfile or not empty user.linkedin or not empty user.github}">
+                        <div class="details-section">
+                            <h3 class="section-title">
+                                <div class="section-icon">
+                                    <i class="fas fa-link"></i>
+                                </div>
+                                ลิงก์โซเชียล
+                            </h3>
 
-                        <div class="social-links">
-                            <c:if test="${not empty user.linkedin}">
-                                <a href="${user.linkedin}" target="_blank" class="social-link">
-                                    <i class="fab fa-linkedin"></i>
-                                    LinkedIn
-                                </a>
-                            </c:if>
-                            <c:if test="${not empty user.github}">
-                                <a href="${user.github}" target="_blank" class="social-link">
-                                    <i class="fab fa-github"></i>
-                                    GitHub
-                                </a>
-                            </c:if>
-                            <c:if test="${empty user.linkedin and empty user.github}">
-                                <p class="info-value empty">ไม่ได้เพิ่มลิงก์โซเชียล คลิกแก้ไขโปรไฟล์เพื่อเพิ่ม</p>
-                            </c:if>
+                            <div class="social-links">
+                                <c:if test="${not empty user.linkedin}">
+                                    <a href="${user.linkedin}" target="_blank" class="social-link">
+                                        <i class="fab fa-linkedin"></i>
+                                        LinkedIn
+                                    </a>
+                                </c:if>
+                                <c:if test="${not empty user.github}">
+                                    <a href="${user.github}" target="_blank" class="social-link">
+                                        <i class="fab fa-github"></i>
+                                        GitHub
+                                    </a>
+                                </c:if>
+                                <c:if test="${isOwnProfile and empty user.linkedin and empty user.github}">
+                                    <p class="info-value empty">ไม่ได้เพิ่มลิงก์โซเชียล คลิกแก้ไขโปรไฟล์เพื่อเพิ่ม</p>
+                                </c:if>
+                            </div>
                         </div>
-                    </div>
+                    </c:if>
 
                     <!-- Reviews Section -->
                     <div class="details-section">
@@ -1238,6 +1355,50 @@
                             </c:otherwise>
                         </c:choose>
                     </div>
+
+                    <!-- User's Skills -->
+                    <c:if test="${not empty userOffers}">
+                        <div class="details-section">
+                            <h3 class="section-title">
+                                <div class="section-icon">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                ทักษะทั้งหมด
+                            </h3>
+
+                            <div class="skills-grid">
+                                <c:forEach var="offer" items="${userOffers}">
+                                    <div class="skill-card">
+                                        <div class="skill-card-header">
+                                            <div>
+                                                <h4 class="skill-card-title">${offer.title}</h4>
+                                                <span class="skill-level">${offer.level}</span>
+                                            </div>
+                                        </div>
+                                        <p class="skill-card-description">
+                                            <c:choose>
+                                                <c:when test="${offer.description.length() > 100}">
+                                                    ${offer.description.substring(0, 100)}...
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ${offer.description}
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </p>
+                                        <div class="skill-card-footer">
+                                            <span class="skill-category">
+                                                <i class="fas fa-tag"></i>
+                                                ${offer.categoryName}
+                                            </span>
+                                            <a href="skill?id=${offer.id}" class="view-skill-link">
+                                                ดูรายละเอียด <i class="fas fa-arrow-right"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </c:if>
                 </div>
             </div>
         </div>

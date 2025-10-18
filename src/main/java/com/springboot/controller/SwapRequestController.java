@@ -14,6 +14,7 @@ import com.springboot.model.User;
 import com.springboot.repository.SwapRequestRepository;
 import com.springboot.repository.SkillOfferRepository;
 import com.springboot.repository.UserRepository;
+import com.springboot.service.NotificationService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -28,6 +29,9 @@ public class SwapRequestController {
 
     @Autowired
     private SkillOfferRepository skillOfferRepository;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @PostMapping("/swap-request/create")
     public String createSwapRequest(
@@ -76,7 +80,16 @@ public class SwapRequestController {
         request.setRespondedAt(null);
 
         // บันทึกลงฐานข้อมูล
-        swapRequestRepository.save(request);
+        SwapRequest savedRequest = swapRequestRepository.save(request);
+
+        // สร้าง notification สำหรับเจ้าของทักษะ
+        User skillOwner = requestedSkill.getUser();
+        notificationService.createSwapRequestNotification(
+            skillOwner,
+            user,
+            requestedSkill.getTitle(),
+            savedRequest.getId()
+        );
 
         redirectAttributes.addFlashAttribute("success", "ส่งคำขอแลกสกิลเรียบร้อยแล้ว! 🎉");
 
