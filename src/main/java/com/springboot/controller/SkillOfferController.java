@@ -179,6 +179,123 @@ public class SkillOfferController {
         }
     }
 
+    @GetMapping("/edit-skill")
+    public ModelAndView showEditSkillForm(@RequestParam Integer id, HttpSession session) {
+        try {
+            User user = (User) session.getAttribute("user");
+            if (user == null) {
+                return new ModelAndView("redirect:/login?message=session-expired");
+            }
+
+            // ดึง SkillOffer ที่ต้องการแก้ไข
+            SkillOffer skillOffer = skillOfferRepository.findById(id).orElse(null);
+
+            if (skillOffer == null) {
+                return new ModelAndView("redirect:/my-offers?error=skill-not-found");
+            }
+
+            // ตรวจสอบว่าเป็นเจ้าของหรือไม่
+            if (skillOffer.getUser().getId() != user.getId()) {
+                return new ModelAndView("redirect:/my-offers?error=unauthorized");
+            }
+
+            ModelAndView mav = new ModelAndView("edit-skill");
+
+            // Get all categories for dropdown - convert to DTOs
+            List<SkillCategory> categories = skillCategoryRepository.findAll();
+            List<SkillCategoryDTO> categoryDTOs = DTOMapper.toSkillCategoryDTOList(categories);
+
+            // Convert to DTO
+            SkillOfferDTO skillOfferDTO = DTOMapper.toSkillOfferDTO(skillOffer);
+            UserDTO userDTO = DTOMapper.toUserDTO(user);
+
+            mav.addObject("skillOffer", skillOfferDTO);
+            mav.addObject("categories", categoryDTOs);
+            mav.addObject("user", userDTO);
+
+            return mav;
+
+        } catch (Exception e) {
+            log.error("Error in showEditSkillForm: {}", e.getMessage(), e);
+            return new ModelAndView("redirect:/my-offers?error=load-failed");
+        }
+    }
+
+    @PostMapping("/edit-skill")
+    public ModelAndView updateSkillOffer(
+            @RequestParam Integer id,
+            @RequestParam String title,
+            @RequestParam String description,
+            @RequestParam Integer categoryId,
+            @RequestParam String level,
+            @RequestParam(required = false) String timeCommitment,
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) Boolean isActive,
+            HttpSession session) {
+
+        try {
+            User user = (User) session.getAttribute("user");
+            if (user == null) {
+                return new ModelAndView("redirect:/login?message=session-expired");
+            }
+
+            // ดึง SkillOffer ที่ต้องการแก้ไข
+            SkillOffer skillOffer = skillOfferRepository.findById(id).orElse(null);
+
+            if (skillOffer == null) {
+                return new ModelAndView("redirect:/my-offers?error=skill-not-found");
+            }
+
+            // ตรวจสอบว่าเป็นเจ้าของหรือไม่
+            if (skillOffer.getUser().getId() != user.getId()) {
+                return new ModelAndView("redirect:/my-offers?error=unauthorized");
+            }
+
+            // Find category
+            SkillCategory category = skillCategoryRepository.findById(categoryId).orElse(null);
+            if (category == null) {
+                ModelAndView mav = new ModelAndView("edit-skill");
+                mav.addObject("error", "Invalid category selected");
+                mav.addObject("skillOffer", DTOMapper.toSkillOfferDTO(skillOffer));
+                List<SkillCategory> categories = skillCategoryRepository.findAll();
+                mav.addObject("categories", DTOMapper.toSkillCategoryDTOList(categories));
+                return mav;
+            }
+
+            // Update or create skill if category/name changed
+            Skill skill = skillOffer.getSkill();
+            if (!skill.getCategory().getId().equals(categoryId) || !skill.getSkillName().equals(title)) {
+                skill = skillRepository.findByCategoryAndSkillName(category, title)
+                        .orElseGet(() -> {
+                            Skill newSkill = new Skill();
+                            newSkill.setSkillName(title);
+                            newSkill.setCategory(category);
+                            newSkill.setDescription(description);
+                            return skillRepository.save(newSkill);
+                        });
+            }
+
+            // Update skill offer
+            skillOffer.setSkill(skill);
+            skillOffer.setTitle(title);
+            skillOffer.setDescription(description);
+            skillOffer.setLevel(level);
+            skillOffer.setTimeCommitment(timeCommitment);
+            skillOffer.setLocation(location);
+            skillOffer.setActive(isActive != null ? isActive : true);
+            skillOffer.setUpdatedAt(LocalDateTime.now());
+
+            skillOfferRepository.save(skillOffer);
+
+            log.info("Successfully updated SkillOffer with ID: {}", id);
+            return new ModelAndView("redirect:/my-offers?success=skill-updated");
+
+        } catch (Exception e) {
+            log.error("Error in updateSkillOffer: {}", e.getMessage(), e);
+            return new ModelAndView("redirect:/my-offers?error=update-failed");
+        }
+    }
+
     @PostMapping("/delete-skill")
     public ModelAndView deleteSkillOffer(@RequestParam Integer skillOfferId, HttpSession session) {
         try {

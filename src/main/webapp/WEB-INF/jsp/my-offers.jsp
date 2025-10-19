@@ -87,6 +87,12 @@
                     <span>ลบ Skill Offer สำเร็จแล้ว</span>
                 </div>
             </c:if>
+            <c:if test="${param.success == 'skill-updated'}">
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i>
+                    <span>อัปเดต Skill Offer สำเร็จแล้ว</span>
+                </div>
+            </c:if>
 
             <!-- Error Messages -->
             <c:if test="${param.error == 'skill-not-found'}">
@@ -226,7 +232,7 @@
                                     </div>
 
                                     <div class="offer-actions">
-                                        <a href="#" class="btn-action btn-edit">
+                                        <a href="edit-skill?id=${offer.id}" class="btn-action btn-edit">
                                             <i class="fas fa-edit"></i>
                                             แก้ไข
                                         </a>
