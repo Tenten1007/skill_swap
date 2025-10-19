@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,8 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/rating")
 public class RatingController {
 
+    private static final Logger log = LoggerFactory.getLogger(RatingController.class);
+
     @Autowired
     private RatingService ratingService;
 
@@ -45,9 +49,9 @@ public class RatingController {
                                        HttpSession session) {
         ModelAndView mav = new ModelAndView("rating-form");
 
-        System.out.println("=== DEBUG GET /rating/give ===");
-        System.out.println("userId: " + userId);
-        System.out.println("matchId ที่ส่งมา: " + matchId);
+        log.debug("=== DEBUG GET /rating/give ===");
+        log.debug("userId: {}", userId);
+        log.debug("matchId ที่ส่งมา: {}", matchId);
 
         // ดึงข้อมูล user ที่จะให้คะแนน
         Optional<User> userOpt = userService.getUserById(userId);
@@ -68,9 +72,9 @@ public class RatingController {
         ratingDTO.setRateeId(userId);
         if (matchId != null) {
             ratingDTO.setSwapMatchId(matchId);
-            System.out.println("✅ ใส่ matchId ใน DTO แล้ว: " + matchId);
+            log.debug("ใส่ matchId ใน DTO แล้ว: {}", matchId);
         } else {
-            System.out.println("⚠️ matchId เป็น null");
+            log.debug("matchId เป็น null");
         }
 
         // ส่งข้อมูลไปหน้า view
@@ -177,11 +181,4 @@ public class RatingController {
         return mav;
     }
 
-    // ลบ method successPage() ออก หรือคอมเมนต์ไว้
-    /*
-    @GetMapping("/success")
-    public ModelAndView successPage() {
-        return new ModelAndView("rating-success");
-    }
-    */
 }

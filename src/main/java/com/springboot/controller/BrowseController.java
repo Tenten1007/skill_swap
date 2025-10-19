@@ -5,6 +5,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,8 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class BrowseController {
+
+	private static final Logger log = LoggerFactory.getLogger(BrowseController.class);
 
 	@Autowired
     private SkillOfferRepository skillOfferRepository;
@@ -139,7 +143,7 @@ public class BrowseController {
 	        mav.addObject("totalResults", skillOfferDTOs.size());
 
 	    } catch (Exception e) {
-	        e.printStackTrace();
+	        log.error("Error in jobBoard: {}", e.getMessage(), e);
 	        mav.addObject("skillOffers", new ArrayList<>());
 	        mav.addObject("categories", new ArrayList<>());
 	        mav.addObject("locations", new ArrayList<>());

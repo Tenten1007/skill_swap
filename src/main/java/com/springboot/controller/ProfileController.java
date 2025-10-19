@@ -3,6 +3,8 @@ package com.springboot.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,8 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class ProfileController {
+
+    private static final Logger log = LoggerFactory.getLogger(ProfileController.class);
 
     @Autowired
     private UserManager userManager;
@@ -81,14 +85,14 @@ public class ProfileController {
             List<Rating> ratings = ratingService.getRatingsByRateeId(user.getId());
             List<ReviewDTO> reviews = new ArrayList<>();
 
-            System.out.println("=== DEBUG: Found " + ratings.size() + " ratings for user " + user.getId());
+            log.debug("=== DEBUG: Found {} ratings for user {}", ratings.size(), user.getId());
 
             for (Rating r : ratings) {
-                System.out.println("Rating ID: " + r.getId());
-                System.out.println("  Rater: " + r.getRater().getFullName());
-                System.out.println("  Score: " + r.getScore());
-                System.out.println("  Comment: [" + r.getComment() + "]");
-                System.out.println("  Created: " + r.getCreatedAt());
+                log.debug("Rating ID: {}", r.getId());
+                log.debug("  Rater: {}", r.getRater().getFullName());
+                log.debug("  Score: {}", r.getScore());
+                log.debug("  Comment: [{}]", r.getComment());
+                log.debug("  Created: {}", r.getCreatedAt());
 
                 ReviewDTO review = new ReviewDTO(
                     r.getRater().getFullName(),
@@ -111,8 +115,7 @@ public class ProfileController {
             mav.addObject("currentUser", user);
 
         } catch (Exception e) {
-            System.out.println("ERROR in showProfile: " + e.getMessage());
-            e.printStackTrace();
+            log.error("Error in showProfile: {}", e.getMessage(), e);
             mav.addObject("error", "เกิดข้อผิดพลาดในการโหลดข้อมูลโปรไฟล์");
             mav.addObject("user", user);
             mav.addObject("totalOffers", 0);
@@ -167,14 +170,14 @@ public class ProfileController {
             List<Rating> ratings = ratingService.getRatingsByRateeId(viewedUser.getId());
             List<ReviewDTO> reviews = new ArrayList<>();
 
-            System.out.println("=== DEBUG: Found " + ratings.size() + " ratings for user " + viewedUser.getId());
+            log.debug("=== DEBUG: Found {} ratings for user {}", ratings.size(), viewedUser.getId());
 
             for (Rating r : ratings) {
-                System.out.println("Rating ID: " + r.getId());
-                System.out.println("  Rater: " + r.getRater().getFullName());
-                System.out.println("  Score: " + r.getScore());
-                System.out.println("  Comment: [" + r.getComment() + "]");
-                System.out.println("  Created: " + r.getCreatedAt());
+                log.debug("Rating ID: {}", r.getId());
+                log.debug("  Rater: {}", r.getRater().getFullName());
+                log.debug("  Score: {}", r.getScore());
+                log.debug("  Comment: [{}]", r.getComment());
+                log.debug("  Created: {}", r.getCreatedAt());
 
                 ReviewDTO review = new ReviewDTO(
                     r.getRater().getFullName(),
@@ -201,8 +204,7 @@ public class ProfileController {
             mav.addObject("currentUser", currentUser);
 
         } catch (Exception e) {
-            System.out.println("ERROR in viewUserProfile: " + e.getMessage());
-            e.printStackTrace();
+            log.error("Error in viewUserProfile: {}", e.getMessage(), e);
             return new ModelAndView("redirect:/home?error=profile-load-failed");
         }
 
@@ -236,7 +238,7 @@ public class ProfileController {
             mav.addObject("user", user);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error in showEditProfile: {}", e.getMessage(), e);
             mav.addObject("error", "เกิดข้อผิดพลาดในการโหลดข้อมูล");
             mav.addObject("user", user);
         }
@@ -311,8 +313,7 @@ public class ProfileController {
             return new ModelAndView("redirect:/profile?success=updated");
 
         } catch (Exception e) {
-            System.out.println("ERROR in updateProfile: " + e.getMessage());
-            e.printStackTrace();
+            log.error("Error in updateProfile: {}", e.getMessage(), e);
             return new ModelAndView("redirect:/edit-profile?error=update-failed");
         }
     }

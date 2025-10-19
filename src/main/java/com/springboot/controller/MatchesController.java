@@ -3,6 +3,8 @@ package com.springboot.controller;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,8 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class MatchesController {
+
+    private static final Logger log = LoggerFactory.getLogger(MatchesController.class);
 
     @Autowired
     private SwapRequestRepository swapRequestRepository;
@@ -69,8 +73,7 @@ public class MatchesController {
             mav.addObject("learningCount", myLearning.size());
 
         } catch (Exception e) {
-            System.out.println("ERROR in showMatches: " + e.getMessage());
-            e.printStackTrace();
+            log.error("Error in showMatches: {}", e.getMessage(), e);
             mav.addObject("error", "เกิดข้อผิดพลาดในการโหลดข้อมูล Matches");
             mav.addObject("sentRequests", List.of());
             mav.addObject("receivedRequests", List.of());
@@ -171,7 +174,7 @@ public class MatchesController {
             return new ModelAndView("redirect:/matches?success=" + message);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error in respondToSwap: {}", e.getMessage(), e);
             return new ModelAndView("redirect:/matches?error=response-failed");
         }
     }
@@ -213,7 +216,7 @@ public class MatchesController {
             return new ModelAndView("redirect:/matches?success=cancelled");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error in cancelSwap: {}", e.getMessage(), e);
             return new ModelAndView("redirect:/matches?error=cancel-failed");
         }
     }
@@ -256,7 +259,7 @@ public class MatchesController {
             return new ModelAndView("redirect:/matches?tab=learning&success=started");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error in startLearning: {}", e.getMessage(), e);
             return new ModelAndView("redirect:/matches?tab=learning&error=start-failed");
         }
     }
@@ -317,7 +320,7 @@ public class MatchesController {
             return new ModelAndView("redirect:/matches?tab=learning&success=completed");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error in completeLearning: {}", e.getMessage(), e);
             return new ModelAndView("redirect:/matches?tab=learning&error=complete-failed");
         }
     }

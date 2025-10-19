@@ -1,5 +1,7 @@
 package com.springboot.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +17,8 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AuthController {
+
+    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     private UserManager userManager;
@@ -51,7 +55,7 @@ public class AuthController {
                 return new ModelAndView("redirect:/home?welcome=true");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error during login: {}", e.getMessage(), e);
         }
 
         ModelAndView mav = new ModelAndView("login");
@@ -85,7 +89,7 @@ public class AuthController {
                 User user = new User(uname, hashedPassword);
                 userManager.insertUser(user);
             } catch (Exception ex) {
-                ex.printStackTrace();
+                log.error("Error during user registration: {}", ex.getMessage(), ex);
             }
         } else {
             ModelAndView mav = new ModelAndView("register");

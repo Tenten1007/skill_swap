@@ -3,7 +3,8 @@ package com.springboot.config;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -14,6 +15,8 @@ import com.springboot.repository.*;
 
 @Component
 public class DataInitializer implements ApplicationRunner {
+
+    private static final Logger log = LoggerFactory.getLogger(DataInitializer.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -38,7 +41,7 @@ public class DataInitializer implements ApplicationRunner {
         // Check if data already exists
         long userCount = userRepository.count();
         if (userCount > 0) {
-            System.out.println("Sample data already exists (" + userCount + " users found). Skipping data creation.");
+            log.info("Sample data already exists ({} users found). Skipping data creation.", userCount);
             return;
         }
 
@@ -164,8 +167,7 @@ public class DataInitializer implements ApplicationRunner {
 
 
         } catch (Exception e) {
-            System.err.println("Error creating sample data: " + e.getMessage());
-            e.printStackTrace();
+            log.error("Error creating sample data: {}", e.getMessage(), e);
         }
     }
 }

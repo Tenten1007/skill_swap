@@ -3,6 +3,8 @@ package com.springboot.controller;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +28,8 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class SkillOfferController {
+
+    private static final Logger log = LoggerFactory.getLogger(SkillOfferController.class);
 
     @Autowired
     private SkillOfferRepository skillOfferRepository;
@@ -74,8 +78,7 @@ public class SkillOfferController {
             mav.addObject("user", userDTO);
 
         } catch (Exception e) {
-            System.out.println("ERROR in showMyOffers: " + e.getMessage());
-            e.printStackTrace();
+            log.error("Error in showMyOffers: {}", e.getMessage(), e);
             mav.addObject("error", "เกิดข้อผิดพลาดในการโหลดข้อมูล");
             mav.addObject("skillOffers", new java.util.ArrayList<>());
         }
@@ -166,7 +169,7 @@ public class SkillOfferController {
             return new ModelAndView("redirect:/home?success=skill-created");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error in createSkillOffer: {}", e.getMessage(), e);
             ModelAndView mav = new ModelAndView("create-skill");
             mav.addObject("error", "เกิดข้อผิดพลาดในการสร้าง Skill Offer");
             // Convert categories to DTOs
@@ -209,30 +212,29 @@ public class SkillOfferController {
                         totalRatingsDeleted += ratings.size();
                     }
                 }
-                System.out.println("Deleted " + totalRatingsDeleted + " related ratings");
+                log.info("Deleted {} related ratings", totalRatingsDeleted);
 
                 // ลบ SwapMatch ทั้งหมด
                 swapMatchRepository.deleteAll(relatedSwapMatches);
                 totalSwapMatchesDeleted = relatedSwapMatches.size();
-                System.out.println("Deleted " + totalSwapMatchesDeleted + " related swap matches");
+                log.info("Deleted {} related swap matches", totalSwapMatchesDeleted);
             }
 
             // ขั้นตอนที่ 2: ค้นหาและลบ SwapRequest ที่เกี่ยวข้องกับ SkillOffer นี้
             var relatedSwapRequests = swapRequestRepository.findByRequestedSkillIdOrOfferedSkillId(skillOfferId);
             if (!relatedSwapRequests.isEmpty()) {
                 swapRequestRepository.deleteAll(relatedSwapRequests);
-                System.out.println("Deleted " + relatedSwapRequests.size() + " related swap requests");
+                log.info("Deleted {} related swap requests", relatedSwapRequests.size());
             }
 
             // ขั้นตอนที่ 3: ลบ SkillOffer
             skillOfferRepository.delete(skillOffer);
 
-            System.out.println("Successfully deleted SkillOffer with ID: " + skillOfferId);
+            log.info("Successfully deleted SkillOffer with ID: {}", skillOfferId);
             return new ModelAndView("redirect:/my-offers?success=skill-deleted");
 
         } catch (Exception e) {
-            System.out.println("ERROR in deleteSkillOffer: " + e.getMessage());
-            e.printStackTrace();
+            log.error("Error in deleteSkillOffer: {}", e.getMessage(), e);
             return new ModelAndView("redirect:/my-offers?error=delete-failed");
         }
     }
