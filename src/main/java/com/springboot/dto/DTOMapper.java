@@ -65,6 +65,9 @@ public class DTOMapper {
         String categoryName = skillOffer.getSkill() != null &&
                              skillOffer.getSkill().getCategory() != null ?
                              skillOffer.getSkill().getCategory().getCategoryName() : "";
+        Integer categoryId = skillOffer.getSkill() != null &&
+                            skillOffer.getSkill().getCategory() != null ?
+                            skillOffer.getSkill().getCategory().getId() : null;
 
         return new SkillOfferDTO(
             skillOffer.getId(),
@@ -81,7 +84,8 @@ public class DTOMapper {
             userProfileImage,
             userLocation,
             skillName,
-            categoryName
+            categoryName,
+            categoryId
         );
     }
 

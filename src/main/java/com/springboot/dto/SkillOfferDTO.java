@@ -28,6 +28,7 @@ public class SkillOfferDTO {
     // Skill information
     private String skillName;
     private String categoryName;
+    private Integer categoryId;
 
     // Constructors
     public SkillOfferDTO() {}
@@ -36,7 +37,7 @@ public class SkillOfferDTO {
                          String timeCommitment, String location, boolean isActive,
                          LocalDateTime createdAt, Integer userId, String userName, String userFullName,
                          String userProfileImage, String userLocation,
-                         String skillName, String categoryName) {
+                         String skillName, String categoryName, Integer categoryId) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -52,6 +53,7 @@ public class SkillOfferDTO {
         this.userLocation = userLocation;
         this.skillName = skillName;
         this.categoryName = categoryName;
+        this.categoryId = categoryId;
     }
 
     // Getters and Setters
@@ -173,6 +175,14 @@ public class SkillOfferDTO {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
     // Helper methods
