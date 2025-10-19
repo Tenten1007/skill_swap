@@ -80,63 +80,252 @@
             50% { background-position: 100% 50%; }
         }
 
-        /* Navbar Styles */
+        /* === NAVBAR STYLES === */
         .modern-navbar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            height: var(--navbar-height);
-            background: var(--glass-bg);
-            backdrop-filter: var(--blur-strength);
-            border-bottom: 1px solid var(--glass-border);
-            box-shadow: var(--glass-shadow);
             z-index: 1000;
-            display: flex;
-            align-items: center;
-            padding: 0 var(--space-xl);
+            padding: var(--space-md) var(--space-lg);
+            background: linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.15) 0%,
+                    rgba(255, 255, 255, 0.08) 100%);
+            backdrop-filter: blur(40px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            animation: slideDownNavbar 0.6s ease-out;
         }
 
-        .navbar-content {
-            width: 100%;
-            max-width: 1400px;
+        @keyframes slideDownNavbar {
+            0% {
+                opacity: 0;
+                transform: translateY(-100%);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .navbar-container {
+            max-width: 1200px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: var(--space-lg);
         }
 
         .navbar-brand {
-            font-size: var(--font-2xl);
-            font-weight: 800;
-            background: var(--button-gradient);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: var(--font-xl);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.05);
+            filter: brightness(1.2);
         }
 
         .navbar-menu {
             display: flex;
-            gap: var(--space-md);
             align-items: center;
-            list-style: none;
-            margin: 0;
-            padding: 0;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
         }
 
         .navbar-link {
-            color: var(--text-secondary);
-            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
             padding: var(--space-sm) var(--space-md);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: var(--radius-md);
-            transition: all 0.3s ease;
-            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-size: var(--font-sm);
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
 
-        .navbar-link:hover, .navbar-link.active {
-            color: var(--text-primary);
-            background: var(--glass-hover);
+        .navbar-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .navbar-link:hover::before {
+            left: 100%;
+        }
+
+        .navbar-link:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            color: var(--text-white);
+            text-decoration: none;
+        }
+
+        .navbar-link.active {
+            background: var(--button-gradient);
+            border-color: transparent;
+            color: var(--text-white);
+        }
+
+        .navbar-link.active:hover {
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.5);
+        }
+
+        /* Navbar Icons Colors */
+        .navbar-link.nav-home {
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .navbar-link.nav-home:hover {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+
+        .navbar-link.nav-board {
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .navbar-link.nav-board:hover {
+            background: rgba(245, 158, 11, 0.15);
+            border-color: rgba(245, 158, 11, 0.5);
+        }
+
+        .navbar-link.nav-add {
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .navbar-link.nav-add:hover {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.5);
+        }
+
+        .navbar-link.nav-offers {
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .navbar-link.nav-offers:hover {
+            background: rgba(139, 92, 246, 0.15);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .navbar-link.nav-matches {
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+
+        .navbar-link.nav-matches:hover {
+            background: rgba(6, 182, 212, 0.15);
+            border-color: rgba(6, 182, 212, 0.5);
+        }
+
+        .navbar-link.nav-notifications {
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .navbar-link.nav-notifications:hover {
+            background: rgba(245, 158, 11, 0.15);
+            border-color: rgba(245, 158, 11, 0.5);
+        }
+
+        .navbar-link.nav-profile {
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .navbar-link.nav-profile:hover {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.5);
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-md);
+            padding: var(--space-sm);
+            color: var(--text-white);
+            font-size: var(--font-xl);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mobile-menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .navbar-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: linear-gradient(135deg,
+                        rgba(255, 255, 255, 0.15) 0%,
+                        rgba(255, 255, 255, 0.08) 100%);
+                backdrop-filter: blur(40px);
+                border-top: 1px solid rgba(255, 255, 255, 0.2);
+                padding: var(--space-md);
+                flex-direction: column;
+                gap: var(--space-xs);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            }
+
+            .navbar-menu.active {
+                display: flex;
+                animation: slideDownMenu 0.3s ease-out;
+            }
+
+            @keyframes slideDownMenu {
+                0% {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .navbar-link {
+                width: 100%;
+                justify-content: center;
+                padding: var(--space-md);
+            }
+
+            .navbar-brand {
+                font-size: var(--font-lg);
+            }
         }
 
         /* Container */
@@ -397,20 +586,48 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
+    <!-- Modern Navbar -->
     <nav class="modern-navbar">
-        <div class="navbar-content">
+        <div class="navbar-container">
             <a href="home" class="navbar-brand">
-                <i class="fas fa-exchange-alt"></i> Skill Swap
+                <i class="fas fa-exchange-alt"></i>
+                Skill Swap
             </a>
-            <ul class="navbar-menu">
-                <li><a href="home" class="navbar-link"><i class="fas fa-home"></i> For You</a></li>
-                <li><a href="skillboard" class="navbar-link"><i class="fas fa-compass"></i> Browse</a></li>
-                <li><a href="my-offers" class="navbar-link"><i class="fas fa-briefcase"></i> My Skills</a></li>
-                <li><a href="matches" class="navbar-link"><i class="fas fa-handshake"></i> Matches</a></li>
-                <li><a href="notifications" class="navbar-link active"><i class="fas fa-bell"></i> Notifications</a></li>
-                <li><a href="profile" class="navbar-link"><i class="fas fa-user"></i> Profile</a></li>
-            </ul>
+
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="navbar-menu" id="navbarMenu">
+                <a href="home" class="navbar-link nav-home">
+                    <i class="fas fa-home"></i>
+                    For You
+                </a>
+                <a href="jobboard" class="navbar-link nav-board">
+                    <i class="fas fa-search"></i>
+                    Browse All
+                </a>
+                <a href="add-skill" class="navbar-link nav-add">
+                    <i class="fas fa-plus-circle"></i>
+                    Add Skill
+                </a>
+                <a href="my-offers" class="navbar-link nav-offers">
+                    <i class="fas fa-briefcase"></i>
+                    My Skills
+                </a>
+                <a href="matches" class="navbar-link nav-matches">
+                    <i class="fas fa-handshake"></i>
+                    Matches
+                </a>
+                <a href="notifications" class="navbar-link nav-notifications active">
+                    <i class="fas fa-bell"></i>
+                    Notifications
+                </a>
+                <a href="profile" class="navbar-link nav-profile">
+                    <i class="fas fa-user"></i>
+                    Profile
+                </a>
+            </div>
         </div>
     </nav>
 
@@ -526,5 +743,26 @@
             </c:otherwise>
         </c:choose>
     </div>
+
+    <script>
+        // Mobile Menu Toggle Function
+        function toggleMobileMenu() {
+            const menu = document.getElementById('navbarMenu');
+            menu.classList.toggle('active');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function (event) {
+            const navbar = document.querySelector('.modern-navbar');
+            const menu = document.getElementById('navbarMenu');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+
+            if (navbar && menu && toggle) {
+                if (!navbar.contains(event.target)) {
+                    menu.classList.remove('active');
+                }
+            }
+        });
+    </script>
 </body>
 </html>

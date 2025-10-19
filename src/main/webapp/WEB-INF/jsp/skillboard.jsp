@@ -49,6 +49,11 @@
 					<i class="fas fa-handshake"></i>
 					Matches
 				</a>
+				<a href="notifications" class="navbar-link nav-notifications">
+					<i class="fas fa-bell"></i>
+					Notifications
+					<span class="notification-badge" id="notificationBadge" style="display: none;"></span>
+				</a>
 				<a href="profile" class="navbar-link nav-profile">
 					<i class="fas fa-user"></i>
 					Profile
@@ -406,6 +411,50 @@
 		.navbar-link.nav-matches:hover {
 			background: rgba(6, 182, 212, 0.15);
 			border-color: rgba(6, 182, 212, 0.5);
+		}
+
+		.navbar-link.nav-notifications {
+			border-color: rgba(245, 158, 11, 0.3);
+		}
+
+		.navbar-link.nav-notifications:hover {
+			background: rgba(245, 158, 11, 0.15);
+			border-color: rgba(245, 158, 11, 0.5);
+		}
+
+		/* Notification Badge */
+		.notification-badge {
+			position: absolute;
+			top: -8px;
+			right: -8px;
+			background: linear-gradient(135deg, #EF4444, #DC2626);
+			color: white;
+			border-radius: 50%;
+			min-width: 20px;
+			height: 20px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 0.75rem;
+			font-weight: 700;
+			padding: 2px 6px;
+			box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+			animation: pulse 2s ease-in-out infinite;
+		}
+
+		@keyframes pulse {
+			0%, 100% {
+				transform: scale(1);
+				box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+			}
+			50% {
+				transform: scale(1.1);
+				box-shadow: 0 4px 12px rgba(239, 68, 68, 0.6);
+			}
+		}
+
+		.navbar-link {
+			position: relative;
 		}
 
 		.navbar-link.nav-profile {
@@ -1229,6 +1278,25 @@
 				}
 			}
 		});
+
+		// Load notification count
+		function loadNotificationCount() {
+			fetch('notifications/count')
+				.then(response => response.json())
+				.then(data => {
+					const badge = document.getElementById('notificationBadge');
+					if (data.count > 0) {
+						badge.textContent = data.count > 99 ? '99+' : data.count;
+						badge.style.display = 'flex';
+					} else {
+						badge.style.display = 'none';
+					}
+				})
+				.catch(error => console.error('Error loading notification count:', error));
+		}
+
+		loadNotificationCount();
+		setInterval(loadNotificationCount, 30000);
 	</script>
 </body>
 </html>
