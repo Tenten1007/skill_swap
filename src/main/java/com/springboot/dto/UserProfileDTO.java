@@ -152,7 +152,9 @@ public class UserProfileDTO {
 
     // Helper methods
     public String getFullName() {
-        return firstName + " " + lastName;
+        String first = (firstName != null) ? firstName : "";
+        String last = (lastName != null) ? lastName : "";
+        return (first + " " + last).trim();
     }
 
     public String getInitials() {

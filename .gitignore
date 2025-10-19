@@ -183,4 +183,9 @@ target/classes/sample_data.sql
 *~
 
 # JVM crash logs
-hs_err_pid*.log".claude/" 
+hs_err_pid*.log".claude/"
+
+# Flowchart files
+flowchart.io
+*.drawio
+*.drawio.bkp

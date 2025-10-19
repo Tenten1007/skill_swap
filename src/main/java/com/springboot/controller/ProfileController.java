@@ -152,8 +152,8 @@ public class ProfileController {
 
             // Get user statistics
             int totalOffers = skillOfferRepository.findByUserId(viewedUser.getId()).size();
-            int sentRequests = 0;
-            int receivedRequests = 0;
+            int sentRequests = swapRequestRepository.findSentRequestsByUserId(viewedUser.getId()).size();
+            int receivedRequests = swapRequestRepository.findReceivedRequestsByUserId(viewedUser.getId()).size();
 
             // Get rating statistics
             Double averageRating = ratingRepository.getAverageRatingByRateeId(viewedUser.getId());
@@ -302,6 +302,9 @@ public class ProfileController {
             if (github != null) {
                 user.setGithub(github.trim());
             }
+
+            // Save to database
+            userManager.insertUser(user);
 
             // Update session with new data
             session.setAttribute("user", user);

@@ -20,7 +20,6 @@ import com.springboot.model.Rating;
 import com.springboot.model.SwapMatch;
 import com.springboot.model.User;
 import com.springboot.service.RatingService;
-import com.springboot.service.SwapMatchService;
 import com.springboot.service.UserService;
 import com.springboot.service.NotificationService;
 
@@ -35,9 +34,6 @@ public class RatingController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private SwapMatchService swapMatchService;
 
     @Autowired
     private NotificationService notificationService;
@@ -136,7 +132,7 @@ public class RatingController {
     // แสดงโปรไฟล์พร้อมคะแนนและรีวิว
     @GetMapping("/profile")
     public ModelAndView showUserProfile(@RequestParam("userId") int userId) {
-        ModelAndView mav = new ModelAndView("user-profile");
+        ModelAndView mav = new ModelAndView("profile");
 
         // ดึงข้อมูล user
         Optional<User> userOpt = userService.getUserById(userId);
