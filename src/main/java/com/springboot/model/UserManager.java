@@ -3,6 +3,8 @@ package com.springboot.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,19 +13,17 @@ import com.springboot.repository.UserRepository;
 @Component
 public class UserManager {
 
+    private static final Logger log = LoggerFactory.getLogger(UserManager.class);
+
     @Autowired
     private UserRepository userRepository;
 
     public boolean isLogin(User user) {
         try {
             User user1 = userRepository.findByUsername(user.getUsername()).orElse(null);
-            if (user1 != null && user.getPassword().equals(user1.getPassword())) {
-                return true;
-            } else {
-                return false;
-            }
+            return user1 != null && user.getPassword().equals(user1.getPassword());
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("Error during login check for user: {}", user.getUsername(), ex);
             return false;
         }
     }
@@ -47,7 +47,7 @@ public class UserManager {
             userRepository.save(user);
             return true;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("Error inserting user: {}", user.getUsername(), ex);
             return false;
         }
     }
@@ -56,7 +56,7 @@ public class UserManager {
         try {
             return userRepository.findByUsername(username).orElse(null);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("Error retrieving user by username: {}", username, ex);
             return null;
         }
     }
@@ -65,7 +65,7 @@ public class UserManager {
         try {
             return userRepository.findById(userId).orElse(null);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("Error retrieving user by ID: {}", userId, ex);
             return null;
         }
     }
