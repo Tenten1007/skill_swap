@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.springboot.dto.DTOMapper;
+import com.springboot.dto.SkillCategoryDTO;
+import com.springboot.dto.SkillOfferDTO;
+import com.springboot.dto.UserDTO;
 import com.springboot.model.Skill;
 import com.springboot.model.SkillCategory;
 import com.springboot.model.SkillOffer;
@@ -19,10 +23,6 @@ import com.springboot.model.User;
 import com.springboot.repository.SkillCategoryRepository;
 import com.springboot.repository.SkillOfferRepository;
 import com.springboot.repository.SkillRepository;
-import com.springboot.dto.SkillOfferDTO;
-import com.springboot.dto.SkillCategoryDTO;
-import com.springboot.dto.UserDTO;
-import com.springboot.dto.DTOMapper;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -264,7 +264,7 @@ public class SkillOfferController {
 
             // Update or create skill if category/name changed
             Skill skill = skillOffer.getSkill();
-            if (!skill.getCategory().getId().equals(categoryId) || !skill.getSkillName().equals(title)) {
+            if (skill.getCategory().getId() != categoryId || !skill.getSkillName().equals(title)) {
                 skill = skillRepository.findByCategoryAndSkillName(category, title)
                         .orElseGet(() -> {
                             Skill newSkill = new Skill();

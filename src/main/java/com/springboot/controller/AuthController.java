@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.springboot.model.User;
-import com.springboot.model.UserManager;
 import com.springboot.model.PasswordUtil;
+import com.springboot.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -21,7 +21,7 @@ public class AuthController {
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
-    private UserManager userManager;
+    private UserService userService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView openLoginPage() {
@@ -41,11 +41,11 @@ public class AuthController {
         try {
             String hashedPassword = PasswordUtil.getInstance().createPassword(pwd, "Tenten");
             User user = new User(uname, hashedPassword);
-            boolean isLogin = userManager.isLogin(user);
+            boolean isLogin = userService.isLogin(user);
 
             if (isLogin) {
                 // Get complete user data from database for session
-                User completeUser = userManager.getUserByUsername(uname);
+                User completeUser = userService.getUserByUsernameForManager(uname);
 
                 // Store both username and user object for redundancy
                 session.setAttribute("username", uname);
@@ -81,13 +81,13 @@ public class AuthController {
         String uname = request.getParameter("username");
         String pwd = request.getParameter("password");
 
-        User user0 = userManager.getUserByUsername(uname);
+        User user0 = userService.getUserByUsernameForManager(uname);
 
         if (user0 == null) {
             try {
                 String hashedPassword = PasswordUtil.getInstance().createPassword(pwd, "Tenten");
                 User user = new User(uname, hashedPassword);
-                userManager.insertUser(user);
+                userService.insertUser(user);
             } catch (Exception ex) {
                 log.error("Error during user registration: {}", ex.getMessage(), ex);
             }

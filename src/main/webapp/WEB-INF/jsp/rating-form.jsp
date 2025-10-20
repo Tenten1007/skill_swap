@@ -61,6 +61,31 @@
         </div>
     </div>
     <!-- Custom Scripts -->
+    <script>
+        // แสดง success message หลังจาก redirect กลับมา
+        <c:if test="${not empty sessionScope.successMessage}">
+            Swal.fire({
+                icon: 'success',
+                title: 'ให้คะแนนสำเร็จ!',
+                text: '${sessionScope.successMessage}',
+                confirmButtonColor: '#10B981',
+                timer: 3000,
+                timerProgressBar: true,
+                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%)',
+                color: '#ffffff',
+                backdrop: 'rgba(0, 0, 0, 0.8)',
+                showClass: {
+                    popup: 'animate__animated animate__zoomIn'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__zoomOut'
+                }
+            }).then(() => {
+                window.location.href = '/home';
+            });
+            <% session.removeAttribute("successMessage"); %>
+        </c:if>
+    </script>
     <script src="${pageContext.request.contextPath}/js/rating-form.js"></script>
 </body>
 </html>

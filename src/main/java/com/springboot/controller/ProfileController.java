@@ -15,8 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.springboot.dto.ReviewDTO;
 import com.springboot.model.Rating;
 import com.springboot.model.User;
-import com.springboot.model.UserManager;
 import com.springboot.repository.SkillOfferRepository;
+import com.springboot.service.UserService;
 import com.springboot.repository.SwapRequestRepository;
 import com.springboot.repository.RatingRepository;
 import com.springboot.service.RatingService;
@@ -29,7 +29,7 @@ public class ProfileController {
     private static final Logger log = LoggerFactory.getLogger(ProfileController.class);
 
     @Autowired
-    private UserManager userManager;
+    private UserService userService;
 
     @Autowired
     private SkillOfferRepository skillOfferRepository;
@@ -57,7 +57,7 @@ public class ProfileController {
 
         try {
             // Get fresh user data from database
-            User freshUser = userManager.getUserByUsername(username);
+            User freshUser = userService.getUserByUsernameForManager(username);
             if (freshUser != null) {
                 user = freshUser;
                 session.setAttribute("user", user); // Update session with fresh data
@@ -147,7 +147,7 @@ public class ProfileController {
 
         try {
             // Get the user profile to view
-            User viewedUser = userManager.getUserById(userId);
+            User viewedUser = userService.getUserByIdForManager(userId);
 
             if (viewedUser == null) {
                 return new ModelAndView("redirect:/home?error=user-not-found");
@@ -224,7 +224,7 @@ public class ProfileController {
 
         try {
             // Get fresh user data from database
-            User freshUser = userManager.getUserByUsername(username);
+            User freshUser = userService.getUserByUsernameForManager(username);
             if (freshUser != null) {
                 user = freshUser;
                 session.setAttribute("user", user);
@@ -269,7 +269,7 @@ public class ProfileController {
 
         try {
             // Get fresh user data from database
-            User freshUser = userManager.getUserByUsername(username);
+            User freshUser = userService.getUserByUsernameForManager(username);
             if (freshUser != null) {
                 user = freshUser;
             }
@@ -306,7 +306,7 @@ public class ProfileController {
             }
 
             // Save to database
-            userManager.insertUser(user);
+            userService.insertUser(user);
 
             // Update session with new data
             session.setAttribute("user", user);
